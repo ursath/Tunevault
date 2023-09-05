@@ -1,10 +1,14 @@
 # Tunevault
 
-Django corren en un virtual environment
+Django corre en un virtual environment
 
 Instalar localmente env
 
 ``pip install pipenv``
+
+Crear virtual environment
+
+``python3 -m venv venv``
 
 En el virtual environment se van a instalar el resto de las librerias necesarias
 - ``pip install django``
@@ -18,4 +22,6 @@ Comandos utiles para Django
 
 Comandos utiles para React
 - ``npm start`` -> para correrlo (importante, tenes que estar en /frontend)
+
+Nota: no se por que pero a veces no anda con python pero si poniendo python3, lo mismo pasa con pip y pip3
 
