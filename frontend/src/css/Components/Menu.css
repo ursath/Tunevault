@@ -1,0 +1,36 @@
+header { 
+    width: 100%;
+    clear: both;
+    content:'';
+    display: table;
+
+}
+
+.Menu {
+    width: 100%;
+    height: 80px;
+}
+
+.logo {
+    width: 190px;
+    height: 40px;
+    float:left;
+    padding: 20px;
+}
+
+nav {
+    float: right;
+}
+
+.item {
+    list-style: none;
+    padding: 10px;
+    float: left;
+    margin-right: 100px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
