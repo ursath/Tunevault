@@ -1,4 +1,5 @@
 from django.shortcuts import render
+<<<<<<< HEAD
 from rest_framework import viewsets
 from .serializers import ProfileSerializer, PostSerializer, CommentSerializer, VaultSerializer
 from .models import Profile, Post, Comment, Vault
@@ -20,3 +21,24 @@ class CommentView(viewsets.ModelViewSet):
 class VaultView(viewsets.ModelViewSet):
     serializer_class = VaultSerializer
     queryset = Vault.objects.all()
+=======
+from django.contrib.auth.models import User, auth
+from .models import Profile, Post, Vault, Comment
+
+# Create your views here.
+
+def settings(request):
+    pass
+
+def profile(request):
+    pass
+
+def signup(request):
+    pass
+
+def signin(request):
+    pass
+
+def vault(request):
+    pass
+>>>>>>> 9e651f2679befcbc584fd29233e7fd95e826f13a
