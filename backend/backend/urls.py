@@ -15,8 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
+from tunevault import views
+
+router = routers.DefaultRouter()
+router.register(r'profiles', views.ProfileView, 'profile')
+router.register(r'posts', views.PostView, 'post')
+router.register(r'comments', views.CommentView, 'comment')
+router.register(r'vaults', views.VaultView, 'vault')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('api/', include(router.urls)),
+    path('spotify/', include('spotify.urls')),
+    ]
