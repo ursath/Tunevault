@@ -1,36 +1,52 @@
-header { 
-    width: 100%;
-    clear: both;
-    content:'';
-    display: table;
-
-}
 
 .Menu {
     width: 100%;
     height: 80px;
 }
 
-.logo {
-    width: 190px;
+.Logo {
     height: 40px;
+    width: 60x;
+    margin: 20px;
+    background-color: #282c34;
+    border: none;
+    cursor: pointer;
+}
+
+img {
+    width: 160px;
+    height: 35px;
     float:left;
-    padding: 20px;
 }
 
 nav {
     float: right;
 }
 
-.item {
+ul {
     list-style: none;
-    padding: 10px;
-    float: left;
-    margin-right: 100px;
+    margin-top: 15px;
+    margin-right: 30px;
 }
 
-a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
+li {
+    display: inline;
+    padding: 5px;
+    margin: 20px;
 }
+
+.Item {
+    text-decoration: none;
+    font-family: Arial;
+    color: white; 
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.LogIn {
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #282c34;
+    width: 80px;
+    border: 1px solid white;
+  }

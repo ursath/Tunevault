@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { createBrowserRouter, RouterProvider,} from "react-router-dom";
+import reportWebVitals from './reportWebVitals';
 import './index.css';
 import App from './js/App';
-import Music from './js/Music.js';
-import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider,} from "react-router-dom";
-import "./index.css";
+import Music from './js/Music';
+import LogIn from './js/LogIn';
+import Podcasts from './js/Podcasts';
+import Home from './js/Home';
+import Members from './js/Members'
 /* 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,13 +22,32 @@ const router = createBrowserRouter([
     path: "/",
     element: <App/>,    
   },
-  [
-    {
-      path: "/Music",
-      element: <Music/>,
-      
-    },
-  ]
+  
+  {
+    path: "/Music",
+    element: <Music/>,
+  },
+
+  {
+    path: "/LogIn",
+    element: <LogIn/>,
+  },
+
+  {
+    path: "/Podcasts",
+    element: <Podcasts/>,
+  },
+
+  {
+    path: "/Home",
+    element: <Home/>,
+  },
+
+  {
+    path: "/Members",
+    element: <Members/>,
+  },
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

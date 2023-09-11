@@ -5,19 +5,29 @@ import { Link } from "react-router-dom";
 
 export default function Menu() {
   return (
-    <header>
-      <div className='Menu'>
-        <img className='logo' src={logo} alt="logo" />
+
+      <div className="Menu">
+        <Link to="/">
+          <button className="Logo">
+            <img src={logo} alt="logo" />
+          </button>
+        </Link>
         <nav>
           <ul>
-          <li><Link to="/">Home</Link></li>
-            <li><Link to="/Music">Music</Link></li>
-            <li><Link to="/Podcsats">Podcasts</Link></li>
-            <li><Link to="/LogIn">Log in</Link></li>
+            <li><Link className="Item" to="/Music">Music</Link></li>
+            <li><Link className="Item" to="/Podcasts">Podcasts</Link></li>
+            <li><Link className="Item" to="/Members">Members</Link></li>
+            <li>
+              <Link className="Item" to="/LogIn">
+                <button className="LogIn">
+                  <p className="Item">Log In</p>
+                </button>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
-    </header>
+
   );
 }
 

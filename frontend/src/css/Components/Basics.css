@@ -1,5 +1,8 @@
-.App {
+.Basics {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
+}
+
+h1 {
+  text-align: center;
 }
