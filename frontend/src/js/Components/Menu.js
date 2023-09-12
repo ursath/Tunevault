@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 export default function Menu() {
   return (
-
       <div className="Menu">
         <Link to="/">
           <button className="Logo">
@@ -27,7 +26,6 @@ export default function Menu() {
           </ul>
         </nav>
       </div>
-
   );
 }
 

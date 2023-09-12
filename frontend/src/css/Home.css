@@ -1,0 +1,24 @@
+.Image {
+    height: 320px;
+    width: 340px;
+}
+
+.Header {
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    font-family: Arial;
+    margin-top: 80px;
+    margin-left: 150px;
+    margin-right: 150px;
+    float: left;
+    width: 230px;
+    height: 210px;
+    line-height: 55px;
+}
+
+.ImageBox {
+    margin-top: 50px;
+    margin-right: 200px;
+    float: right;
+}
