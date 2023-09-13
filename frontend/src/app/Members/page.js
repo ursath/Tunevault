@@ -1,6 +1,5 @@
-import React from 'react';
-import Menu from './Components/Menu';
-import '../css/Components/Basics.css';
+import Menu from '../../Components/Menu';
+import '../../Style/globals.css';
 
 export default function Members() {
   return (
