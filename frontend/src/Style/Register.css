@@ -1,0 +1,78 @@
+form {
+  height: 520px;
+  width: 400px;
+  background-color: rgb(37, 37, 37);
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(8,7,16,0.6);
+  padding: 50px 35px;
+  padding-top: 20px;
+
+}
+
+form *{
+  font-family: var(--font-poppins);
+  color: #ffffff;
+  outline: none;
+  border: none;
+}
+
+.PopUp{
+  width:100%;
+  height: 80vh;
+  backdrop-filter: blur(5px);
+}
+
+.Title {
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.InputItem {
+  display: block;
+  margin-top: 20px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.InputBox {
+  border-radius: 10px;
+  border: 1px solid var(--gris-secundario, #7C7C7C);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  height: 40px;
+  width: 100%;
+  background-color: rgb(37, 37, 37);
+  border-color: rgba(255, 255, 255, 0.787);
+  border-radius: 15px;
+  padding: 10px;
+  margin-top: 8px;
+}
+
+.Input {
+  background-color: rgb(37, 37, 37);
+  width: 100%;
+}
+
+.SingInButton {
+  margin-top: 30px;
+  width: 100%;
+  height: 40px;
+  background-color: #320eb2;
+  color: white;
+  border-radius: 50px;
+  font-family: var(--font-poppins);
+  cursor: pointer;
+}
+
+.CrossButton {
+  background-color: none;
+  margin-right: 10px;
+  text-align: right;
+  width: 100%;
+}
