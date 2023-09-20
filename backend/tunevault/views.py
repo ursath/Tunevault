@@ -5,6 +5,7 @@ from .models import Profile, Post, Comment, Vault
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
+from django_nextjs.render import render_nextjs_page_sync
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
@@ -26,7 +27,7 @@ class VaultView(viewsets.ModelViewSet):
 
 @login_required(login_url='signin')
 def settings(request):
-    
+
     user_profile = Profile.objects.get(user=request.user)
 
     if request.method == 'POST':
@@ -51,8 +52,8 @@ def settings(request):
             user_profile.save()
         
         return redirect('settings')
-    # return render(request, 'setting.html', {'user_profile': user_profile}) TODO llamar desde next js
-    return 0
+    # TODO ver que anda
+    return render_nextjs_page_sync(request, 'setting.html', {'user_profile': user_profile}) 
 
 def profile(request):
     pass
@@ -90,8 +91,9 @@ def signup(request):
             return redirect('signup')
         
     else:
-        #return render(request, 'signup.html') TODO llamar a next js desde aca
-        pass
+        # TODO ver que anda
+        return render_nextjs_page_sync(request, 'signup.html') 
+        
 
 def signin(request):
     
@@ -109,8 +111,7 @@ def signin(request):
             return redirect('signin')
 
     else:
-        # return render(request, 'signin.html') TODO llamar next js desde aca
-        pass 
+        return render(request, 'signin.html')  
 
 def vault(request):
     pass
