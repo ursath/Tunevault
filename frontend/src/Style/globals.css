@@ -32,6 +32,8 @@ body {
 }
 
 h1 {
-  text-align: center;
+  text-align: left;
   color:white;
+  font-family: var(--font-poppins);
+  font-weight: 700;
 }

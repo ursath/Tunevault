@@ -8,7 +8,7 @@ export default function Init() {
   return (
     <div className='Basics'>
         <Menu />
-        <div className='Header'>Join our music <span style={{ color: '#FF00FF' }}>lover</span> community</div>
+        <div className='Header'><h1>Join our music <span style={{ color: '#FF00FF' }}>lover</span> community</h1></div>
         <div className='ImageBox'><Image src={home} className="Image" alt="home" width={500} height={300}></Image></div>
     </div>
   )
