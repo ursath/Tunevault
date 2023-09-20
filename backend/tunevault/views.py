@@ -111,7 +111,8 @@ def signin(request):
             return redirect('signin')
 
     else:
-        return render(request, 'signin.html')  
+        # TODO ver que anda
+        return render_nextjs_page_sync(request, 'signin.html')  
 
 def vault(request):
     pass
