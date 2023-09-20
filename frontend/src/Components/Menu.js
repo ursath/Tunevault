@@ -13,13 +13,13 @@ export default function Menu() {
         </Link>
         <nav>
           <ul>
-            <li><Link href="/Music"> <a className="Item">Music</a></Link></li>
-            <li><Link href="/Podcasts"> <a className="Item">Podcasts</a></Link></li>
-            <li><Link href="/Members"> <a className="Item">Members</a></Link></li>
+            <li><Link href="/Music" className="Item">Music</Link></li>
+            <li><Link href="/Podcasts" className="Item">Podcasts</Link></li>
+            <li><Link href="/Members" className="Item">Members</Link></li>
             <li>
               <Link className="Item" href="/LogIn">
                 <button className="LogIn">
-                  <p className="Item">Log In</p>
+                   <p className="Item">Log In</p>
                 </button>
               </Link>
             </li>
