@@ -11,17 +11,18 @@ const RegisterModal = ({ isvisible, onclose }) => {
     const [password2, setPassword2] = useState('');
 
     const submit = async (e) => {
-    e.preventDefault();
-    await fetch('http://localhost:8000/api/profiles', {
-        method: "POST",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-        username,
-        email,
-        password, 
-        password2
-        })
-    });
+        e.preventDefault();
+        await fetch('http://127.0.0.1:8000/api/profiles/', {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+            username,
+            email,
+            password, 
+            password2
+            })
+        });
+        window.location.href = '/';
     }
 
     if(!isvisible) return null;
@@ -52,7 +53,9 @@ const RegisterModal = ({ isvisible, onclose }) => {
             <input className="Input" type="password" required onChange={e => setPassword2(e.target.value)}/>  
         </div>
 
-        <button className="SingInButton">Sign up</button>
+        <div className="SignUpButton">
+            <button type='submit' className="SignUp">Sign up</button>
+        </div>
         </form>
     </div>
     );
