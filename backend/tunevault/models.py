@@ -13,6 +13,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     profileimg = models.ImageField(upload_to='profile_image', default='profile_image.jpg')
     location = models.CharField(max_length=100, blank=True)
+    followers = models.PositiveIntegerField()
     # TODO guardar artistas/albumes favoritos
 
     def __str__(self):
@@ -21,6 +22,12 @@ class Profile(models.Model):
 class Vault(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.TextField(max_length=150)
+    description = models.TextField()
+    genres = models.TextField()
+    rating = models.FloatField()
+    spotifyimg = models.ImageField(upload_to= 'vault_image', default='unknown_vault.jpg')
+    followers = models.PositiveIntegerField()
+    likes = models.PositiveIntegerField()
     # TODO sacar mas info de la api de spotify
     def __str__(self):
         return self.title

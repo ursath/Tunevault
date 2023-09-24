@@ -32,6 +32,5 @@ urlpatterns = [
     path('signup', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
     path('vault/<str:pk>', views.vault, name='vault'),
-    path('api/', include(router.urls)),
-    path('spotify/', include('spotify.urls')),
+    path('api/', include(router.urls)),    
     ]

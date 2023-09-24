@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_nextjs',
     'corsheaders',
-    'spotify.apps.SpotifyConfig',
     'tunevault',
 ]
 

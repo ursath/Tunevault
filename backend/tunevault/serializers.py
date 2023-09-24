@@ -19,4 +19,4 @@ class CommentSerializer(serializers.ModelSerializer):
 class VaultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vault
-        fields = ('id', 'title')
+        fields = ('id', 'title', 'description', 'genres', 'rating', 'spotifyimg', 'followers', 'likes')
