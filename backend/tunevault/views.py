@@ -131,6 +131,8 @@ def signup(request):
         # TODO ver que anda
         return render_nextjs_page_sync(request, '../../frontend/src/app/Init/page.js') 
         
+def index(request):
+    return render_nextjs_page_sync(request, '/app/page.js')
 
 def signin(request):
     
