@@ -2,15 +2,8 @@
 import React, {useState} from 'react';
 import '../Style/Register.scss';
 import '../Style/globals.scss'
-import RegisterModal from './RegisterModal';
 
-const LogInModal = ({ position, isvisible, onclose }) => {
-
-    const[showRegisterModal, setShowRegisterModal] = useState(false);
-
-    const openRegisterModal = () => {
-        setShowRegisterModal(true);
-      };
+const LogInModal = ({ isvisible, onclose, onchange }) => {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -32,10 +25,9 @@ const LogInModal = ({ position, isvisible, onclose }) => {
 
     return (
     <div className="PopUp">
-        <RegisterModal isvisible={showRegisterModal} onclose={() => setShowRegisterModal(false)} />
         <form onSubmit={submit}> 
-        <button className="CrossButton" onClick={() => {setShowRegisterModal(false); onclose()}}>x</button>
-        <h3 className="Title">Sign In</h3>
+        <button className="CrossButton" onClick={() => onclose()}>x</button>
+        <h3 className="Title">Sign in</h3>
 
         <h3 className="InputItem">Username</h3> 
         <div className="InputBox">
@@ -52,7 +44,7 @@ const LogInModal = ({ position, isvisible, onclose }) => {
         </div>
 
         <div className="OtherOptionButton">
-            <button onClick={openRegisterModal}>Don't have an account? <span style={{ textDecoration: 'underline' }}>Sign up</span></button>
+            <button onClick={() => onchange()}>Don't have an account? <span style={{ textDecoration: 'underline' }}>Sign up</span></button>
         </div>
 
         </form>
