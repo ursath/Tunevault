@@ -7,6 +7,14 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django_nextjs.render import render_nextjs_page_sync
 from django.contrib.auth.decorators import login_required
+from spotipy.oauth2 import SpotifyClientCredentials
+import spotipy
+import json
+from spotipy.oauth2 import SpotifyOAuth
+from tunevault.models import Vault 
+from dotenv import load_dotenv
+
+load_dotenv()
 # Create your views here.
 
 class ProfileView(viewsets.ModelViewSet):
@@ -145,3 +153,45 @@ def signin(request):
 
 def vault(request):
     pass
+
+
+auth_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(auth_manager=auth_manager)
+
+def search_artist(string):
+    result = sp.search(string,2,0,"artist")
+    listToRet = []
+    if result['artists']['items']==[]:
+        return json.dumps({'error': 'No se encontraron artistas'})
+    for items in result['artists']['items']:
+        queryResult = get_or_create_vault_(items)
+        listToRet.append(queryResult)
+    return listToRet
+
+def get_or_create_vault_(item):
+    try:
+        toRet = Vault.objects.get(id=item['id'])
+    except:
+        toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
+    return {
+        'id': toRet.id,
+        'title': toRet.title,
+        'description': toRet.description,
+        'genres': toRet.genres,
+        'spotifyimg':toRet.spotifyimg,
+        'rating':toRet.rating,
+        'followers':toRet.followers,
+        'likes':toRet.likes
+    }
+
+def get_top50_artists():
+    playlists = sp.playlist_tracks("37i9dQZF1DXcBWIGoYBM5M")#top50 playlist id
+    list = []
+    for item in playlists['items']:
+        list.append(item['track']['artists'])
+    return list
+
+def create_vault(id, title, description, genres, spotifyimg):
+    vaultToRet = Vault(id=id, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
+    vaultToRet.save()
+    return vaultToRet

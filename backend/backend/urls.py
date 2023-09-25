@@ -26,11 +26,13 @@ router.register(r'comments', views.CommentView, 'comment')
 router.register(r'vaults', views.VaultView, 'vault')
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('settings/', views.settings, name='settings'),
     path('profile/<str:pk>', views.profile, name='profile'),
     path('signup', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
+    path('search', views.search_artist, name = 'search_artist'),
     path('vault/<str:pk>', views.vault, name='vault'),
     path('api/', include(router.urls)),    
     ]
