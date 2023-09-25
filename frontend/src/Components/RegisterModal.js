@@ -32,7 +32,7 @@ const RegisterModal = ({ position, isvisible, onclose }) => {
     <div className="PopUp">
         <form onSubmit={submit}> 
         <button className="CrossButton" onClick={() => onclose()}>x</button>
-        <h2 className="Title">Create an account</h2>
+        <h3 className="Title">Create an account</h3>
 
         <h3 className="InputItem">Username</h3> 
         <div className="InputBox">

@@ -11,7 +11,8 @@ export default function Init() {
   const[showModal, setShowModal] = useState(false);
   
   return (
-    <div className='Basics'>
+<div className='all'>
+  <div className='Basics'>
       <Menu />
       <RegisterModal isvisible={showModal} onclose={() => setShowModal(false)} /> 
       <div className='container'>
@@ -26,8 +27,14 @@ export default function Init() {
           </div>
             <Image src={home} className="homeImage" alt="home"></Image>
         </div>
+    </div>
+      <div className='Black'> 
+        <div className='container'>
+        <h2> Discover new albums & artists</h2>
+        </div>
       </div>
       
+    </div>
     </div>
   )
 }
