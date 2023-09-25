@@ -3,12 +3,12 @@ import '../Style/Menu.scss';
 import logo from '../Resources/logo.png';
 import Link from "next/link";
 import Image from 'next/image';
-import RegisterModal from './RegisterModal';
+import LogInModal from './LogInModal';
 import Lupa from '../Resources/search.js';
 import { useState } from 'react';
 
 export default function Menu() {
-  const[showModal, setShowModal] = useState(false);
+  const[showLogInModal, setShowLogInModal] = useState(false);
 
   return (
     <div>
@@ -24,22 +24,20 @@ export default function Menu() {
             <li className="NavItem"><Link href="/Podcasts" className="Item">Podcasts</Link></li>
             <li className="NavItem"><Link href="/Members" className="Item">Members</Link></li>
             <li className="NavItem">
-              
-                <button className="LogIn" onClick={() => setShowModal(true)}>
+                <button className="LogIn" onClick={() => setShowLogInModal(true)}>
                    <p className="Item">Log In</p>
                 </button>
             </li>
-            <li className='NavItem'>
+            <li className="NavItem">
               <div className="search">
-                  <input className='Item' id='searcher' >
-                  </input>
+                  <input className="Item" type="text" id="searcher" />
                   <Lupa size="20" />
               </div>
             </li>
           </ul>
         </nav>
       </div>
-      <RegisterModal isvisible={showModal} onclose={() => setShowModal(false)} />
+      <LogInModal isvisible={showLogInModal} onclose={() => setShowLogInModal(false)} />
       </div>
   );
 }

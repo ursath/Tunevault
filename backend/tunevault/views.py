@@ -117,11 +117,11 @@ def signup(request):
                 return redirect('settings')
         else:
             messages.info(request, 'Password Not Matching')
-            return redirect('signup')
+            return redirect('../../frontend/src/app/Init/page.js')
         
     else:
         # TODO ver que anda
-        return render_nextjs_page_sync(request, 'signup.html') 
+        return render_nextjs_page_sync(request, '../../frontend/src/app/Init/page.js') 
         
 
 def signin(request):
@@ -137,11 +137,11 @@ def signin(request):
             return redirect('/')
         else:
             messages.info(request, 'Credentials Invalid')
-            return redirect('signin')
+            return redirect('../../frontend/src/app/Init/page.js')
 
     else:
         # TODO ver que anda
-        return render_nextjs_page_sync(request, 'signin.html')  
+        return render_nextjs_page_sync(request, '../../frontend/src/app/Init/page.js')  
 
 def vault(request):
     pass

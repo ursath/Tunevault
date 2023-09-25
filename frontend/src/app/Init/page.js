@@ -8,26 +8,26 @@ import RegisterModal from '../../Components/RegisterModal';
 import { useState } from 'react';
 
 export default function Init() {
-  const[showModal, setShowModal] = useState(false);
+  const[showRegisterModal, setShowRegisterModal] = useState(false);
   
   return (
-<div className='all'>
-  <div className='Basics'>
-      <Menu />
-      <RegisterModal isvisible={showModal} onclose={() => setShowModal(false)} /> 
+  <div className='all'>
+    <div className='Basics'>
+      <Menu /> 
+      <RegisterModal isvisible={showRegisterModal} onclose={() => setShowRegisterModal(false)} />
       <div className='container'>
         <div className='homeBox'> 
           <div className='Header'>
             <h1>Join our music <span style={{ color: '#FF00FF' }}>lover</span> community</h1>
             <div>
-              <button className="createAccount" onClick={() => setShowModal(true)} >
+              <button className="createAccount" onClick={() => setShowRegisterModal(true)} >
                     <p className="createAccount">Create an account</p> 
               </button>
             </div>
           </div>
             <Image src={home} className="homeImage" alt="home"></Image>
         </div>
-    </div>
+      </div>
       <div className='Black'> 
         <div className='container'>
         <h2> Discover new albums & artists</h2>
@@ -35,6 +35,6 @@ export default function Init() {
       </div>
       
     </div>
-    </div>
+  </div>
   )
 }
