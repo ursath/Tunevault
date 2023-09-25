@@ -1,15 +1,33 @@
+"use client"
 import Menu from '../../Components/Menu';
-import '../../Style/globals.css';
-import '../../Style/Home.css';
+import '../../Style/globals.scss';
+import '../../Style/Home.scss';
 import Image from 'next/image';
 import home from '../../Resources/home.png';
+import RegisterModal from '../../Components/RegisterModal';
+import { useState } from 'react';
 
 export default function Init() {
+  const[showModal, setShowModal] = useState(false);
+  
   return (
     <div className='Basics'>
-        <Menu />
-        <div className='Header'><h1>Join our music <span style={{ color: '#FF00FF' }}>lover</span> community</h1></div>
-        <div className='ImageBox'><Image src={home} className="Image" alt="home" width={500} height={300}></Image></div>
+      <Menu />
+      <RegisterModal isvisible={showModal} onclose={() => setShowModal(false)} /> 
+      <div className='container'>
+        <div className='homeBox'> 
+          <div className='Header'>
+            <h1>Join our music <span style={{ color: '#FF00FF' }}>lover</span> community</h1>
+            <div>
+              <button className="createAccount" onClick={() => setShowModal(true)} >
+                    <p className="createAccount">Create an account</p> 
+              </button>
+            </div>
+          </div>
+            <Image src={home} className="homeImage" alt="home"></Image>
+        </div>
+      </div>
+      
     </div>
   )
 }

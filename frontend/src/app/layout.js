@@ -1,6 +1,6 @@
-import '../Style/globals.css'
+import '../Style/globals.scss'
 import { Nunito, Poppins } from 'next/font/google'
- 
+
 const nunito = Nunito({
   subsets: ['latin'],
   variable: '--font-nunito',

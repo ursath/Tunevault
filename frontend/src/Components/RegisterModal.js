@@ -1,9 +1,10 @@
 "use client";
 import React, {useState} from 'react';
-import '../Style/Register.css';
-import '../Style/globals.css'
+import '../Style/Register.scss';
+import '../Style/globals.scss'
 
-const RegisterModal = ({ isvisible, onclose }) => {
+
+const RegisterModal = ({ position, isvisible, onclose }) => {
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');

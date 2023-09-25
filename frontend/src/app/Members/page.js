@@ -1,5 +1,5 @@
 import Menu from '../../Components/Menu';
-import '../../Style/globals.css';
+import '../../Style/globals.scss';
 
 export default function Members() {
   return (
