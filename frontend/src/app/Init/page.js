@@ -56,7 +56,7 @@ export default function Init() {
           <BoxVaults/>
         </div>
         <div>
-          <div className="Search">
+          <div className="SearchHome">
             <input className="InputSearch" placeholder='What do you want to talk about?' type="text" id="searcher" />
             <Lupa size="20" color="white" />
           </div>
