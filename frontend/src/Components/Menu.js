@@ -49,7 +49,7 @@ export default function Menu() {
             <li className="NavItem">
               <div className="search">
                   <input className="Item" type="text" id="searcher" />
-                  <Lupa size="20" />
+                  <Lupa className="Lupa" size="20" color="black"/>
               </div>
             </li>
           </ul>
