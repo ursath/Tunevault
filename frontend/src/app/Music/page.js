@@ -1,12 +1,12 @@
 import Menu from '../../Components/Menu';
-import '../../Style/Music.scss'
+import '../../Style/BasicsSections.scss'
 import Lupa from '../../Resources/search.js';
 
 export default function Music() {
   return (
     <div className='BasicsMusic'>
       <Menu />
-      <div className='HeaderMusic'>
+      <div className='HeaderMP'>
         <h1>Music</h1>
       </div>
       <div className="Search">
@@ -15,7 +15,7 @@ export default function Music() {
       </div>
       <div class="Filters">
         <label className='Label'>FILTER BY</label>
-        <select className='custom-select'>
+        <select className='SelectMusic'>
           <option value="0">Genre</option>
           <option value="1">Disco</option>
           <option value="2">Rock</option>
@@ -24,14 +24,14 @@ export default function Music() {
           <option value="5">Pop</option>
           <option value="6">Salsa</option>
         </select>
-        <select className='custom-select'>
+        <select className='SelectMusic'>
           <option value="0">Active</option>
           <option value="1">Trending</option>
           <option value="2">Emergent</option>
           <option value="3">New</option>
         </select>
       </div>
-      <div class="BlackMusic">
+      <div class="BlackMP">
         <h1 className='TrendingTittle'>Trending Vaults</h1>
       </div>
     </div>

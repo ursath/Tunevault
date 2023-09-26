@@ -10,7 +10,12 @@
     height: 600px;
 }
 
-.HeaderMusic {
+.BasicsMembers {
+    background: linear-gradient(180deg, #1cb451 0%, #0B022D 100%);
+    height: 600px;
+}
+
+.HeaderMP {
     font-size: xx-large;
     font-family: var(--font-poppins);
     position: absolute;
@@ -56,7 +61,7 @@
     font-family: var(--font-poppins);
 }
 
-.custom-select {
+.SelectMusic {
     background-color: #26477c;
     border-radius: 10px;
     border: 1px solid #282828;
@@ -78,7 +83,7 @@
     margin-right: 20px;
 }
 
-.BlackMusic {
+.BlackMP {
     height:100vh;
     width: 100%;
     margin-top: 360px;
