@@ -1,0 +1,22 @@
+.boxVaults{
+    display: grid;
+    padding: 50px;
+    z-index: 1px;
+    color: red;
+}
+
+.box {
+    border-radius: 8px;
+background: var(--fondo, #1C1C1C);
+width: 306px;
+height: 402px;
+flex-shrink: 0;
+}
+
+.imgVault { 
+    
+    box-shadow: 0px 4px 32px -214px rgba(0, 0, 0, 0.25);
+    width: 250px;
+height: 250px;
+flex-shrink: 0;
+}
