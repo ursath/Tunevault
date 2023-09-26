@@ -1,4 +1,4 @@
-#!/home/mica/Documents/ITBA/IngeI/Tunevault/venv/bin/python3
+#!/Users/agustinasanguinetti/Desktop/Facu/Tunevault/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys

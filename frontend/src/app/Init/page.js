@@ -7,6 +7,8 @@ import home from '../../Resources/home.png';
 import RegisterModal from '../../Components/RegisterModal';
 import LogInModal from '../../Components/LogInModal';
 import { useState } from 'react';
+import Cilindro from '@/Resources/figures/cilindroHome';
+import BoxVaults from '@/Components/vaultsPreview';
 
 export default function Init() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -47,7 +49,13 @@ export default function Init() {
       </div>
       <div className='Black'> 
         <div className='container'>
-        <h2> Discover new albums & artists</h2>
+        <h2> Discover new albums & artists</h2>  
+        </div>
+        <div className='container'>
+          <BoxVaults/>
+        </div>
+        <div className='container'>
+        <Cilindro className="figure"/>
         </div>
       </div>
     </div>
