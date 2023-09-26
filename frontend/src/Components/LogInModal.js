@@ -1,8 +1,8 @@
 "use client";
 import React, {useState} from 'react';
 import '../Style/Register.scss';
-import '../Style/globals.scss'
-
+import '../Style/globals.scss';
+import {postApi} from '@/Components/callApi.js' 
 const LogInModal = ({ isvisible, onclose, onchange }) => {
 
     const [username, setUsername] = useState('');
@@ -10,17 +10,12 @@ const LogInModal = ({ isvisible, onclose, onchange }) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await fetch('http://127.0.0.1:8000/api/profiles/', {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
+        await postApi('singin',{}, {
             username,
-            password
-            })
+            password, 
         });
-        window.location.href = '/';
     }
-
+    
     if(!isvisible) return null;
 
     return (

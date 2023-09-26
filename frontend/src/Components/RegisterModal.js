@@ -1,7 +1,8 @@
 "use client";
 import React, {useState} from 'react';
-import '../Style/Register.scss';
-import '../Style/globals.scss'
+import '@/Style/Register.scss';
+import '@/Style/globals.scss'
+import { postApi } from '@/Components/callApi';
 
 const RegisterModal = ({ isvisible, onclose, onchange }) => {
 
@@ -12,19 +13,44 @@ const RegisterModal = ({ isvisible, onclose, onchange }) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await fetch('http://127.0.0.1:8000/api/profiles/', {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
+        await postApi('create/',{}, {
             username,
             email,
             password, 
             password2
-            })
         });
-        window.location.href = '/';
     }
 
+/* con jwt:
+        const [credentials, setCredentials] = useState({
+          email: '',
+          password: ''
+        });
+      
+        const handleChange = (e) => {
+          setCredentials({
+            ...credentials,
+            [e.target.name]: e.target.value
+          });
+        };
+      
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+      
+          try {
+            const response = await axios.post('/api/login', credentials);
+            const { token, refreshToken } = response.data;
+      
+            // Store the tokens in localStorage or secure cookie for later use
+            localStorage.setItem('token', token);
+            localStorage.setItem('refreshToken', refreshToken);
+      
+            // Redirect or perform other actions upon successful login
+          } catch (error) {
+            // Handle login error
+          }
+        };
+*/
     if(!isvisible) return null;
 
     return (
