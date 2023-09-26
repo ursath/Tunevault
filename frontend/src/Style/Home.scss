@@ -47,3 +47,31 @@ p.createAccount{
     z-index: -1;
 }
 
+.Search {
+    width: 650px;
+    height: 40px;
+    cursor: pointer;
+    padding-left: 10px;
+    background-color: rgb(29, 29, 29);
+    border-radius: 24px;
+    margin-top: 1100px;
+    display: flex;
+    place-items: center;
+    position: absolute;
+    top: 10%;
+    left: 28%;
+    padding-right: 10px;   
+    z-index: 1;
+}
+
+.InputSearch {
+    background-color: rgb(29, 29, 29);
+    font-size: small;
+    font-family: var(--font-poppins);
+    color: white;
+    width: 600px;
+}
+
+.InputSearch::placeholder {
+    color:white;
+}

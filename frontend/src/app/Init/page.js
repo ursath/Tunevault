@@ -9,6 +9,7 @@ import LogInModal from '../../Components/LogInModal';
 import { useState } from 'react';
 import Cilindro from '@/Resources/figures/cilindroHome';
 import BoxVaults from '@/Components/vaultsPreview';
+import Lupa from '@/Resources/search.js'
 
 export default function Init() {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -54,8 +55,14 @@ export default function Init() {
         <div className='container'>
           <BoxVaults/>
         </div>
-        <div className='container'>
+        <div>
+          <div className="Search">
+            <input className="InputSearch" placeholder='What do you want to talk about?' type="text" id="searcher" />
+            <Lupa size="20" color="white" />
+          </div>
+          <div className='container'>
         <Cilindro className="figure"/>
+        </div>
         </div>
       </div>
     </div>
