@@ -1,5 +1,6 @@
-import axios from 'axios'
-const urlBack = "http://localhost:8000/jwt/";
+import axios from 'axios';
+import urljoin from 'url-join';
+const urlBack = "127.0.0.1:8000/";
 
 const axiosBack = axios.create({
   baseURL: urlBack
@@ -29,32 +30,20 @@ export function getApi({path, param }) {
 }  
 
 // data:  is the data to be sent as the request body
-export function postApi( {path, param, dataToPost} ) {
-  
-  axiosBack.post( path,{
-    params: param
-  }, {
-    data: dataToPost 
-  })
+export function postApi( {path, dataToPost} ) {
+
+  const fullUrl = urljoin(urlBack, path); // Concatenate the base URL and path using urljoin
+  const url = "127.0.0.1:8000/register/";
+  axios.post(url, 
+    dataToPost 
+  );
+  axiosBack.post(url, 
+    dataToPost 
+  )
   .then(function (response) {
     console.log(response);
   })
   .catch(function (error) {
     console.log(error);
-  });
+  }); 
 }
-
-/*
-const submit = async (e) => {
-        e.preventDefault();
-        await fetch('http://127.0.0.1:8000/api/profiles/', {
-            method: "POST",
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-            username,
-            password
-            })
-        });
-        window.location.href = '/';
-    }
-    */

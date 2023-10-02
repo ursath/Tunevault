@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from rest_framework import viewsets
-from .serializers import ProfileSerializer, PostSerializer, CommentSerializer, VaultSerializer
+from rest_framework import viewsets, status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from .serializers import ProfileSerializer, PostSerializer, CommentSerializer, VaultSerializer, UserSerializer
 from .models import Profile, Post, Comment, Vault
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
@@ -13,6 +16,7 @@ import json
 from spotipy.oauth2 import SpotifyOAuth
 from tunevault.models import Vault 
 from dotenv import load_dotenv
+from django.contrib.auth import authenticate, login, logout
 
 load_dotenv()
 # Create your views here.
@@ -33,125 +37,76 @@ class VaultView(viewsets.ModelViewSet):
     serializer_class = VaultSerializer
     queryset = Vault.objects.all()
 
-@login_required(login_url='signin')
-def settings(request):
+class UserView(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
-    user_profile = Profile.objects.get(user=request.user)
-
+@api_view(['POST'])
+@permission_classes([AllowAny])  # Allow unauthenticated users to register
+def register_user(request):
+    """
+    API endpoint for user registration.
+    """
     if request.method == 'POST':
-        
-        if request.FILES.get('image') == None:
-            image = user_profile.profileimg
-            bio = request.POST['bio']
-            location = request.POST['location']
-
-            user_profile.profileimg = image
-            user_profile.bio = bio
-            user_profile.location = location
-            user_profile.save()
-        if request.FILES.get('image') != None:
-            image = request.FILES.get('image')
-            bio = request.POST['bio']
-            location = request.POST['location']
-
-            user_profile.profileimg = image
-            user_profile.bio = bio
-            user_profile.location = location
-            user_profile.save()
-        
-        return redirect('settings')
-    # TODO ver que anda
-    return render_nextjs_page_sync(request, 'setting.html', {'user_profile': user_profile}) 
-
-def profile(request):
-    pass
-
-# @login_required(login_url='signin')
-# def profile(request, pk):
-#     user_object = User.objects.get(username=pk)
-#     user_profile = Profile.objects.get(user=user_object)
-#     user_posts = Post.objects.filter(user=pk)
-#     user_post_length = len(user_posts)
-
-#     follower = request.user.username
-#     user = pk
-
-#     if FollowersCount.objects.filter(follower=follower, user=user).first():
-#         button_text = 'Unfollow'
-#     else:
-#         button_text = 'Follow'
-
-#     user_followers = len(FollowersCount.objects.filter(user=pk))
-#     user_following = len(FollowersCount.objects.filter(follower=pk))
-
-#     context = {
-#         'user_object': user_object,
-#         'user_profile': user_profile,
-#         'user_posts': user_posts,
-#         'user_post_length': user_post_length,
-#         'button_text': button_text,
-#         'user_followers': user_followers,
-#         'user_following': user_following,
-#     }
-#     return render(request, 'profile.html', context)
-
-def signup(request):
-
-    if request.method == 'POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['password']
-        password2 = request.POST['password2']
-
-        if password == password2:
+        # Deserialize user data
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            # Check if a user with the provided email already exists
+            email = serializer.validated_data['email']
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email Taken')
-                return redirect('signup')
-            elif User.objects.filter(username=username).exists():
-                messages.info(request, 'Username Taken')
-                return redirect('signup')
-            else:
-                user = User.objects.create_user(username=username, email=email, password=password)
-                user.save()
+                return Response({'message': 'Email already in use'}, status=status.HTTP_400_BAD_REQUEST)
 
-                #log user in and redirect to settings page
-                user_login = auth.authenticate(username=username, password=password)
-                auth.login(request, user_login)
+            # Check if the two provided passwords match
+            password = serializer.validated_data['password']
+            password_confirmation = serializer.validated_data.get('password_confirmation')
+            if password != password_confirmation:
+                return Response({'message': 'Passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
 
-                #create a Profile object for the new user
-                user_model = User.objects.get(username=username)
-                new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
-                new_profile.save()
-                return redirect('settings')
-        else:
-            messages.info(request, 'Password Not Matching')
-            return redirect('../../frontend/src/app/Init/page.js')
-        
-    else:
-        # TODO ver que anda
-        return render_nextjs_page_sync(request, '../../frontend/src/app/Init/page.js') 
-        
-def index(request):
-    return render_nextjs_page_sync(request, '/app/page.js')
-
-def signin(request):
+            # Create a new user
+            user = User.objects.create_user(
+                username=serializer.validated_data['username'],
+                email=email,
+                password=password
+            )
+            user.save()
+            return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['POST'])
+@permission_classes([AllowAny])  # Allow unauthenticated users to login
+def login_user(request):
+    """
+    API endpoint for user login.
+    """
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = auth.authenticate(username=username, password=password)
-
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(request, username=username, password=password)
         if user is not None:
-            auth.login(request, user)
-            return redirect('/')
-        else:
-            messages.info(request, 'Credentials Invalid')
-            return redirect('../../frontend/src/app/Init/page.js')
+            login(request, user)
+            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
+        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    else:
-        # TODO ver que anda
-        return render_nextjs_page_sync(request, '../../frontend/src/app/Init/page.js')  
+@api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])  # Require authentication for profile management
+def profile(request):
+    """
+    API endpoint for user profile management.
+    """
+    if request.method == 'GET':
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    if request.method == 'PUT':
+        serializer = UserSerializer(request.user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'Profile updated successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method == 'DELETE':
+        request.user.delete()
+        return Response({'message': 'User deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
 
 def vault(request):
     pass
