@@ -105,8 +105,16 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-        'default': dj_database_url.parse(getenv('DATABASE_URL')),
+    'default': {
+        'ENGINE': "django.db.backends.postgresql",
+        'HOST': "db.rhfatnsmwbhnemonaoee.supabase.co",
+        'NAME': "postgres",
+        'USER': "postgres",
+        'PASSWORD': "tunevaultdatabase2023",
+        'PORT': "5432",
     }
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
