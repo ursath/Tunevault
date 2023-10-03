@@ -29,16 +29,18 @@ export function getApi(path) {
   })
 
 }  
-
-// data:  is the data to be sent as the request body
-export function postApi( {path, param, dataToPost} ) {
-  
-  axiosBack.post( 'api/users/',{
+/*
+{
       email: "androminguez@gmail.com",
       username: "swaasm",
       password: "fuaaaPibexlmi",
       re_password: "fuaaaPibexlmi"
-  })
+  }
+*/
+// data:  is the data to be sent as the request body
+export function postApi( path, dataToPost ) {
+  
+  axiosBack.post( path,dataToPost)
   .then(function (response) {
     console.log(response.data);
   })

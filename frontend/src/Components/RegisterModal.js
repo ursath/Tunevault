@@ -13,12 +13,12 @@ const RegisterModal = ({ isvisible, onclose, onchange }) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await postApi('api/users/',{}, {
-            username,
-            email,
-            password, 
-            password2
-        });
+        await postApi('api/users/',{
+          email: email,
+          username: username,
+          password: password,
+          re_password: password2
+      });
     }
 
 /* con jwt:
