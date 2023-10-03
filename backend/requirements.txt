@@ -79,7 +79,6 @@ sphinx-rtd-theme==1.2.2
 sphinxcontrib-jquery==4.1
 spotipy==2.23.0
 sqlparse==0.4.4
-ubuntu-advantage-tools==8001
 ufw==0.36.1
 unattended-upgrades==0.1
 urllib3==1.26.5
