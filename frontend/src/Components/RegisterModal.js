@@ -13,7 +13,7 @@ const RegisterModal = ({ isvisible, onclose, onchange }) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await postApi('create/',{}, {
+        await postApi('api/users/',{}, {
             username,
             email,
             password, 

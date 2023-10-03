@@ -1,8 +1,9 @@
 import axios from 'axios'
-const urlBack = "http://localhost:8000/jwt/";
+const urlBack = "http://127.0.0.1:8000/";
 
 const axiosBack = axios.create({
-  baseURL: urlBack
+  baseURL: urlBack,  
+
 });
 
 
@@ -11,16 +12,17 @@ const axiosBack = axios.create({
     firstName: 'Fred',
     lastName: 'Flintstone'
 }
+
+headers: {
+    'Content-Type': 'application/json',}
 */
 //`params` are the URL parameters to be sent with the request
-export function getApi({path, param }) {
+export function getApi(path) {
   // useEffect( () => { } )
-    axiosBack.get( path, {
-      params: param
-    })
+    axiosBack.get( path)
   .then(function (response) {
-    console.log(response);
-    return response;
+    console.log(response.data);
+    return response.data;
   })
   .catch(function (error) {
     console.log(error);
@@ -31,17 +33,20 @@ export function getApi({path, param }) {
 // data:  is the data to be sent as the request body
 export function postApi( {path, param, dataToPost} ) {
   
-  axiosBack.post( path,{
-    params: param
-  }, {
-    data: dataToPost 
+  axiosBack.post( 'api/users/',{
+      email: "androminguez@gmail.com",
+      username: "swaasm",
+      password: "fuaaaPibexlmi",
+      re_password: "fuaaaPibexlmi"
   })
   .then(function (response) {
-    console.log(response);
+    console.log(response.data);
   })
   .catch(function (error) {
-    console.log(error);
+    console.log('hola');
+    console.log(error.data);
   });
+  return getApi('api/',{});
 }
 
 /*
