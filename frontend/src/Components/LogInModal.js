@@ -10,7 +10,7 @@ const LogInModal = ({ isvisible, onclose, onchange }) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await postApi('api/users/',{
+        await postApi('api/jwt/create/',{
           username: username,
           password: password,
       });
@@ -39,7 +39,7 @@ const LogInModal = ({ isvisible, onclose, onchange }) => {
         </div>
 
         <div className="OtherOptionButton">
-            <button onClick={() => onchange()}>Don't have an account? <span style={{ textDecoration: 'underline' }}>Sign up</span></button>
+            <button onClick={() => onchange()}>{`Don't have an account?`} <span style={{ textDecoration: 'underline' }}>Sign up</span></button>
         </div>
 
         </form>
