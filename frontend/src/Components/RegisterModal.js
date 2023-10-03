@@ -2,7 +2,13 @@
 import React, {useState} from 'react';
 import '@/Style/Register.scss';
 import '@/Style/globals.scss'
-import { postApi } from '@/Components/callApi';
+import { postApiDisplayError } from '@/Components/callApi';
+import { errorAlert } from '@/Components/errorAlert'
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const RegisterModal = ({ isvisible, onclose, onchange }) => {
 
@@ -11,21 +17,32 @@ const RegisterModal = ({ isvisible, onclose, onchange }) => {
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
 
+
     const submit = async (e) => {
         e.preventDefault();
-        await postApi('api/users/',{
-          email: email,
-          username: username,
-          password: password,
-          re_password: password2
-      });
+        
+        const ans = await postApiDisplayError('api/users/',{
+              email: email,
+              username: username,
+              password: password,
+              re_password: password2
+          });
+
+        if (ans==-1 ) {
+            console.error("Campos invalidos");
+            console.log(ans);
+            return;
+        }
+      
+        window.location.href = '/';              
+      
     }
 
     if(!isvisible) return null;
 
     return (
     <div className="PopUp">
-
+        <ToastContainer />    
         <form onSubmit={submit}> 
         <button className="CrossButton" onClick={() => {onclose()}}>x</button>
         <h3 className="Title">Create an account</h3>
