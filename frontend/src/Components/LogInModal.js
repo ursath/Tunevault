@@ -10,10 +10,10 @@ const LogInModal = ({ isvisible, onclose, onchange }) => {
 
     const submit = async (e) => {
         e.preventDefault();
-        await postApi('singin',{}, {
-            username,
-            password, 
-        });
+        await postApi('api/users/',{
+          username: username,
+          password: password,
+      });
     }
     
     if(!isvisible) return null;
