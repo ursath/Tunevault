@@ -17,7 +17,6 @@ from os import getenv, path
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 import dotenv
-import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,10 +37,10 @@ DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 SECRET_KEY = getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv('DEBUG', 'False') == 'True'
+DEBUG = 'True'
 
 ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS',
-                       'https://tunevault-backend.onrender.com').split(',')
+                       '127.0.0.1,localhost').split(',')
 
 SECRET_KEY = 'django-insecure-v0q&g^)4f6459t7t_8#gxasgfubl%9ad-20p+f#$p3x8peqj7@'
 
@@ -65,7 +64,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_nextjs',
     'corsheaders',
-    'tunevault.apps.TunevaultConfig',
+    'tunevault',
     'djoser',
     'storages',
 ]
@@ -152,8 +151,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'tunevault', 'static')]
+STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
