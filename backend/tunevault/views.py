@@ -27,6 +27,26 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView
 )
 
+def home(request):
+    return render(request, 'home.html')
+
+def music(request):
+    return render(request, 'music.html')
+
+def podcasts(request):
+    return render(request, 'podcasts.html')
+
+def members(request):
+    return render(request, 'members.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def create_account(request):
+    return render(request, 'createAccount.html')
+
+
+
 class CustomProviderAuthView(ProviderAuthView):
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
@@ -243,9 +263,7 @@ def signup(request):
     else:
         # TODO ver que anda
         return render_nextjs_page_sync(request, '../../frontend/src/app/Init/page.js') 
-        
-def index(request):
-    return render_nextjs_page_sync(request, '../../frontend/app/page.js')
+
 
 def signin(request):
     

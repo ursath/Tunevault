@@ -1,0 +1,33 @@
+
+html, body {
+margin: 0;
+padding: 0;
+}
+
+.Black {
+height: 100vh;
+background-color: black;
+}
+
+.container {
+display: grid;
+width: 80%;
+place-content: center;
+margin: auto;  
+margin-bottom: 40px;
+position: relative;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3 {
+text-align: left;
+color:white;
+font-family: var(--font-poppins);
+font-weight: 700;
+}
+
+h2 {
+font-size: 30px;
+margin-top: 50px;
+}
+

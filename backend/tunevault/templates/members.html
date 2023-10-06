@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'basicsSections.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+<body>
+    <div class='BasicsMembers'>
+        {% include 'navBar.html' %}
+        <div class='HeaderMP'>
+            <h1>Members</h1>
+        </div>
+        <div class="Search">
+            <input class="InputSearch" placeholder='Who are you looking for?' type="text" id="searcher" />
+            <i class="material-icons SearchIcon">search</i>
+        </div>
+        <div class="BlackMP">
+            <h1 class='TrendingTittle'>Trending Vaults</h1>
+        </div>
+    </div>
+</body>
+</html>
