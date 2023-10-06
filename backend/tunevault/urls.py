@@ -1,23 +1,14 @@
 from django.urls import path, re_path
 from . import views
-
-from .views import (
-    CustomProviderAuthView,
-    CustomTokenObtainPairView,
-    CustomTokenRefreshView,
-    CustomTokenVerifyView,
-    LogoutView
-)
+from django.contrib import admin
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('music/', views.music, name='music'),
-    path('podcasts/', views.podcasts, name='podcasts'),
-    path('login/', views.login, name='login'),
-    path('create_account/', views.create_account, name='create_account'),
-    path('members/', views.members, name='members'),
-    path('jwt/create/', CustomTokenObtainPairView.as_view()),
-    path('jwt/refresh/', CustomTokenRefreshView.as_view()),
-    path('jwt/verify/', CustomTokenVerifyView.as_view()),
-    path('logout/', LogoutView.as_view()),
-]
+    path('settings/', views.settings_profile, name='settings'),
+    path('profile/<str:pk>', views.profile, name='profile'),
+    path('signup', views.signup, name='signup'),
+    path('signin', views.signin, name='signin'),
+    path('search', views.search_artist, name = 'search_artist'),
+    path('vault/<str:pk>', views.vault, name='vault'),
+    ]
