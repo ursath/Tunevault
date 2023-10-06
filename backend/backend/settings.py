@@ -40,7 +40,7 @@ SECRET_KEY = getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 DEBUG = getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS',
-                       '127.0.0.1,localhost').split(',')
+                       '127.0.0.1,localhost', 'https://tunevault-backend.onrender.com').split(',')
 
 SECRET_KEY = 'django-insecure-v0q&g^)4f6459t7t_8#gxasgfubl%9ad-20p+f#$p3x8peqj7@'
 
