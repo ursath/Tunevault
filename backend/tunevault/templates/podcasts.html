@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'basicsSections.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+<body>
+    <div class='BasicsPodcast'>
+        {% include 'navBar.html' %}
+        <div class='HeaderMP'>
+            <h1>Podcasts</h1>
+        </div>
+        <div class="Search">
+            <input class="InputSearch" placeholder='What do you want to talk about?' type="text" id="searcher" />
+            <i class="material-icons SearchIcon">search</i>
+        </div>
+        <div class="Filters">
+            <label class='Label'>FILTER BY</label>
+            <select class='SelectPodcast'>
+                <option value="0">Genre</option>
+                <option value="1">Disco</option>
+                <option value="2">Rock</option>
+                <option value="3">Classic</option>
+                <option value="4">Reggaeton</option>
+                <option value="5">Pop</option>
+                <option value="6">Salsa</option>
+            </select>
+            <select class='SelectPodcast'>
+                <option value="0">Active</option>
+                <option value="1">Trending</option>
+                <option value="2">Emergent</option>
+                <option value="3">New</option>
+            </select>
+        </div>
+        <div class="BlackMP">
+            <h1 class='TrendingTittle'>Trending Vaults</h1>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class='all'>
+        <div class='Basics'>
+          {% include 'navBar.html' %}
+          <div class='container'>
+            <div class='homeBox'> 
+              <div class='Header'>
+                <h1 class='Header'>Join our music <span style="color: #FF00FF;">lover</span> community</h1>
+                <div>
+                  <a href="/create_account">
+                  <button class="createAccount">
+                        <p class="createAccountp">Create an account</p> 
+                  </button>
+                  </a>
+                </div>
+              </div>
+                <img src="{% static 'resources/home.png' %}" class="homeImage" alt="home"></Image>
+            </div>
+          </div>
+          <div class='Black'> 
+            <div class='container'>
+            <h2> Discover new albums & artists</h2>  
+            </div>
+            <div>
+              <div class="SearchHome">
+                <input class="InputSearch" placeholder='What do you want to talk about?' type="text" id="searcher" />
+                <i class="material-icons search_icon">search</i>
+              </div>
+              <div class='container'>
+            <!--<Cilindro class="figure"/>-->
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+</html>
