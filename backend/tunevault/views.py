@@ -183,7 +183,7 @@ def settings_profile(request):
         
         return redirect('settings')
     # TODO ver que anda
-    return render_nextjs_page_sync(request, 'setting.html', {'user_profile': user_profile}) 
+    return render(request, 'setting.html', {'user_profile': user_profile}) 
 
 def profile(request):
     pass
