@@ -15,7 +15,7 @@ class Profile(models.Model):
     user = models.ForeignKey(User,related_name='public_info', on_delete=models.CASCADE)
     id_user = models.IntegerField()
     bio = models.TextField(blank=True)
-    profileimg = models.ImageField(upload_to='profile_image', default='profile_image.jpg')
+    profileimg = models.ImageField(upload_to='profile_image', default='default_profile.jpg')
     location = models.CharField(max_length=100, blank=True)
     followers = models.PositiveIntegerField(default = 0)
     # TODO guardar artistas/albumes favoritos

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'settings.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="Back">
+
+            <a href="/">
+                <div class="imageBox">
+                    <img class="imageLogo" src="{% static 'resources/logo.png' %}" alt="logo" />
+                </div>
+            </a>
+
+            <div class="formBox">
+                <a href="/">
+                    <i class="material-icons closeIcon">close</i>
+                </a>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="Header">
+                        <h3>Profile settings</h3>
+                        <div class="profileImage">
+                            <img class="image" src="{{user_profile.profileimg.url}}" />
+                            <input type="file" name="image">
+                        </div>
+                    </div> 
+                        <div class="item">
+                            <label class="label" for="about">Biography</label>  
+                            <textarea placeholder="Write your biography" id="about" rows="3" name="bio" class="input">{{user_profile.bio}}</textarea>
+                        </div> 
+                    
+                        <div class="item">
+                            <label class="label" for="location">Location</label>
+                            <input placeholder="Enter your location" id='location' type="text" name="location" value="{{user_profile.location}}" class="input">
+                        </div>
+                
+                    <div class="buttonBox">
+                        <a href="/"><div class="cancelButton"> Cancel</div></a>
+                        
+                        <button type="submit" class="saveButton">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

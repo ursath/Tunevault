@@ -177,7 +177,7 @@ def settings_profile(request):
         
         return redirect('settings')
     # TODO ver que anda
-    return render(request, 'setting.html', {'user_profile': user_profile}) 
+    return render(request, 'settingsProfile.html', {'user_profile': user_profile}) 
 
 def profile(request):
     pass
@@ -211,8 +211,6 @@ def profile(request):
 #     }
 #     return render(request, 'profile.html', context)
 
-def profile(request):
-    render(request, 'profile.html')
 
 def signup(request):
 
@@ -260,7 +258,7 @@ def signin(request):
 
         if user is not None:
             auth.login(request, user)
-            return redirect('home')
+            return redirect('settings')
         else:
             messages.info(request, 'Invalid username or password')
             return redirect('login')

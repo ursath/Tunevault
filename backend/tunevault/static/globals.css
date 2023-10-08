@@ -19,15 +19,3 @@ position: relative;
 font-family: Arial, Helvetica, sans-serif;
 }
 
-h1, h2, h3 {
-text-align: left;
-color:white;
-font-family: var(--font-poppins);
-font-weight: 700;
-}
-
-h2 {
-font-size: 30px;
-margin-top: 50px;
-}
-
