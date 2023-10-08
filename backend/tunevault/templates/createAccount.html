@@ -13,17 +13,6 @@
                 <img class="image" src="{% static 'resources/logo.png' %}" alt="logo" />
             </div>
         </a>
-
-        <div>
-            <style>
-                h5{
-                    color: red;
-                }
-            </style>
-            {% for message in messages %}
-            <h5>{{message}}</h5>
-            {% endfor %}
-        </div>
         
         <div class="formBox">
             <form method="POST" > 
@@ -52,6 +41,12 @@
             <h3 class="InputItem">Repeat password</h3>
             <div class="InputBox">
                 <input class="Input" type="password" name="password2"/>  
+            </div>
+
+            <div class="errorMessage">
+                {% for message in messages %}
+                <p>{{message}}</p>
+                {% endfor %}
             </div>
 
             <div class="SignUpButton">

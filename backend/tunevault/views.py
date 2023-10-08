@@ -224,10 +224,10 @@ def signup(request):
 
         if password == password2:
             if User.objects.filter(email=email).exists():
-                messages.info(request, 'Email Taken')
+                messages.info(request, 'Email is already associated with an existing account')
                 return redirect('create_account')
             elif User.objects.filter(username=username).exists():
-                messages.info(request, 'Username Taken')
+                messages.info(request, 'Username already exists, please choose another one')
                 return redirect('create_account')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
@@ -243,7 +243,7 @@ def signup(request):
                 new_profile.save()
                 return redirect('profile')
         else:
-            messages.info(request, 'Password Not Matching')
+            messages.info(request, 'Password not matching')
             return redirect('create_account')
         
     else:
@@ -262,7 +262,7 @@ def signin(request):
             auth.login(request, user)
             return redirect('home')
         else:
-            messages.info(request, 'Credentials Invalid')
+            messages.info(request, 'Invalid username or password')
             return redirect('login')
 
     else:
