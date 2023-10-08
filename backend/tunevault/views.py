@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Profile, Post, Comment, Vault
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
@@ -27,12 +27,6 @@ def podcasts(request):
 
 def members(request):
     return render(request, 'members.html')
-
-def login(request):
-    return render(request, 'login.html')
-
-def create_account(request):
-    return render(request, 'createAccount.html')
 
 
 
@@ -217,6 +211,9 @@ def profile(request):
 #     }
 #     return render(request, 'profile.html', context)
 
+def profile(request):
+    render(request, 'profile.html')
+
 def signup(request):
 
     if request.method == 'POST':
@@ -228,10 +225,10 @@ def signup(request):
         if password == password2:
             if User.objects.filter(email=email).exists():
                 messages.info(request, 'Email Taken')
-                return redirect('signup')
+                return redirect('create_account')
             elif User.objects.filter(username=username).exists():
                 messages.info(request, 'Username Taken')
-                return redirect('signup')
+                return redirect('create_account')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
@@ -244,13 +241,13 @@ def signup(request):
                 user_model = User.objects.get(username=username)
                 new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
                 new_profile.save()
-                return redirect('settings')
+                return redirect('profile')
         else:
             messages.info(request, 'Password Not Matching')
-            return redirect('signup')
+            return redirect('create_account')
         
     else:
-        return render(request, 'signin.html') 
+        return render(request, 'createAccount.html') 
 
 
 def signin(request):
@@ -266,10 +263,10 @@ def signin(request):
             return redirect('home')
         else:
             messages.info(request, 'Credentials Invalid')
-            return redirect('signin')
+            return redirect('login')
 
     else:
-        return render(request, 'home')  
+        return render(request, 'login.html')  
 
 def vault(request):
     pass

@@ -1,4 +1,4 @@
-form {
+.formBox {
     height: auto;
     width: 400px;
     background-color: rgb(37, 37, 37);
@@ -33,8 +33,8 @@ form {
   .imageBox {
     height: 33px;
     width: 138px;
-    background: none;
-    border: none;
+    background: transparent;
+    border: transparent;
     cursor: pointer;
     padding-top: 33px;
     margin-left: 15.4%;
@@ -63,15 +63,15 @@ form {
     background-color: rgb(37, 37, 37);
     border-color: rgba(255, 255, 255, 0.787);
     border-radius: 15px;
-    padding: 10px 2px;
+    padding: 10px 4px;
     margin-top: 8px;
   }
   
   .Input {
     background-color: rgb(37, 37, 37);
     width: 100%;
-    outline: none;
-    border: none;
+    outline: transparent;
+    border: transparent;
     color:white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
@@ -93,12 +93,12 @@ form {
     font-size: 16px;
     cursor: pointer;
     background-color: transparent;
-    border: none;
+    border: transparent;
   }
   
   .OtherOptionButtonBox {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 5%;
   }
 
   .OtherOptionButton {
@@ -107,4 +107,5 @@ form {
     color: white;
     font-size: 16px;
     cursor: pointer;
+    padding: 5% 10%;
   }

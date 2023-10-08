@@ -13,33 +13,51 @@
                 <img class="image" src="{% static 'resources/logo.png' %}" alt="logo" />
             </div>
         </a>
-        <form onSubmit={submit}> 
-        <a href="/">
-            <i class="material-icons closeIcon">close</i>
-        </a>
-        
-        <h3 class="Title">Sign in</h3>
 
-        <h3 class="InputItem">Username</h3> 
-        <div class="InputBox">
-            <input class="Input" type="text"/>
+        <div>
+            <style>
+                h5{
+                    color: red;
+                }
+            </style>
+            {% for message in messages %}
+            <h5>{{message}}</h5>
+            {% endfor %}
         </div>
 
-        <h3 class="InputItem">Password</h3>
-        <div class="InputBox">
-            <input class="Input" type="password"/>
-        </div>
+        <div class="formBox">
+            <div>
+            <form method="POST"> 
+            {% csrf_token %}
+            <a href="/">
+                <i class="material-icons closeIcon">close</i>
+            </a>
+            
+            <h3 class="Title">Sign in</h3>
 
-        <div class="SignUpButton">
-            <button type='submit' class="SignUp">Sign in</button>
-        </div>
+            <h3 class="InputItem">Username</h3> 
+            <div class="InputBox">
+                <input class="Input" type="text" name="username"/>
+            </div>
 
-        <div class="OtherOptionButtonBox">
+            <h3 class="InputItem">Password</h3>
+            <div class="InputBox">
+                <input class="Input" type="password" name="password"/>
+            </div>
+
+            <div class="SignUpButton">
+                <button type='submit' class="SignUp">Sign in</button>
+            </div>
+            </form>
+            </div>
+
+            <div class="OtherOptionButtonBox">
             <a href="/create_account">
                 <button class="OtherOptionButton">Don't have an account? <span style="text-decoration: underline;">Sign up</span></button>
             </a>
+            </div>
+            
         </div>
-        </form>
     </div>
     </body>
 </html>
