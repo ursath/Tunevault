@@ -1,5 +1,55 @@
 <!DOCTYPE html>
 <html>
-    <head>Sign up</head>
-    <body></body>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'login.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+    <div class="Back">
+        <a href="/">
+            <div class="imageBox">
+                <img class="image" src="{% static 'resources/logo.png' %}" alt="logo" />
+            </div>
+        </a>
+        <form onSubmit={submit}> 
+        <a href="/">
+            <i class="material-icons closeIcon">close</i>
+        </a>
+        
+        <h3 class="Title">Create an account</h3>
+
+        <h3 class="InputItem">Username</h3> 
+        <div class="InputBox">
+            <input class="Input" type="text"/>
+        </div>
+
+        <h3 class="InputItem">Email</h3>
+        <div class="InputBox">
+            <input class="Input" type="email"/>
+        </div>
+
+        <h3 class="InputItem">Password</h3>
+        <div class="InputBox">
+            <input class="Input" type="password"/>
+        </div>
+
+        <h3 class="InputItem">Repeat password</h3>
+        <div class="InputBox">
+            <input class="Input" type="password"/>  
+        </div>
+
+        <div class="SignUpButton">
+            <button type='submit' class="SignUp">Sign up</button>
+        </div>
+
+        <div class="OtherOptionButtonBox">
+            <a href="/login">
+                <button class="OtherOptionButton">Are you a member? <span style="text-decoration: underline;">Sign in</span></button>
+            </a>
+        </div>
+        </form>
+    </div>
+    </body>
 </html>

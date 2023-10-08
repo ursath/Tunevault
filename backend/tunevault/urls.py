@@ -5,10 +5,9 @@ from django.contrib import admin
 urlpatterns = [
     #path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('settings/', views.settings_profile, name='settings'),
-    path('profile/<str:pk>', views.profile, name='profile'),
-    path('signup', views.signup, name='signup'),
-    path('signin', views.signin, name='signin'),
-    path('search', views.search_artist, name = 'search_artist'),
-    path('vault/<str:pk>', views.vault, name='vault'),
+    path('music/', views.music, name='music'),
+    path('podcasts/', views.podcasts, name='podcasts'),
+    path('login/', views.login_page, name='login'),
+    path('create_account/', views.create_account, name='create_account'),
+    path('members/', views.members, name='members')
 ]

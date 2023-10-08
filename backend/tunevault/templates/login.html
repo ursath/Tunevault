@@ -1,5 +1,45 @@
 <!DOCTYPE html>
 <html>
-    <head>Sign in</head>
-    <body></body>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'login.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+    <div class="Back">
+        <a href="/">
+            <div class="imageBox">
+                <img class="image" src="{% static 'resources/logo.png' %}" alt="logo" />
+            </div>
+        </a>
+        <form onSubmit={submit}> 
+        <a href="/">
+            <i class="material-icons closeIcon">close</i>
+        </a>
+        
+        <h3 class="Title">Sign in</h3>
+
+        <h3 class="InputItem">Username</h3> 
+        <div class="InputBox">
+            <input class="Input" type="text"/>
+        </div>
+
+        <h3 class="InputItem">Password</h3>
+        <div class="InputBox">
+            <input class="Input" type="password"/>
+        </div>
+
+        <div class="SignUpButton">
+            <button type='submit' class="SignUp">Sign in</button>
+        </div>
+
+        <div class="OtherOptionButtonBox">
+            <a href="/create_account">
+                <button class="OtherOptionButton">Don't have an account? <span style="text-decoration: underline;">Sign up</span></button>
+            </a>
+        </div>
+        </form>
+    </div>
+    </body>
 </html>
