@@ -37,17 +37,18 @@ def get_or_create_vault(item):
     }
 
 def get_or_create_by_id(vtype, id):
-    try:
-        toRet = Vault.objects.get(id=id)
-    except:
-        if vtype == 'artist':
-            pass
-        elif vtype == 'podcast':
-            pass
-        elif vtype == 'album':
+    if vtype == 'artist':
+        pass
+    elif vtype == 'podcast':
+        pass
+    elif vtype == 'album':
+        try:
+            toRet = Vault.objects.get(id=id)
+        except:
+            item = sp.album(id, None)
             toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
-        else:
-            pass #error
+    else:
+        pass #error
     return {
         'id': toRet.id,
         'title': toRet.title,
