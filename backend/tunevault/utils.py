@@ -16,15 +16,31 @@ def get_artist_search(string):
     if result['artists']['items']==[]:
         return json.dumps({'error': 'No se encontraron artistas'})
     for items in result['artists']['items']:
-        queryResult = get_or_create_vault_(items)
+        queryResult = get_or_create_vault(items)
         listToRet.append(queryResult)
     return listToRet
 
-def get_or_create_vault_(item):
+def get_or_create_vault(item):
     try:
         toRet = Vault.objects.get(id=item['id'])
     except:
         toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
+    return {
+        'id': toRet.id,
+        'title': toRet.title,
+        'description': toRet.description,
+        'genres': toRet.genres,
+        'spotifyimg':toRet.spotifyimg,
+        'rating':toRet.rating,
+        'followers':toRet.followers,
+        'likes':toRet.likes
+    }
+
+def get_or_create_by_id(id):
+    try:
+        toRet = Vault.objects.get(id=id)
+    except:
+        return json.dumps({'error': 'No se encontró el artista'})
     return {
         'id': toRet.id,
         'title': toRet.title,

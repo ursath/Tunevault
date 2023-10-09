@@ -3,14 +3,13 @@ from .models import Profile, Post, Comment, Vault
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
-from django_nextjs.render import render_nextjs_page_sync
 from django.contrib.auth.decorators import login_required
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
-from tunevault.models import Vault 
 from dotenv import load_dotenv
+from .utils import get_or_create_by_id
 
 
 load_dotenv()
@@ -267,9 +266,10 @@ def signin(request):
     else:
         return render(request, 'login.html')  
 
-def vault(request):
-   pass 
-
+def vault(request, id):
+   # id es el ID del album/artista
+   context = get_or_create_by_id(id)
+   return render(request, 'vault.html', context) 
 
 
 auth_manager = SpotifyClientCredentials()
