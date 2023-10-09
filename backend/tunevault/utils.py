@@ -47,7 +47,3 @@ def create_vault(id, title, description, genres, spotifyimg):
     vaultToRet = Vault(id=id, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
     vaultToRet.save()
     return vaultToRet
-
-
-
-print(get_artist_search("Kanye"))
