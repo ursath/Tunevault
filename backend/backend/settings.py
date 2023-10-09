@@ -41,7 +41,9 @@ DEBUG = 'True'
 
 SECRET_KEY = 'django-insecure-v0q&g^)4f6459t7t_8#gxasgfubl%9ad-20p+f#$p3x8peqj7@'
 
-ALLOWED_HOSTS = ['.vercel.app'] 
+ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+#ALLOWED_HOSTS = ['.vercel.app'] 
 
 AUTH_COOKIE = 'access'
 AUTH_COOKIE_MAX_AGE= 86400
@@ -147,6 +149,6 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
