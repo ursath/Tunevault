@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'vault.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>
-        <img>
+        <div class="Back">
+            {% include 'navBar.html' %}
+            <div class="vault">
+                <h2>{{context.id}}</h2>
+                <h2>header</h2>
+            </div>
+        </div>
     </body>
 </html>

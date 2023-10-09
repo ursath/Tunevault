@@ -266,9 +266,9 @@ def signin(request):
     else:
         return render(request, 'login.html')  
 
-def vault(request, id):
+def vault(request, vtype, id):
    # id es el ID del album/artista
-   context = get_or_create_by_id(id)
+   context = get_or_create_by_id(vtype, id)
    return render(request, 'vault.html', context) 
 
 

@@ -36,11 +36,18 @@ def get_or_create_vault(item):
         'likes':toRet.likes
     }
 
-def get_or_create_by_id(id):
+def get_or_create_by_id(vtype, id):
     try:
         toRet = Vault.objects.get(id=id)
     except:
-        return json.dumps({'error': 'No se encontró el artista'})
+        if vtype == 'artist':
+            pass
+        elif vtype == 'podcast':
+            pass
+        elif vtype == 'album':
+            toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
+        else:
+            pass #error
     return {
         'id': toRet.id,
         'title': toRet.title,
@@ -51,6 +58,9 @@ def get_or_create_by_id(id):
         'followers':toRet.followers,
         'likes':toRet.likes
     }
+
+def get_album_item(id):
+    pass
 
 def get_top50_artists():
     playlists = sp.playlist_tracks("37i9dQZF1DXcBWIGoYBM5M")#top50 playlist id
