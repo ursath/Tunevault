@@ -73,6 +73,8 @@
     font-size: small;
     color: white;
     width: 600px;
+    outline: transparent;
+    border: transparent;
 }
 
 .InputSearch::placeholder {
