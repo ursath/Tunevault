@@ -39,11 +39,11 @@ def get_or_create_vault(item):
     }
 
 def get_or_create_by_id(vtype, id):
-    if vtype == 'artist':
+    if vtype == 'Artist':
         pass
-    elif vtype == 'podcast':
+    elif vtype == 'Podcast':
         pass
-    elif vtype == 'album':
+    elif vtype == 'Album':
         try:
             uuid_str = string_to_uuid(id)
             print(uuid_str)
@@ -56,6 +56,7 @@ def get_or_create_by_id(vtype, id):
     return {
         'id': toRet.id,
         'title': toRet.title,
+        'vtype': vtype,
         'description': toRet.description,
         'genres': toRet.genres,
         'spotifyimg':toRet.spotifyimg,

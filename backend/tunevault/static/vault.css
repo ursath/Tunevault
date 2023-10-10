@@ -1,16 +1,65 @@
 .Back {
     background: linear-gradient(180deg, #03bf67 0%, #000000 100%);
-    height: 100vh;
+    height: 100%;
 }
 
 .vault {
     background-color: rgb(37, 37, 37);
     height: auto;
-    width: 70%;
+    width: 60%;
     border-radius: 12px;
     color: white;
     padding: 1% 5%;
-    margin: 0 10%;
+    margin: 0 15%;
+    margin-bottom: 15%;
     font-family: Arial, Helvetica, sans-serif;
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
+}
+
+.likesBox {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.like {
+    cursor: pointer;
+    margin-top: 12px;
+    margin-left: 12px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2%;
+}
+
+.type {
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    opacity: 50%;
+}
+
+.info {
+    margin: 3%;
+}
+
+.spotifyButton {
+    background-color: #00b35f;
+    outline: transparent;
+    border: transparent;
+    cursor: pointer;
+    border-radius: 24px;
+    font-size: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    padding: 5px 20px;
+    color: rgb(0, 0, 0);
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    margin-top:8px;
+}
+
+.spotifyLogo {
+    margin-right: 10px;
 }

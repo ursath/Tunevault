@@ -10,9 +10,39 @@
         <div class="Back">
             {% include 'navBar.html' %}
             <div class="vault">
-                <h2>{{context.id}}</h2>
-                <h2>header</h2>
+                <div class="likesBox">
+                    <p>{{likes}}</p>
+                    <i onclick="toggleIcon(this)" class="material-icons like">favorite_border</i>
+                    <a href="{{description}}" style="text-decoration: none;">
+                        <button class="spotifyButton">
+                            <img height="20" width="20" class="spotifyLogo" src="{% static 'resources/spotify.png' %}">
+                            Spotify
+                        </button>
+                    </a>
+                </div>
+
+                <div class="center">
+                    <img height="300" width="300" src="{{spotifyimg}}">
+                </div>
+
+                
+
+                <div class="info">
+                    <p class="type">{{vtype}}</p>
+                    <h2>{{title}}</h2>
+                </div>
             </div>
         </div>
+
+        <script>
+             function toggleIcon(x) {
+                if (x.textContent === 'favorite_border') {
+                    x.textContent = 'favorite';
+                } else {
+                    x.textContent = 'favorite_border';
+                }
+            }
+        </script>
+
     </body>
 </html>
