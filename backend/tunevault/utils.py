@@ -1,6 +1,8 @@
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 import json
+import uuid
+import hashlib
 from spotipy.oauth2 import SpotifyOAuth
 from tunevault.models import Vault 
 from dotenv import load_dotenv
@@ -22,7 +24,7 @@ def get_artist_search(string):
 
 def get_or_create_vault(item):
     try:
-        toRet = Vault.objects.get(id=item['id'])
+        toRet = Vault.objects.filter(id=item['id'])
     except:
         toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
     return {
@@ -43,7 +45,9 @@ def get_or_create_by_id(vtype, id):
         pass
     elif vtype == 'album':
         try:
-            toRet = Vault.objects.get(id=id)
+            uuid_str = string_to_uuid(id)
+            print(uuid_str)
+            toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.album(id, None)
             toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
@@ -71,6 +75,31 @@ def get_top50_artists():
     return list
 
 def create_vault(id, title, description, genres, spotifyimg):
-    vaultToRet = Vault(id=id, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
+    uuid_str = string_to_uuid(id)
+    vaultToRet = Vault(id=uuid_str, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
     vaultToRet.save()
     return vaultToRet
+
+def string_to_uuid(input_string):
+    # Hash the input string using SHA-256
+    sha256_hash = hashlib.sha256(input_string.encode()).hexdigest()
+
+    # Take the first 32 characters of the hash (128 bits)
+    hash_32_chars = sha256_hash[:32]
+
+    # Convert the 32-character hexadecimal string to UUID format
+    uuid_string = '-'.join([
+        hash_32_chars[:8],  # First 8 characters
+        hash_32_chars[8:12],  # Next 4 characters
+        hash_32_chars[12:16],  # Next 4 characters
+        hash_32_chars[16:20],  # Next 4 characters
+        hash_32_chars[20:]  # Last 12 characters
+    ])
+
+    # Create a UUID from the formatted string
+    try:
+        uuid_param = uuid.UUID(uuid_string)
+        return uuid_param
+    except ValueError:
+        # Handle the case where the string is not a valid UUID
+        return None  # Or raise an error or handle it as needed
