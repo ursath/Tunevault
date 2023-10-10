@@ -20,6 +20,11 @@
     top: 15%;
     left: 46%;
     text-align: center;
+    color:white;
+}
+
+.Title {
+    color:white;
 }
 
 .Search {
@@ -91,6 +96,7 @@
     width: 100%;
     margin-top: 360px;
     background-color: black;
+    color:white;
 }
 
 .TrendingTittle {
@@ -98,4 +104,5 @@
     padding-left: 100px;
     font-size: x-large;
     font-family: Arial, Helvetica, sans-serif;
+    color:white;
 }
