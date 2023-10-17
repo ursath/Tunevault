@@ -1,0 +1,35 @@
+.vaultPrev {
+    width: 282.251px;
+    height: 371.517px;
+    border-radius: 8px;
+    background: var(--fondo, #1C1C1C);
+}
+
+.imgVault {
+    border-radius: 8px;
+    width: 249.045px;
+height: 249.526px;
+    margin: auto;
+    border-radius: 8px;
+background: cover no-repeat;
+    z-index: 0;
+}
+
+.likesBox {
+    border-radius: 8px;
+    background: #000;
+    width: 123px;
+    height: 60px;
+    z-index: 1;
+}
+
+.artist {
+    border-radius: 249.526px;
+    background: cover no-repeat;
+}
+
+.type {
+    font-size: 24px;
+    font-family: Arial, Helvetica, sans-serif;
+    opacity: 50%;
+}

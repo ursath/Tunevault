@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'previewVault.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>  
+        <a href="{{description}}" style="text-decoration: none;">
+            <div class="vaultPrev">
+                {{% if vtype == 'Artist' %}}
+                <img class="imgVault artist" src="{{spotifyimg}}">
+                {{% else %}}
+                <img class="imgVault" src="{{spotifyimg}}">
+                {{% endif %}}
+                <div class="likesBox">
+                    <p>{{likes}}</p>
+                    <i onclick="toggleIcon(this)" class="material-icons like">favorite_border</i>
+                </div>
+                
+                <div class="info">
+                    <h2>{{title}}</h2>
+                    <p class="type">{{vtype}}</p>
+                </div>
+            </div>
+        </a>
+                
+
+        <script>
+             function toggleIcon(x) {
+                if (x.textContent === 'favorite_border') {
+                    x.textContent = 'favorite';
+                } else {
+                    x.textContent = 'favorite_border';
+                }
+            }
+        </script>
+
+    </body>
+</html>
