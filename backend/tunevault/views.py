@@ -132,7 +132,7 @@ def members(request):
 #         response.delete_cookie('refresh')
 
 #         return response
-    
+
 # class ProfileView(viewsets.ModelViewSet):
 #     serializer_class = ProfileSerializer
 #     queryset = Profile.objects.all()
@@ -155,7 +155,7 @@ def settings_profile(request):
     user_profile = Profile.objects.get(user=request.user)
 
     if request.method == 'POST':
-        
+
         if request.FILES.get('image') == None:
             image = user_profile.profileimg
             bio = request.POST['bio']
@@ -174,10 +174,10 @@ def settings_profile(request):
             user_profile.bio = bio
             user_profile.location = location
             user_profile.save()
-        
+
         return redirect('settings')
     # TODO ver que anda
-    return render(request, 'settingsProfile.html', {'user_profile': user_profile}) 
+    return render(request, 'settingsProfile.html', {'user_profile': user_profile})
 
 def profile(request):
     pass
@@ -243,13 +243,13 @@ def signup(request):
         else:
             messages.info(request, 'Password not matching')
             return redirect('create_account')
-        
+
     else:
-        return render(request, 'createAccount.html') 
+        return render(request, 'createAccount.html')
 
 
 def signin(request):
-    
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -264,17 +264,21 @@ def signin(request):
             return redirect('login')
 
     else:
-        return render(request, 'login.html')  
+        return render(request, 'login.html')
 
 def vault(request, vtype, id):
    # id es el ID del album/artista
-   # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones 
+   # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones
    context = get_or_create_by_id(vtype, id)
-   return render(request, 'vault.html', context) 
+   return render(request, 'vault.html', context)
 
 def gallery(request):
     # muestra los albums/artists/podcasts guardados en la bd
-    # info: id, nombre, tipo, likes, foto 
+    # info: id, nombre, tipo, likes, fo
+    list=[]
+    for vault in Vault.objects.all():
+        list.append({"id":vault.id, "title":vault.title, "vtype":vault.vtype, "likes":vault.likes, "spotifyimg":vault.spotifyimg})
+    #return aca 
     pass
 
 def top_50(request):
@@ -285,3 +289,4 @@ def top_50(request):
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
+gallery()
