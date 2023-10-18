@@ -9,20 +9,20 @@
     <body>  
         <a href="{{description}}" style="text-decoration: none;">
             <div class="vaultPrev">
-                {{% if vtype == 'Artist' %}}
+                {% if vtype == 'Artist' %}
+                
                 <img class="imgVault artist" src="{{spotifyimg}}">
-                {{% else %}}
+                {% else %}
                 <img class="imgVault" src="{{spotifyimg}}">
-                {{% endif %}}
+                {% endif %}
                 <div class="likesBox">
                     <p>{{likes}}</p>
                     <i onclick="toggleIcon(this)" class="material-icons like">favorite_border</i>
                 </div>
                 
-                <div class="info">
-                    <h2>{{title}}</h2>
-                    <p class="type">{{vtype}}</p>
-                </div>
+                
+                    <p class="type"> {{title}}</p>
+                
             </div>
         </a>
                 

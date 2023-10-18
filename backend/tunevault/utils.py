@@ -4,7 +4,7 @@ import json
 import uuid
 import hashlib
 from spotipy.oauth2 import SpotifyOAuth
-# from .models import Vault
+from .models import Vault
 from dotenv import load_dotenv
 
 load_dotenv()
