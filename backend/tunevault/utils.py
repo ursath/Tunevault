@@ -119,7 +119,8 @@ def format_top50():
     return top50_dict
 
 def create_vault(id, type, title, description, genres, spotifyimg):
-    uuid_str = string_to_uuid(id)
+    str = type.lower() + id
+    uuid_str = string_to_uuid(str)
     vaultToRet = Vault(id=uuid_str, type=type, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
     vaultToRet.save()
     return vaultToRet
