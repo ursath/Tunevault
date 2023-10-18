@@ -268,9 +268,19 @@ def signin(request):
 
 def vault(request, vtype, id):
    # id es el ID del album/artista
+   # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones 
    context = get_or_create_by_id(vtype, id)
    return render(request, 'vault.html', context) 
 
+def gallery(request):
+    # muestra los albums/artists/podcasts guardados en la bd
+    # info: id, nombre, tipo, likes, foto 
+    pass
+
+def top_50(request):
+    # muestra el top 50 de spotify
+    # info: id, artista, foto del artista, likes
+    pass
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)

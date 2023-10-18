@@ -4,7 +4,7 @@ import json
 import uuid
 import hashlib
 from spotipy.oauth2 import SpotifyOAuth
-from tunevault.models import Vault 
+from models import Vault
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -69,7 +69,7 @@ def get_album_item(id):
     pass
 
 def get_top50_artists():
-    playlists = sp.playlist_tracks("37i9dQZF1DXcBWIGoYBM5M")#top50 playlist id
+    playlists = sp.playlist_tracks("37i9dQZF1DXcBWIGoYBM5M") # top50 playlist id
     list = []
     for item in playlists['items']:
         list.append(item['track']['artists'])
