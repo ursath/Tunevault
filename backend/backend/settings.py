@@ -35,13 +35,16 @@ DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 SECRET_KEY = getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'True'
+DEBUG = 'RENDER' not in os.environ
 
 # ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-SECRET_KEY = 'django-insecure-v0q&g^)4f6459t7t_8#gxasgfubl%9ad-20p+f#$p3x8peqj7@'
+#SECRET_KEY = 'django-insecure-v0q&g^)4f6459t7t_8#gxasgfubl%9ad-20p+f#$p3x8peqj7@'
 
-ALLOWED_HOSTS = getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = []
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 #ALLOWED_HOSTS = ['.vercel.app'] 
 
