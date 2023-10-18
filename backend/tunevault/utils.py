@@ -12,6 +12,10 @@ load_dotenv()
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
+def get_artist(id):
+    result = sp.artist(id)
+    return result
+
 def get_artist_search(string):
     result = sp.search(string,1,0,"artist")
     listToRet = []
@@ -75,6 +79,36 @@ def get_top50_artists():
         list.append(item['track']['artists'])
     return list
 
+def format_top50():
+    # formats data from get_top50_artists() in the following way 
+    # {
+    #     'id_artist_1': {
+    #         'artist': 'artist',
+    #         'image': 'artistimg',
+    #         'likes': 0
+    #     },
+    #     'id_artist_2': {
+    #         'artist': 'artist',
+    #         'image': 'artistimg',
+    #         'likes': 0
+    #     },
+    #     }
+    # }
+    top50_list = get_top50_artists()
+    top50_dict = {}
+    for item in top50_list:
+        for artist in item:
+            if artist['id'] not in top50_dict:
+                artist_data = get_artist(artist['id'])
+                top50_dict[artist['id']] = {
+                    'artist': artist_data['name'],
+                    'image': artist_data['images'][0]['url'],
+                    'likes': 0
+                }
+            else:
+                top50_dict[artist['id']]['likes'] += 1
+    return top50_dict
+
 def create_vault(id, title, description, genres, spotifyimg):
     uuid_str = string_to_uuid(id)
     vaultToRet = Vault(id=uuid_str, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
@@ -104,3 +138,14 @@ def string_to_uuid(input_string):
     except ValueError:
         # Handle the case where the string is not a valid UUID
         return None  # Or raise an error or handle it as needed
+    
+
+
+def main():
+    # #print(get_top50_artists())
+    # format_top50()
+    # ans = get_artist('5H4yInM5zmHqpKIoMNAx4r')
+    print(format_top50())
+
+if __name__ == "__main__":
+    main()

@@ -9,8 +9,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id
-
+from .utils import get_or_create_by_id, format_top50
 
 load_dotenv()
 
@@ -281,10 +280,24 @@ def gallery(request):
     #return aca 
     pass
 
-def top_50(request):
-    # muestra el top 50 de spotify
-    # info: id, artista, foto del artista, likes
-    pass
+def music(request):
+    # {
+    #     'id_artist_1': {
+    #         'artist': 'artist',
+    #         'image': 'artistimg',
+    #         'likes': 0
+    #     },
+    #     'id_artist_2': {
+    #         'artist': 'artist',
+    #         'image': 'artistimg',
+    #         'likes': 0
+    #     },
+    #     }
+    # }
+
+    context = format_top50()
+    return render(request, 'music.html', context)
+
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
