@@ -139,13 +139,3 @@ def string_to_uuid(input_string):
         # Handle the case where the string is not a valid UUID
         return None  # Or raise an error or handle it as needed
     
-
-
-def main():
-    # #print(get_top50_artists())
-    # format_top50()
-    # ans = get_artist('5H4yInM5zmHqpKIoMNAx4r')
-    print(format_top50())
-
-if __name__ == "__main__":
-    main()
