@@ -277,8 +277,8 @@ def gallery(request):
     list=[]
     for vault in Vault.objects.all():
         list.append({"id":vault.id, "title":vault.title, "vtype":vault.vtype, "likes":vault.likes, "spotifyimg":vault.spotifyimg})
-    #return aca 
-    pass
+    return render(request, 'gallery.html', {list})
+
 
 def music(request):
     # {
@@ -302,4 +302,4 @@ def music(request):
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
-gallery()
+
