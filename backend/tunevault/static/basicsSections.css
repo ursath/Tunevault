@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+:root {
+    --fonts: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
 .BasicsMusic {
     background: linear-gradient(180deg, #3399d9 0%, #0B022D 100%);
     height: 600px;
@@ -15,7 +21,7 @@
 
 .HeaderMP {
     font-size: large;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     position: absolute;
     top: 15%;
     left: 46%;
@@ -49,7 +55,7 @@
 .InputSearch {
     background-color: rgb(29, 29, 29);
     font-size: small;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     color: white;
     width: 600px;
     border: transparent;
@@ -66,7 +72,7 @@
     top: 37%;
     left: 37%;
     color:white;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
 }
 
 .SelectMusic {
@@ -103,6 +109,6 @@
     padding-top: 50px;
     padding-left: 100px;
     font-size: x-large;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     color:white;
 }

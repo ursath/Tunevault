@@ -7,24 +7,27 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>  
-        <a href="{{description}}" style="text-decoration: none;">
-            <div class="vaultPrev">
-                {% if vtype == 'Artist' %}
+            <div class="container">
+                <a href="{{description}}" style="text-decoration: none;">
+                <div class="vaultPrev">
+                    {% if vtype == 'Artist' %}    
+                    <img class="imgVault artist" src="{{spotifyimg}}">
+                    {% else %}
+                    <img class="imgVault" src="{{spotifyimg}}">
+                    {% endif %}
                 
-                <img class="imgVault artist" src="{{spotifyimg}}">
-                {% else %}
-                <img class="imgVault" src="{{spotifyimg}}">
-                {% endif %}
-                <div class="likesBox">
-                    <p>{{likes}}</p>
-                    <i onclick="toggleIcon(this)" class="material-icons like">favorite_border</i>
+                    <p class="title"> {{title}}</p>
+                    <p class="type">{{vtype}}</p>    
                 </div>
-                
-                
-                    <p class="type"> {{title}}</p>
-                
+                <div class="likesContainer">
+                    <div class="likesBox">
+                        <p>{{likes}}</p>
+                        <i class="material-icons like">favorite_border</i>
+                    </div>
+                </div>
+                </a>
             </div>
-        </a>
+       
                 
 
         <script>
