@@ -1,17 +1,18 @@
 .vaultPrev {
-    width: 282.251px;
-    height: 371.517px;
+    width: 260px;
+    height: 325px;
     border-radius: 8px;
     background: var(--fondo, #1C1C1C);
 }
 
 .imgVault {
     border-radius: 8px;
-    width: 249.045px;
-height: 249.526px;
-    margin: auto;
+    width: 228px;
+    height: 213px;
+    margin-top: 14px;
+    margin-left: 14px;
     border-radius: 8px;
-background: cover no-repeat;
+    background: cover no-repeat;
     z-index: 0;
 }
 
@@ -20,6 +21,9 @@ background: cover no-repeat;
     background: #000;
     width: 123px;
     height: 60px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+
     z-index: 1;
 }
 
@@ -29,7 +33,12 @@ background: cover no-repeat;
 }
 
 .type {
-    font-size: 24px;
+    font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    opacity: 50%;
+}
+
+.info {
+    display: flex;
+    margin: 18px;    
+    color: white;
 }
