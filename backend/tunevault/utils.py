@@ -4,7 +4,7 @@ import json
 import uuid
 import hashlib
 from spotipy.oauth2 import SpotifyOAuth
-from models import Vault
+from .models import Vault
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -39,18 +39,27 @@ def get_or_create_vault(item):
     }
 
 def get_or_create_by_id(vtype, id):
-    if vtype == 'Artist':
-        pass
-    elif vtype == 'Podcast':
-        pass
-    elif vtype == 'Album':
+    type = vtype.lower()
+    str = type + id
+    uuid_str = string_to_uuid(str)
+    if type == 'artist':
         try:
-            uuid_str = string_to_uuid(id)
-            print(uuid_str)
+            toRet = Vault.objects.get(id=uuid_str)
+        except:
+            item = sp.artist(id)
+            toRet = create_vault(item['id'], type, item['name'],item['external_urls']['spotify'], item['genres'], item['images'][0]['url'])
+    elif type == 'podcast':
+        try:
+            toRet = Vault.objects.get(id=uuid_str)
+        except:
+            item = sp.show(id, None)
+            toRet = create_vault(item['id'], type, item['name'],item['external_urls']['spotify'], {'none'}, item['images'][0]['url'])
+    elif type == 'album':
+        try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.album(id, None)
-            toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
+            toRet = create_vault(item['id'], type, item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
     else:
         pass #error
     return {
@@ -75,9 +84,9 @@ def get_top50_artists():
         list.append(item['track']['artists'])
     return list
 
-def create_vault(id, title, description, genres, spotifyimg):
+def create_vault(id, type, title, description, genres, spotifyimg):
     uuid_str = string_to_uuid(id)
-    vaultToRet = Vault(id=uuid_str, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
+    vaultToRet = Vault(id=uuid_str, type=type, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0)
     vaultToRet.save()
     return vaultToRet
 
