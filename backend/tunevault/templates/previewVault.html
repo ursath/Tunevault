@@ -7,8 +7,8 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>  
-        <a href="{{description}}" style="text-decoration: none;">
             <div class="container">
+                <a href="{{description}}" style="text-decoration: none;">
                 <div class="vaultPrev">
                     {% if vtype == 'Artist' %}    
                     <img class="imgVault artist" src="{{spotifyimg}}">
@@ -16,8 +16,8 @@
                     <img class="imgVault" src="{{spotifyimg}}">
                     {% endif %}
                 
-                    <p class="type"> {{title}}</p>
-                    <p>{{vtype}}</p>    
+                    <p class="title"> {{title}}</p>
+                    <p class="type">{{vtype}}</p>    
                 </div>
                 <div class="likesContainer">
                     <div class="likesBox">
@@ -25,8 +25,9 @@
                         <i class="material-icons like">favorite_border</i>
                     </div>
                 </div>
+                </a>
             </div>
-        </a>
+       
                 
 
         <script>

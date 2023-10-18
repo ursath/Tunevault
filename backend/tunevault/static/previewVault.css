@@ -1,28 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 :root {
-    --margin-box: 15px;
+    --margin-box: 16px;
+    --fondo: #1C1C1C;
 }
 
 .container {
     position: relative;
     width: 240px;
-    height: 325px;
+    height: 320px;
 }
 
 .vaultPrev {
     width: 260px;
-    height: 325px;
+    height: 320px;
     border-radius: 8px;
-    background: var(--fondo, #1C1C1C);
+    
+    background: var(--fondo);
     position: absolute;
     z-index: 0;
+    
 }
 
 .imgVault {
     border-radius: 8px;
     width: 228px;
     height: 213px;
-    margin-top: 15px;
-    margin-left: 15px;
+    margin-top: var(--margin-box);
+    margin-left: var(--margin-box);
     border-radius: 8px;
     background: cover no-repeat;
 }
@@ -44,8 +49,15 @@
     height: 60px;
     color: white;
     margin-left: 150px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
     justify-content: center;
+    margin-top: 4px;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.like {
+    margin-top: 16px;
 }
 
 .artist {
@@ -53,13 +65,20 @@
     background: cover no-repeat;
 }
 
-.type {
-    position: absolute;
-    z-index: 0;
+.title {
     font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
     font-weight: 700;
-    margin-bottom: 10px;    
-    margin-left: 15px;    
+    margin-top: 13px;    
+    margin-left: var(--margin-box);    
+    
+    color: white;   
+}
+
+.type {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 18px; 
+    margin-left: var(--margin-box);    
+    margin-top: -15px;
     color: white;   
 }
