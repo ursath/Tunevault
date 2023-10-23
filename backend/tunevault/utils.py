@@ -47,24 +47,25 @@ def get_or_create_vault(item):
     }
 
 def get_or_create_by_id(vtype, id):
-    type = vtype.lower()
-    str = type + id
+    vault_type = vtype.lower()
+    str = vault_type + id
     uuid_str = string_to_uuid(str)
-    if type == 'artist':
+    toRet = None
+    if vault_type == 'Artist':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.artist(id)
             artist = [{'name': item['name'], 'image': item['images'][0]['url']}]
-            toRet = create_vault(item['id'], type, item['name'], None, item['genres'], item['images'][0]['url'], item['external_urls']['spotify'], artist, 0)
-    elif type == 'podcast':
+            toRet = create_vault(item['id'], vault_type, item['name'], None, item['genres'], item['images'][0]['url'], item['external_urls']['spotify'], artist, 0)
+    elif vault_type == 'Podcast':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.show(id, None)
             publisher = [{'name': item['publisher'], 'image': item['images'][0]['url']}]
-            toRet = create_vault(item['id'], type, item['name'], item['description'], None, item['images'][0]['url'], item['external_urls']['spotify'], publisher, item['total_episodes'])
-    elif type == 'album':
+            toRet = create_vault(item['id'], vault_type, item['name'], item['description'], None, item['images'][0]['url'], item['external_urls']['spotify'], publisher, item['total_episodes'])
+    elif vault_type == 'Album':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
@@ -72,7 +73,7 @@ def get_or_create_by_id(vtype, id):
             artists = []
             for artist in item['artists']:
                 artists.append({'name': artist['name'], 'image': artist['images'][0]['url']}) 
-            toRet = create_vault(item['id'], type, item['name'], None, item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'])
+            toRet = create_vault(item['id'], vault_type, item['name'], None, item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'])
     else:
         pass #error
     return {
@@ -128,7 +129,7 @@ def format_top50():
                 }
             else:
                 top50_dict[artist['id']]['likes'] += 1
-    return top50_dict
+    return {'top': top50_dict}
 
 def create_vault(id, type, title, description, genres, spotifyimg, external_url, authors, total_tracks):
     str = type.lower() + id
