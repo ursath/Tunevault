@@ -51,21 +51,21 @@ def get_or_create_by_id(vtype, id):
     str = vault_type + id
     uuid_str = string_to_uuid(str)
     toRet = None
-    if vault_type == 'Artist':
+    if vault_type == 'artist':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.artist(id)
             artist = [{'name': item['name'], 'image': item['images'][0]['url']}]
             toRet = create_vault(item['id'], vault_type, item['name'], None, item['genres'], item['images'][0]['url'], item['external_urls']['spotify'], artist, 0)
-    elif vault_type == 'Podcast':
+    elif vault_type == 'podcast':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.show(id, None)
             publisher = [{'name': item['publisher'], 'image': item['images'][0]['url']}]
             toRet = create_vault(item['id'], vault_type, item['name'], item['description'], None, item['images'][0]['url'], item['external_urls']['spotify'], publisher, item['total_episodes'])
-    elif vault_type == 'Album':
+    elif vault_type == 'album':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
