@@ -130,7 +130,7 @@ def format_top50():
                 }
             else:
                 top50_dict[artist['id']]['likes'] += 1
-    return top50_dict
+    return {'top': top50_dict}
 
 def create_vault(id, type, title, description, genres, spotifyimg, external_url, authors, total_tracks, date):
     str = type.lower() + id

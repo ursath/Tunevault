@@ -34,9 +34,15 @@
                 <option value="3">New</option>
             </select>
         </div>
-        <div class="BlackMP">
+        <div class='BlackMP'>
             <h1 class='TrendingTittle'>Trending Vaults</h1>
-            {% include 'previewVault.html' %}
+            <div class='gallery'>
+            {% for artist_id, artist_data in top.items %}
+                <div class='gallery-item'>
+                {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist_data.image description="/" likes=artist_data.likes  title=artist_data.artist %}
+                </div>
+            {% endfor %}
+            </div>
         </div>
     </div>
 </body>

@@ -98,7 +98,7 @@
 }
 
 .BlackMP {
-    height:100vh;
+    height:8000px;
     width: 100%;
     margin-top: 360px;
     background-color: black;
@@ -111,4 +111,18 @@
     font-size: x-large;
     font-family: var(--fonts);
     color:white;
+}
+
+.gallery {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10%;
+    justify-content: center;
+}
+
+.gallery-item {
+    flex: 0 0 calc(33.33% - 80px);
+    margin-bottom: 30px;
 }
