@@ -7,7 +7,7 @@
 .Back {
     background: linear-gradient(180deg, #03bf67 0%, #000000 100%);
     height: auto;
-    padding-bottom: 5%;
+    padding-bottom: 10%;
 }
 
 .vault {
@@ -138,6 +138,7 @@ hr {
     z-index: 999; 
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .mini-logo {

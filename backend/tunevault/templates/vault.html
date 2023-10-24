@@ -16,15 +16,15 @@
                 </div>
 
                 <div class="center">
-                    <img class="main-image" height="300" width="300" src="{{spotifyimg}}">
+                    <img class="main-image" height="300" width="300" src="{{vault.spotifyimg}}">
                 </div>
 
                 <div class="info">
-                    <p class="type">{{vtype}}</p>
+                    <p class="type">{{vault.vtype}}</p>
                     <div class="info-header">
-                    <h2>{{title}}</h2>
+                    <h2>{{vault.title}}</h2>
                     <div class="button">
-                        <a href="{{external_url}}" style="text-decoration: none;">
+                        <a href="{{vault.external_url}}" style="text-decoration: none;">
                             <button class="spotifyButton">
                                 <img height="20" width="20" class="spotifyLogo" src="{% static 'resources/spotify.png' %}">
                                 Spotify
@@ -33,30 +33,32 @@
                     </div>
                     </div>
                     <div class="secondary-info">
-                        <img class="secondary-image" height="45" width="45" src="{{authors.0.image}}">
-                        <p class="info-item">{{ authors.0.name }}</p>
-                        {% if type == 'album' %}
+                        <img class="secondary-image" height="45" width="45" src="{{vault.authors.0.image}}">
+                        <p class="info-item">{{ vault.authors.0.name }}</p>
+                        {% if vault.type == 'album' %}
                         <p class="info-separation">·</p>
-                        <p class="info-item-2">{{date}}</p>
+                        <p class="info-item-2">{{vault.date}}</p>
                         <p class="info-separation">·</p>
-                        <p class="info-item-2" >{{total_tracks}} songs</p>
-                        {% elif  type == 'artist'%}
+                        <p class="info-item-2" >{{vault.total_tracks}} songs</p>
+                        {% elif  vault.type == 'artist'%}
                         <p class="info-separation">·</p>
-                        <p class="info-item-2">{{genres.0}}</p>
-                        {% elif  type == 'podcast' %}
+                        <p class="info-item-2">{{vault.genres.0}}</p>
+                        {% elif  vault.type == 'podcast' %}
                         <p class="info-separation">·</p>
-                        <p class="info-item-2">{{total_tracks}} episodes </p>
+                        <p class="info-item-2">{{vault.total_tracks}} episodes </p>
                         {% endif %}
                     </div>
-                    {% if type == 'podcast' %}
+                    {% if vault.type == 'podcast' %}
                     <div class="description">
-                        <p>{{description}}</p>
+                        <p>{{vault.description}}</p>
                     </div>
                     {% endif %}
                 </div>
                 <div class="commentaries">
+                    {% for post in posts %}
                     <hr>
-                    {% include 'commentBox.html' %}
+                    {% include 'commentBox.html' with username=post.user date=post.date title=post.title%}
+                    {% endfor %}
                     <hr>
                 </div>
                 <div class="join-vault">
@@ -66,6 +68,7 @@
                     </button>
                 </div>
         </div>
+
         <script>
              function toggleIcon(x) {
                 if (x.textContent === 'favorite_border') {

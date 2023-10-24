@@ -50,7 +50,7 @@ class Post(models.Model):
     content = models.TextField(max_length=597)
 
     def __str__(self):
-        return self.user.username
+        return self.user
 
 
 class Comment(models.Model):

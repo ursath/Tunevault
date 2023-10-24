@@ -268,7 +268,9 @@ def signin(request):
 def vault(request, vtype, id):
    # id es el ID del album/artista
    # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones
-   context = get_or_create_by_id(vtype, id)
+   vault = get_or_create_by_id(vtype, id)
+   posts = Post.objects.filter(vault_id=id)    
+   context = {'vault': vault, 'posts': posts}
    return render(request, 'vault.html', context)
 
 def gallery(request):

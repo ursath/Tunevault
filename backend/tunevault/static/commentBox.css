@@ -17,18 +17,21 @@
     font-weight: bold;
 }
 
-.comment p {
-    padding: 0;
-    margin: 0 0 10px 0;
+.comment-header {
+    display: flex;
+    align-items: center;
 }
 
-.username {
+.date {
     font-size: 14px;
     color:rgb(190, 190, 190);
+    align-items: center;
+    margin: 0 0 0 20px;
 }
 
 .commentary {
     color:rgb(219, 219, 219);
+    margin: 0;
 }
 
 .image {
@@ -47,4 +50,5 @@
 
 .thumb {
     margin-left: 10px;
+    cursor: pointer;
 }
