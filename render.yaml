@@ -1,6 +1,6 @@
 databases:
-  - name: postgres
-    databaseName: postgres
+  - name: tunevault
+    databaseName: tunevault
     user: postgres
 
 services:
