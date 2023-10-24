@@ -37,9 +37,9 @@
                         <p class="info-item">{{ authors.0.name }}</p>
                         {% if type == 'album' %}
                         <p class="info-separation">·</p>
-                        <p class="info-item-2">date {{date}}</p>
+                        <p class="info-item-2">{{date}}</p>
                         <p class="info-separation">·</p>
-                        <p class="info-item-2" >songs {{total_tracks}}</p>
+                        <p class="info-item-2" >{{total_tracks}} songs</p>
                         {% elif  type == 'artist'%}
                         <p class="info-separation">·</p>
                         <p class="info-item-2">{{genres.0}}</p>
