@@ -1,0 +1,31 @@
+databases:
+  - name: postgres
+    databaseName: postgres
+    user: postgres
+
+services:
+  - type: web
+    name: tunevault
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn mysite.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mysite
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+      - key: SPOTIPY_CLIENT_ID
+        value: 6f199e448eb64f289c3d9b5bbeb4dde8
+      - key: SPOTIPY_CLIENT_SECRET
+        value: c650685d0eaf4e83bc7683025d478ca3
+      - key: DATABASE_URL
+        value: 'postgres://postgres:tunevaultdatabase2023@db.rhfatnsmwbhnemonaoee.supabase.co:6453/postgres'
+      - key: DJANGO_SECRET_KEY
+        value: 'django-insecure-v0q&g^)4f6459t7t_8#gxasgfubl%9ad-20p+f#$p3x8peqj7@'
+
+
+
