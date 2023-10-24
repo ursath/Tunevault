@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="center">
-                    <img height="300" width="300" src="{{spotifyimg}}">
+                    <img class="main-image" height="300" width="300" src="{{spotifyimg}}">
                 </div>
 
                 <div class="info">
@@ -54,7 +54,17 @@
                     </div>
                     {% endif %}
                 </div>
-            </div>
+                <div class="commentaries">
+                    <hr>
+                    {% include 'commentBox.html' %}
+                    <hr>
+                </div>
+                <div class="join-vault">
+                    <button class="join-button">
+                        Join the vault
+                        <img height="20" width="20" class="mini-logo" src="{% static 'resources/logo-mini.png' %}">
+                    </button>
+                </div>
         </div>
         <script>
              function toggleIcon(x) {
