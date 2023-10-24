@@ -25,7 +25,7 @@ class Profile(models.Model):
 
 class Vault(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    type = models.TextField(default = "vault")
+    vtype = models.TextField(default = "vault")
     title = models.TextField(max_length=150)
     description = models.TextField(default = "this is the vault description")
     external_url = models.TextField(max_length = 150)

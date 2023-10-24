@@ -50,6 +50,7 @@ def get_or_create_by_id(vtype, id):
     type = vtype.lower()
     str = type + id
     uuid_str = string_to_uuid(str)
+    toRet = None
     if type == 'artist':
         try:
             toRet = Vault.objects.get(id=uuid_str)
@@ -78,7 +79,7 @@ def get_or_create_by_id(vtype, id):
     return {
         'id': toRet.id,
         'title': toRet.title,
-        'vtype': vtype,
+        'type': type,
         'description': toRet.description,
         'external_url': toRet.external_url,
         'genres': toRet.genres,
@@ -130,10 +131,10 @@ def format_top50():
                 top50_dict[artist['id']]['likes'] += 1
     return top50_dict
 
-def create_vault(id, vtype, title, description, genres, spotifyimg, external_url, authors, total_tracks, date):
-    str = vtype.lower() + id
+def create_vault(id, type, title, description, genres, spotifyimg, external_url, authors, total_tracks, date):
+    str = type.lower() + id
     uuid_str = string_to_uuid(str)
-    vaultToRet = Vault(id=uuid_str, vtype=vtype, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0, external_url=external_url, authors=json.dumps(authors), total_tracks=total_tracks, date=date)
+    vaultToRet = Vault(id=uuid_str, type=type, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0, external_url=external_url, authors=json.dumps(authors), total_tracks=total_tracks, date=date)
     vaultToRet.save()
     return vaultToRet
 

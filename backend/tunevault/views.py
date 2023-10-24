@@ -301,4 +301,3 @@ def music(request):
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
-

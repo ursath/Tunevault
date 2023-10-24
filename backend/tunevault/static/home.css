@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 .Basics {
     background: linear-gradient(180deg, #3D13E5 0%, #0B022D 100%);
@@ -16,7 +17,7 @@
     color: white;
     font-size: 45px;
     font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Poppins',Arial, Helvetica, sans-serif;
     padding-top: 10px;
     padding-right : 60px;
     padding-left : 0px;
