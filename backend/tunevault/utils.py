@@ -83,13 +83,14 @@ def get_or_create_by_id(vtype, id):
         'type': type,
         'description': toRet.description,
         'external_url': toRet.external_url,
-        'genres': toRet.genres,
+        'genres': json.loads(toRet.genres),
         'spotifyimg':toRet.spotifyimg,
         'rating':toRet.rating,
         'followers':toRet.followers,
         'likes':toRet.likes,
-        'authors': toRet.authors,
+        'authors': json.loads(toRet.authors),
         'total_tracks': toRet.total_tracks,
+        'date': toRet.date,
     }
 
 def get_album_item(id):
@@ -135,7 +136,7 @@ def format_top50():
 def create_vault(id, type, title, description, genres, spotifyimg, external_url, authors, total_tracks, date):
     str = type.lower() + id
     uuid_str = string_to_uuid(str)
-    vaultToRet = Vault(id=uuid_str, vtype=type, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0, external_url=external_url, authors=json.dumps(authors), total_tracks=total_tracks, date=date)
+    vaultToRet = Vault(id=uuid_str, vtype=type, title=title, description=description, genres=json.dumps(genres), spotifyimg=spotifyimg, rating=0, followers=0, likes=0, external_url=external_url, authors=json.dumps(authors), total_tracks=total_tracks, date=date)
     vaultToRet.save()
     return vaultToRet
 

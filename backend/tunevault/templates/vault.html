@@ -24,7 +24,7 @@
                     <div class="info-header">
                     <h2>{{title}}</h2>
                     <div class="button">
-                        <a href="{{description}}" style="text-decoration: none;">
+                        <a href="{{external_url}}" style="text-decoration: none;">
                             <button class="spotifyButton">
                                 <img height="20" width="20" class="spotifyLogo" src="{% static 'resources/spotify.png' %}">
                                 Spotify
@@ -32,22 +32,25 @@
                         </a>
                     </div>
                     </div>
-                    {% if vtype != 'Artist' %}
                     <div class="secondary-info">
-                        <img class="secondary-image" height="45" width="45" src="{{spotifyimg}}">
-                        <p class="info-item">Artist</p>
+                        <img class="secondary-image" height="45" width="45" src="{{authors.0.image}}">
+                        <p class="info-item">{{ authors.0.name }}</p>
+                        {% if type == 'album' %}
                         <p class="info-separation">·</p>
-                        <p class="info-item-2">year</p>
-                        {% if vtype == 'Album' %}
+                        <p class="info-item-2">date {{date}}</p>
                         <p class="info-separation">·</p>
-                        <p class="info-item-2" >songs</p>
-                        {% elif  vtype == 'Single'%}
+                        <p class="info-item-2" >songs {{total_tracks}}</p>
+                        {% elif  type == 'artist'%}
                         <p class="info-separation">·</p>
-                        <p class="info-item-2">mins</p>
-                        {% else }
+                        <p class="info-item-2">{{genres.0}}</p>
+                        {% elif  type == 'podcast' %}
                         <p class="info-separation">·</p>
-                        <p class="info-item-2">episodes</p>
+                        <p class="info-item-2">{{total_tracks}} episodes </p>
                         {% endif %}
+                    </div>
+                    {% if type == 'podcast' %}
+                    <div class="description">
+                        <p>{{description}}</p>
                     </div>
                     {% endif %}
                 </div>

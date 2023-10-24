@@ -39,7 +39,9 @@
             <div class='gallery'>
             {% for artist_id, artist_data in top.items %}
                 <div class='gallery-item'>
-                {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist_data.image description="/" likes=artist_data.likes  title=artist_data.artist %}
+                {% with artist_description="/vault/artist/"|add:artist_id %}
+                {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist_data.image description=artist_description likes=artist_data.likes  title=artist_data.artist %}
+                {% endwith %}
                 </div>
             {% endfor %}
             </div>
@@ -47,3 +49,4 @@
     </div>
 </body>
 </html>
+
