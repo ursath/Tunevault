@@ -25,7 +25,7 @@ class Profile(models.Model):
 
 class Vault(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    vtype = models.TextField(max_length=150, default='artist')
+    vtype = models.TextField(default = "vault")
     title = models.TextField(max_length=150)
     description = models.TextField(default = "this is the vault description")
     external_url = models.TextField(max_length = 150)
@@ -35,8 +35,8 @@ class Vault(models.Model):
     followers = models.PositiveIntegerField(default = 0)
     likes = models.PositiveIntegerField(default = 0)
     authors = models.TextField(null=True)
-    # TODO sacar mas info de la api de spotify
-    def __str__(self):
+    total_tracks = models.PositiveIntegerField(default = 0)
+    def str(self):
         return self.title
 
 class Post(models.Model):

@@ -72,10 +72,11 @@ def get_or_create_by_id(vtype, id):
             item = sp.album(id, None)
             artists = []
             for artist in item['artists']:
-                artists.append({'name': artist['name'], 'image': artist['images'][0]['url']}) 
+                artistInfo = sp.artist(artist['id'])
+                artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']}) 
             toRet = create_vault(item['id'], vault_type, item['name'], None, item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'])
     else:
-        pass #error
+        pass #error  
     return {
         'id': toRet.id,
         'title': toRet.title,
@@ -87,7 +88,7 @@ def get_or_create_by_id(vtype, id):
         'rating':toRet.rating,
         'followers':toRet.followers,
         'likes':toRet.likes,
-        'authors': json.decoder.JSONDecoder(toRet.authors),
+        'authors': toRet.authors,
         'total_tracks': toRet.total_tracks,
     }
 
@@ -131,10 +132,16 @@ def format_top50():
                 top50_dict[artist['id']]['likes'] += 1
     return {'top': top50_dict}
 
+#HARDCODE: fields saved in Vault
+# ERRORS:
+# genres: psycopg2.errors.NotNullViolation: null value in column "genres" of relation "tunevault_vault" violates not-null constraint
+# description: NotNullViolation: null value in column "description" of relation "tunevault_vault" violates not-null constraint
+# total_tracks: django.db.utils.ProgrammingError: column tunevault_vault.total_tracks does not exist
+#               LINE 1: ...ault_vault"."likes", "tunevault_vault"."authors", "tunevault...
 def create_vault(id, type, title, description, genres, spotifyimg, external_url, authors, total_tracks):
     str = type.lower() + id
     uuid_str = string_to_uuid(str)
-    vaultToRet = Vault(id=uuid_str, type=type, title=title, description=description, genres=genres, spotifyimg=spotifyimg, rating=0, followers=0, likes=0, external_url=external_url, authors=json.dumps(authors), total_tracks=total_tracks)
+    vaultToRet = Vault(id=uuid_str, vtype=type, title=title, description='description', genres='genres', spotifyimg=spotifyimg, rating=0, followers=0, likes=0, external_url=external_url, authors=json.dumps(authors))
     vaultToRet.save()
     return vaultToRet
 
