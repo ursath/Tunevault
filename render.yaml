@@ -1,7 +1,7 @@
 databases:
   - name: tunevault
     databaseName: tunevault
-    user: postgres
+    user: tunevault
 
 services:
   - type: web
