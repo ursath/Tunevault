@@ -35,8 +35,9 @@ class Vault(models.Model):
     followers = models.PositiveIntegerField(default = 0)
     likes = models.PositiveIntegerField(default = 0)
     authors = models.TextField(null=True)
-    # TODO sacar mas info de la api de spotify
-    def __str__(self):
+    total_tracks = models.PositiveIntegerField(default = 0)
+    date = models.TextField(default = "2020-01-01")
+    def str(self):
         return self.title
 
 class Post(models.Model):
