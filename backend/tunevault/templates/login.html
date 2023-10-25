@@ -14,14 +14,15 @@
             </div>
         </a>
 
-        <div class="formBox">
+        <div class="formBox signInBox">
             <div>
+                <button id="goBack" class="close-button">
+                    <i class="material-icons closeIcon">close</i>
+                </button>
+                
             <form method="POST"> 
             {% csrf_token %}
-            <a href="/">
-                <i class="material-icons closeIcon">close</i>
-            </a>
-            
+          
             <h3 class="Title">Sign in</h3>
 
             <h3 class="InputItem">Username</h3> 
@@ -54,5 +55,14 @@
             
         </div>
     </div>
+
+    <script>
+            // Agregamos un controlador de eventos al botón
+            document.getElementById('goBack').addEventListener('click', function() {
+            // Utilizamos window.history.back() para volver a la página anterior
+            window.history.back();
+        });
+    </script>
+
     </body>
 </html>

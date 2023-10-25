@@ -14,9 +14,21 @@
     color:white;
   } 
 
+  .signInBox {
+    margin-top: 5%;
+  }
+
   .closeIcon {
     color: white;
-    padding-left: 95%;
+  }
+
+  .close-button {
+    border: none;
+    background-color: transparent;
+    display: flex;
+    margin-left: auto;
+    cursor: pointer;
+    margin-top: 15px;
   }
   
   .Back {

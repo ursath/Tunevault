@@ -55,11 +55,12 @@
                     {% endif %}
                 </div>
 
+                
                 <form method="POST" id="comment-form" style="display: none;" >
                     {% csrf_token %}
                     {{ form }}
                     <button class="submit-button" type="submit">
-                        <i class="material-icons">check</i>
+                        <i class="material-icons">send</i>
                     </button>
                 </form>
 
@@ -72,10 +73,18 @@
                 </div>
                 
                 <div class="join-vault">
+                    {% if user.is_authenticated %}
                     <button class="join-button" id="join-button">
                         Join the vault
                         <img height="20" width="20" class="mini-logo" src="{% static 'resources/logo-mini.png' %}">
                     </button>
+                    {% else %}
+                    <a href="/login">
+                        <button class="join-button">
+                            Join the vault
+                            <img height="20" width="20" class="mini-logo" src="{% static 'resources/logo-mini.png' %}">
+                        </button>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -92,7 +101,6 @@
             document.addEventListener("DOMContentLoaded", function() {
                 var joinButton = document.getElementById("join-button");
                 var commentForm = document.getElementById("comment-form");
-
                 joinButton.addEventListener("click", function() {
                     if (commentForm.style.display === "none" || commentForm.style.display === "") {
                         commentForm.style.display = ""; 
