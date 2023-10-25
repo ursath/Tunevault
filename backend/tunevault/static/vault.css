@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
 :root {
+    --fondo: #1C1C1C;
     --fonts: 'Poppins', Arial, Helvetica, sans-serif;
 }
 
@@ -128,6 +129,7 @@ hr {
     height: 50px;
     font-weight: bold;
     font-family: var(--fonts);
+    font-size: 16px;
     border: none;
     border-radius: 24px;
     padding: 15px 40px;
@@ -143,4 +145,36 @@ hr {
 
 .mini-logo {
     margin-left: 15px;
+}
+
+#comment-form {
+    display: flex;
+    align-items: center;
+    font-size: 0px;
+    margin: 30px 30px 0 0;
+}
+
+.submit-button {
+    background-color: #3D13E5;
+    color: #fff; 
+    padding: 10px 20px;  
+    border-radius: 24px;
+    cursor: pointer;  
+    font-family: var(--fonts);
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+}
+
+#comment-form textarea {
+    width: 75%;
+    height: 60px;
+    background-color: var(--fondo);
+    color: white;
+    font-family: var(--fonts);
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    padding: 2% 5%;
+    margin-right: 20px;
 }
