@@ -28,6 +28,8 @@ def podcasts(request):
 def members(request):
     return render(request, 'members.html')
 
+def profile(request):
+    return render(request, 'profile.html')
 
 
 # class CustomProviderAuthView(ProviderAuthView):
@@ -179,8 +181,6 @@ def settings_profile(request):
     # TODO ver que anda
     return render(request, 'settingsProfile.html', {'user_profile': user_profile})
 
-def profile(request):
-    pass
 
 # @login_required(login_url='signin')
 # def profile(request, pk):

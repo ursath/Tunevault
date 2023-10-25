@@ -4,6 +4,12 @@
     --fonts: 'Poppins', Arial, Helvetica, sans-serif;
 }
 
+.Basics {
+    background: linear-gradient(180deg, #3D13E5 0%, #0B022D 100%);
+    height: auto;
+    min-height: 100vh;
+}
+
 html, body {
 margin: 0;
 padding: 0;
