@@ -8,6 +8,7 @@
     <body>
         <div class="box">
             <img class="image" height="40" width="40" src="https://us.123rf.com/450wm/thesomeday123/thesomeday1231709/thesomeday123170900021/85622928-icono-de-perfil-de-avatar-predeterminado-marcador-de-posici%C3%B3n-de-foto-gris-vectores-de.jpg">
+            <a href="{% url 'post' vtype=type id=id post_id=post_id %}" style="text-decoration: none;">
             <div class="comment">
                 <div class="comment-header">
                     <h4>@{{username}}</h4>
@@ -16,6 +17,7 @@
                 <p class="username"></p>
                 <p class="commentary">{{title}}</p>
             </div>
+            </a>
             <div class="likes-thumb">
                 <p>4</p>
                 <i onclick="toggleThumb(this)" class="material-icons thumb">thumb_up_off_alt</i>

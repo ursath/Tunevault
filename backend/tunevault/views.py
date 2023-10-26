@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views import View
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 import json
@@ -319,6 +320,17 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title']
+
+
+class vaultPost(View):
+    def get(self, request, post_id, *args, **kwargs):
+        post = Post.objects.get(id=post_id)
+
+        context = {
+            'post': post,
+        }
+
+        return render(request, 'post.html', context)
 
 
 auth_manager = SpotifyClientCredentials()

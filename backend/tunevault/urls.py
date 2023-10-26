@@ -1,6 +1,7 @@
 from django.urls import path, include
 from . import views
 from django.contrib import admin
+from .views import vaultPost
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('settings/', views.settings_profile, name='settings'),
     path('profile/', views.profile, name='profile'),
     path('vault/<str:vtype>/<str:id>', views.vault, name='vault'),
+    path('vault/<str:vtype>/<str:id>/post/<str:post_id>', vaultPost.as_view(), name='post'),
 ]

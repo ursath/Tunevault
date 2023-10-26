@@ -66,8 +66,8 @@
 
                 <div class="commentaries">
                     {% for post in posts %}
-                    <hr>
-                    {% include 'commentBox.html' with username=post.user date=post.date title=post.title%}
+                        <hr>
+                        {% include 'commentBox.html' with username=post.user date=post.date title=post.title type=vault.type id=post.vault_id post_id=post.id %}
                     {% endfor %}
                     <hr>
                 </div>

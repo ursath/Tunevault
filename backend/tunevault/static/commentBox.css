@@ -15,6 +15,7 @@
     padding: 0;
     margin: 0;
     font-weight: bold;
+    color:white;
 }
 
 .comment-header {
@@ -46,9 +47,11 @@
     align-items: center;
     margin-right: 5%;
     height: 20px;
+    color:white;
 }
 
 .thumb {
     margin-left: 10px;
     cursor: pointer;
+    color:white;
 }
