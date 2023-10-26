@@ -12,7 +12,7 @@
             <a href="{% url 'post' vtype=type id=id post_id=post_id %}" style="text-decoration: none;">
             <div class="comment">
                 <div class="comment-header">
-                    <h4>@{{username}}</h4>
+                    <h4 class="comment-title">@{{username}}</h4>
                     <p class="date">{{date}}</p>
                 </div>
                 <p class="commentary">{{title}}</p>
@@ -21,7 +21,7 @@
             {% else %}
             <div class="comment">
                 <div class="comment-header">
-                    <h4>@{{username}}</h4>
+                    <h4 class="comment-title">@{{username}}</h4>
                     <p class="date">{{date}}</p>
                 </div>
                 <p class="commentary">{{title}}</p>

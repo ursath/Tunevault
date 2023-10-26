@@ -2,6 +2,7 @@
 
 :root {
     --fonts: 'Poppins', Arial, Helvetica, sans-serif;
+    --fondo: #1C1C1C;
 }
 
 .post {
@@ -36,4 +37,20 @@
     cursor: pointer;
     margin-top: 2%;
     font-size: 16px;
+}
+
+.reply-box {
+    margin-top: 5%;
+}
+
+.reply-text {
+    font-family: var(--fonts);
+    padding: 0 5%;
+    font-size: 14px;
+    margin-top: 0;
+    color: rgba(255, 255, 255, 0.678);
+}
+
+.hide-reply-text {
+    display: none;
 }

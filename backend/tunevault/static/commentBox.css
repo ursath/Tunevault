@@ -11,7 +11,7 @@
     padding: 0.5% 1.5%;
 }
 
-.comment h4 {
+.comment-title {
     padding: 0;
     margin: 0;
     font-weight: bold;
@@ -32,7 +32,7 @@
 
 .commentary {
     color:rgb(219, 219, 219);
-    margin: 0;
+    margin: 15px 0 0 0;
 }
 
 .image {

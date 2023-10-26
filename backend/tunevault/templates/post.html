@@ -21,7 +21,7 @@
                     <img class="image" height="40" width="40" src="https://us.123rf.com/450wm/thesomeday123/thesomeday1231709/thesomeday123170900021/85622928-icono-de-perfil-de-avatar-predeterminado-marcador-de-posici%C3%B3n-de-foto-gris-vectores-de.jpg">
                     <div class="comment">
                         <div class="comment-header">
-                            <h4>@{{ post.user }}</h4>
+                            <h4 class="comment-title">@{{ post.user }}</h4>
                             <p class="date">{{ post.date }}</p>
                         </div>
                         <p class="post-comment">{{post.title}}</p>
@@ -31,14 +31,21 @@
                         <i onclick="toggleThumb(this)" class="material-icons thumb">thumb_up_off_alt</i>
                     </div>
                 </div>
-
-                <form method="POST" id="comment-form" style="width: 100%;">
-                    {% csrf_token %}
-                    {{ form }}
-                    <button class="submit-button" type="submit">
-                        <i class="material-icons">send</i>
-                    </button>
-                </form>
+ 
+                {% if user.is_authenticated %}
+                <div class="reply-box">
+                    <div class="reply-header">
+                        <p id="reply-text" class="hide-reply-text reply-text">Replying to @{{post.user}}</p>
+                    </div>
+                    <form method="POST" id="comment-form" style="width: 100%; margin-top:0;">
+                        {% csrf_token %}
+                        {{ form }}
+                        <button class="submit-button" type="submit">
+                            <i class="material-icons">send</i>
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
 
                 <div class="commentaries">
                     {% for comment in comments %}
@@ -62,6 +69,21 @@
 
             document.getElementById('goBack').addEventListener('click', function() {
                 window.history.back();
+            });
+ 
+            document.addEventListener('DOMContentLoaded', function () {
+                const textarea = document.querySelector('#comment-form textarea');
+                const replyText = document.getElementById('reply-text');
+
+                textarea.addEventListener('click', function () {
+                    replyText.classList.remove('hide-reply-text');
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (event.target !== textarea) {
+                        replyText.classList.add('hide-reply-text');
+                    }
+                });
             });
        </script>
     </body>
