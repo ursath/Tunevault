@@ -39,18 +39,45 @@
                     </div>
                     <form method="POST" id="comment-form" style="width: 100%; margin-top:0;">
                         {% csrf_token %}
-                        {{ form }}
+                        {{ form.content }}
                         <button class="submit-button" type="submit">
                             <i class="material-icons">send</i>
                         </button>
+                        <input type="hidden" name="comment_answer_id" value="0">
                     </form>
                 </div>
                 {% endif %}
 
                 <div class="commentaries">
-                    {% for comment in comments %}
+                    {% for a_comment in comments %}
                     <hr>
-                    {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" %}
+                        {% with comment=a_comment.comment %}
+                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" %}
+
+                        <button class="replies-button" data-target="{{ comment.id }}" onclick=toggleReplies(this)>
+                            <p>Responses</p>
+                        </button>
+                        
+                        <button class="makeReply-button" data-target="{{ comment.id }}" onclick=toggleMakeReply(this)>
+                            <p>Reply</p>
+                        </button>
+
+                        <form method="POST" class="hidden-makeReply" data-comment-id="{{ comment.id }}" style="width: 100%; margin-top:0; display:none;">
+                            {% csrf_token %}
+                            {{ form.content }}
+                            <button class="submit-button" type="submit">
+                                <i class="material-icons">send</i>
+                            </button>
+                            <input type="hidden" name="comment_answer_id" value="{{ comment.id }}">
+                        </form> 
+                        
+                        <div class="hidden-replies" style="margin-left: 3%; display: none;" data-comment-id="{{ comment.id }}">
+                        {% for reply in a_comment.replies %}
+                        {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" %}
+                        {% endfor %}
+                        </div>
+
+                        {% endwith %}
                     {% endfor %}
                     <hr>
                 </div>
@@ -85,6 +112,33 @@
                     }
                 });
             });
+
+            
+            function toggleReplies(button) {
+                const commentId = button.getAttribute('data-target');
+                const repliesContainer = document.querySelector(`.hidden-replies[data-comment-id="${commentId}"]`);
+
+                if (repliesContainer) {
+                    if (repliesContainer.style.display === 'none' || repliesContainer.style.display === '') {
+                        repliesContainer.style.display = 'block';
+                    } else {
+                        repliesContainer.style.display = 'none';
+                    }
+                }
+            }
+
+            function toggleMakeReply(button) {
+                const commentId = button.getAttribute('data-target');
+                const repliesContainer = document.querySelector(`.hidden-makeReply[data-comment-id="${commentId}"]`);
+
+                if (repliesContainer) {
+                    if (repliesContainer.style.display === 'none' || repliesContainer.style.display === '') {
+                        repliesContainer.style.display = 'block';
+                    } else {
+                        repliesContainer.style.display = 'none';
+                    }
+                }
+            }
        </script>
     </body>
 </html>

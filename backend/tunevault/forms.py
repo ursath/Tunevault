@@ -21,8 +21,12 @@ class CommentForm(forms.ModelForm):
         widget=forms.Textarea(attrs={
             'rows': '2',
             'placeholder': 'Reply to this post...',
-        }))
+    }))
 
+    comment_answer_id = forms.CharField(
+        label='',
+    )
+    
     class Meta:
         model = Comment
-        fields = ['content']
+        fields = ['content', 'comment_answer_id']
