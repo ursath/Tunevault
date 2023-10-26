@@ -8,6 +8,7 @@
 .Back {
     background: linear-gradient(180deg, #03bf67 0%, #000000 100%);
     height: auto;
+    min-height: 100vh;
     padding-bottom: 10%;
 }
 
@@ -48,6 +49,8 @@
     font-size: 24px;
     font-family: Arial, Helvetica, sans-serif;
     opacity: 50%;
+    margin: 30px 0 0 0;
+    padding: 0;
 }
 
 .info {
@@ -56,7 +59,8 @@
 
 .info-header {
     display: flex;
-    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .button {

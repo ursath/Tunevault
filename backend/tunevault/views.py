@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Profile, Post, Comment, Vault
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
+from .forms import PostForm, CommentForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views import View
@@ -11,7 +12,6 @@ import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 from .utils import get_or_create_by_id, format_top50
-from django import forms
 
 load_dotenv()
 
@@ -271,7 +271,7 @@ def vault(request, vtype, id):
    # id es el ID del album/artista
    # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones
     vault = get_or_create_by_id(vtype, id)
-    posts = Post.objects.filter(vault_id=id)  
+    posts = Post.objects.filter(vault_id=id)
     form = PostForm(request.POST)  
     if form.is_valid():
         new_post = form.save(commit=False)
@@ -309,29 +309,39 @@ def music(request):
     context = format_top50()
     return render(request, 'music.html', context)
 
-class PostForm(forms.ModelForm):
-    title = forms.CharField(
-        label='',
-        widget=forms.Textarea(attrs={
-            'rows': '2',
-            'placeholder': 'Say Something...'
-            }))
-
-    class Meta:
-        model = Post
-        fields = ['title']
-
 
 class vaultPost(View):
     def get(self, request, post_id, *args, **kwargs):
         post = Post.objects.get(id=post_id)
+        form = CommentForm()
+        comments = Comment.objects.filter(post_id=post_id)
+        context = {
+            'post': post,
+            'form': form,
+            'comments': comments,
+        }
+        return render(request, 'post.html', context)
+    
+    def post(self, request, post_id, *args, **kwargs):
+        post = Post.objects.get(id=post_id)
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.user = request.user
+            new_comment.post_id = post_id
+            new_comment.save()
+        
+        comments = Comment.objects.filter(post_id=post_id)
 
         context = {
             'post': post,
+            'form': form,
+            'comments': comments,
         }
 
         return render(request, 'post.html', context)
-
+    
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)

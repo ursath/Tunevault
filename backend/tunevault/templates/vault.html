@@ -20,7 +20,13 @@
                 </div>
 
                 <div class="info">
-                    <p class="type">{{vault.vtype}}</p>
+                    {% if vault.type == 'album' %}
+                    <p class="type">Album</p>
+                    {% elif  vault.type == 'artist'%}
+                    <p class="type">Artist</p>
+                    {% elif  vault.type == 'podcast' %}
+                    <p class="type">Podcast</p>
+                    {% endif %}
                     <div class="info-header">
                     <h2>{{vault.title}}</h2>
                     <div class="button">

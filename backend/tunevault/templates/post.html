@@ -1,29 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'vault.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'commentBox.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'post.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    <body>
+        <div class="Back">
+            {% include 'NavBar.html' %}
+            <div class="vault">
+                <button id="goBack" class="back-button">
+                    <i class="material-icons">arrow_back_ios</i>
+                    <p>Back to vault</p>
+                </button>
 
-<div class="container">
-    <div class="row mt-5">
-
-    </div>
-    <div class="row justify-content-center mt-3">
-        <div class="col-md-5 col-sm-12 border-bottom">
-            <p><strong>{{ post.user }}</strong> {{ post.date }}</p>
-            <p>{{ post.title }}</p>
-        </div>
-    </div>
-
-    <div class="row justify-content-center mt-3">
-        <div class="col-md-5 col-sm-12">
-            <h5>Add a Comment!</h5>
-        </div>
-    </div>
-    <div class="row justify-content-center mt-3 mb-5">
-        <div class="col-md-5 col-sm-12">
-            <form method="POST">
-                {% csrf_token %}
-                {{ form }}
-                <div class="d-grid gap-2">
-                    <button class="btn btn-success mt-3">Submit!</button>
+                <div class="post">
+                    <img class="image" height="40" width="40" src="https://us.123rf.com/450wm/thesomeday123/thesomeday1231709/thesomeday123170900021/85622928-icono-de-perfil-de-avatar-predeterminado-marcador-de-posici%C3%B3n-de-foto-gris-vectores-de.jpg">
+                    <div class="comment">
+                        <div class="comment-header">
+                            <h4>@{{ post.user }}</h4>
+                            <p class="date">{{ post.date }}</p>
+                        </div>
+                        <p class="post-comment">{{post.title}}</p>
+                    </div>
+                    <div class="post-likes-thumb">
+                        <p>4</p>
+                        <i onclick="toggleThumb(this)" class="material-icons thumb">thumb_up_off_alt</i>
+                    </div>
                 </div>
-            </form>
+
+                <form method="POST" id="comment-form" style="width: 100%;">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button class="submit-button" type="submit">
+                        <i class="material-icons">send</i>
+                    </button>
+                </form>
+
+                <div class="commentaries">
+                    {% for comment in comments %}
+                    <hr>
+                    {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" %}
+                    {% endfor %}
+                    <hr>
+                </div>
+
+            </div>
         </div>
-    </div>
-</div>
+
+        <script>
+            function toggleThumb(x) {
+               if (x.textContent === 'thumb_up_off_alt') {
+                   x.textContent = 'thumb_up';
+               } else {
+                   x.textContent = 'thumb_up_off_alt';
+               }
+            }
+
+            document.getElementById('goBack').addEventListener('click', function() {
+                window.history.back();
+            });
+       </script>
+    </body>
+</html>
