@@ -18,31 +18,45 @@
                 </button>
 
                 <div class="post">
-                    <img class="image" height="40" width="40" src="https://us.123rf.com/450wm/thesomeday123/thesomeday1231709/thesomeday123170900021/85622928-icono-de-perfil-de-avatar-predeterminado-marcador-de-posici%C3%B3n-de-foto-gris-vectores-de.jpg">
-                    <div class="comment">
-                        <div class="comment-header">
-                            <h4 class="comment-title">@{{ post.user }}</h4>
-                            <p class="date">{{ post.date }}</p>
+                    <div style="display: flex;">
+                        <img class="image" height="40" width="40" src="https://us.123rf.com/450wm/thesomeday123/thesomeday1231709/thesomeday123170900021/85622928-icono-de-perfil-de-avatar-predeterminado-marcador-de-posici%C3%B3n-de-foto-gris-vectores-de.jpg">
+                        <div class="comment">
+                            <div class="comment-header">
+                                <h4 class="comment-title">@{{ post.user }}</h4>
+                                <p class="date">{{ post.date }}</p>
+                            </div>
+                            <p class="post-comment">{{post.title}}</p>
                         </div>
-                        <p class="post-comment">{{post.title}}</p>
+                        <div class="post-likes-thumb">
+                            <p>4</p>
+                            <i onclick="toggleThumb(this)" class="material-icons thumb">thumb_up_off_alt</i>
+                        </div>
                     </div>
-                    <div class="post-likes-thumb">
-                        <p>4</p>
-                        <i onclick="toggleThumb(this)" class="material-icons thumb">thumb_up_off_alt</i>
+                    <div class="buttons" style="margin: 20px 0 0 10px">
+                        <button class="replies-button" data-target="0" onclick="toggleReplies(this)" style="cursor:default">
+                            Responses
+                        </button>
+    
+                        <button class="makeReply-button" data-target="0" onclick="toggleMakeReply(this)">
+                            <i class="material-icons" style="margin-right: 10px;">reply</i>
+                            Reply
+                        </button>
                     </div>
                 </div>
  
                 {% if user.is_authenticated %}
                 <div class="reply-box">
-                    <div class="reply-header">
-                        <p id="reply-text" class="hide-reply-text reply-text">Replying to @{{post.user}}</p>
-                    </div>
-                    <form method="POST" id="comment-form" style="width: 100%; margin-top:0;">
-                        {% csrf_token %}
-                        {{ form.content }}
-                        <button class="submit-button" type="submit">
-                            <i class="material-icons">send</i>
-                        </button>
+                    <form method="POST" id="comment-form" class="hidden-makeReply" style="width: 100%; margin-top:0; display: none;" data-comment-id="0">
+                            <div class="reply-header">
+                                <p class="reply-text">Replying to @{{post.user}}</p>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                            {% csrf_token %}
+                            {{ form.content }}
+                            <button class="submit-button" type="submit">
+                                <i class="material-icons">send</i>
+                            </button>
+                        </div>
                         <input type="hidden" name="comment_answer_id" value="0">
                     </form>
                 </div>
@@ -50,7 +64,6 @@
 
                 <div class="commentaries">
                     {% for a_comment in comments %}
-                    <hr>
                         {% with comment=a_comment.comment %}
                         {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" %}
 
@@ -67,25 +80,33 @@
                         </div>
 
                         <div class="buttons-functionalities">
-                            <form method="POST" class="hidden-makeReply" data-comment-id="{{ comment.id }}" style="width: 100%; margin-top:0; display:none;">
-                                {% csrf_token %}
-                                {{ form.content }}
-                                <button class="submit-button" type="submit">
-                                    <i class="material-icons">send</i>
-                                </button>
+                            {% if user.is_authenticated %}
+                            <form method="POST" class="hidden-makeReply" data-comment-id="{{ comment.id }}" style="width: 100%; margin-top:0; display:none;" id="reply-form">
+                                <div class="reply-header">
+                                    <p class="reply-text">Replying to @{{comment.user}}</p>
+                                </div>
+                                    <div style="display: flex">
+                                    {% csrf_token %}
+                                    {{ form.content }}
+                                    <button class="submit-button" type="submit">
+                                        <i class="material-icons">send</i>
+                                    </button>
+                                </div>
                                 <input type="hidden" name="comment_answer_id" value="{{ comment.id }}">
                             </form> 
-                            
+                            {% endif %}
                             <div class="hidden-replies" style="display: none;" data-comment-id="{{ comment.id }}">
                             {% for reply in a_comment.replies %}
-                            {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" %}
+                            <div style="margin: 20px 0;">
+                                {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" %}
+                            </div>
                             {% endfor %}
                             </div>
                         </div>
 
                         {% endwith %}
+                        <hr>
                     {% endfor %}
-                    <hr>
                 </div>
 
             </div>
@@ -103,22 +124,6 @@
             document.getElementById('goBack').addEventListener('click', function() {
                 window.history.back();
             });
- 
-            document.addEventListener('DOMContentLoaded', function () {
-                const textarea = document.querySelector('#comment-form textarea');
-                const replyText = document.getElementById('reply-text');
-
-                textarea.addEventListener('click', function () {
-                    replyText.classList.remove('hide-reply-text');
-                });
-
-                document.addEventListener('click', function (event) {
-                    if (event.target !== textarea) {
-                        replyText.classList.add('hide-reply-text');
-                    }
-                });
-            });
-
             
             function toggleReplies(button) {
                 const commentId = button.getAttribute('data-target');

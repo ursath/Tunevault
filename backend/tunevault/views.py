@@ -312,18 +312,8 @@ def music(request):
 
 class vaultPost(View):
     def get(self, request, post_id, *args, **kwargs):
-        comments = Comment.objects.filter(post_id=post_id)
-        chain_comments = []
-       
-        for comment in comments:
-            if comment.comment_answer_id == "0":
-                chain_comments.append({'comment': comment, 'replies': []})
-
-        for post in chain_comments:
-            for comment in comments:
-                if str(comment.comment_answer_id) == str(post['comment'].id):
-                    post['replies'].append(comment)
-            
+        
+        chain_comments = getChainOfComments(post_id)
         post = Post.objects.get(id=post_id)
         form = CommentForm()
 
@@ -344,16 +334,31 @@ class vaultPost(View):
             new_comment.post_id = post_id
             new_comment.save()
         
-        comments = Comment.objects.filter(post_id=post_id)
+        chain_comments = getChainOfComments(post_id)
 
         context = {
             'post': post,
             'form': form,
-            'comments': comments,
+            'comments': chain_comments,
         }
 
         return render(request, 'post.html', context)
     
+
+def getChainOfComments(post_id):
+    comments = Comment.objects.filter(post_id=post_id)
+    chain_comments = []
+
+    for comment in comments:
+        if comment.comment_answer_id == "0":
+            chain_comments.append({'comment': comment, 'replies': []})
+
+    for post in chain_comments:
+        for comment in comments:
+            if str(comment.comment_answer_id) == str(post['comment'].id):
+                post['replies'].append(comment)
+        
+    return chain_comments
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
