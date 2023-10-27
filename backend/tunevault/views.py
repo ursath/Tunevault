@@ -11,7 +11,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id, format_top50
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount
 
 load_dotenv()
 
@@ -271,13 +271,13 @@ def vault(request, vtype, id):
    # id es el ID del album/artista
    # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones
     vault = get_or_create_by_id(vtype, id)
-    posts = Post.objects.filter(vault_id=id)
     form = PostForm(request.POST)  
     if form.is_valid():
         new_post = form.save(commit=False)
         new_post.user = request.user
         new_post.vault_id = id
         new_post.save()
+    posts = getPostsWithCommentCount(id)
 
     context = {'vault': vault, 'posts': posts, 'form': form}
     return render(request, 'vault.html', context)
@@ -348,22 +348,6 @@ class vaultPost(View):
 
         return render(request, 'post.html', context)
     
-
-def getChainOfComments(post_id):
-    comments = Comment.objects.filter(post_id=post_id)
-    chain_comments = []
-
-    for comment in comments:
-        if comment.comment_answer_id == "0":
-            chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0})
-
-    for post in chain_comments:
-        for comment in comments:
-            if str(comment.comment_answer_id) == str(post['comment'].id):
-                post['replies'].append(comment)
-                post['replies_count'] += 1
-        
-    return chain_comments
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)

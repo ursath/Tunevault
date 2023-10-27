@@ -71,9 +71,18 @@
                 </form>
 
                 <div class="commentaries">
-                    {% for post in posts %}
+                    {% for a_post in posts %}
                         <hr>
+                        {% with post=a_post.post %}
                         {% include 'commentBox.html' with username=post.user date=post.date title=post.title type=vault.type id=post.vault_id post_id=post.id %}
+                        <a href="{% url 'post' vtype=vault.type id=post.vault_id post_id=post.id %}" style="text-decoration: none;">
+                            <div class="replies-button-box">
+                                <button class="replies-button">
+                                    {{ a_post.comment_count }} {% if a_post.comment_coun == 1 %}response{% else %}responses{% endif %}
+                                </button>
+                            </div>
+                        </a>
+                        {% endwith %}
                     {% endfor %}
                     <hr>
                 </div>

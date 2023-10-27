@@ -190,3 +190,24 @@ hr {
     padding: 2% 5%;
     margin-right: 20px;
 }
+
+.replies-button {
+    border: transparent;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.11);
+    color: white;
+    align-items: center;
+    display: flex;
+    font-family: var(--fonts);
+    padding: 5px 15px;
+    height: 30px;
+    margin-right: 20px;
+    cursor: pointer;
+    min-width: 115px;
+    text-align: center;
+    justify-content: center;
+}
+
+.replies-button-box {
+    margin: 10px 0 20px 50px;
+}

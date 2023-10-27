@@ -6,6 +6,7 @@ import hashlib
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
+from .models import Comment, Post
 
 load_dotenv()
 
@@ -163,4 +164,29 @@ def string_to_uuid(input_string):
     except ValueError:
         # Handle the case where the string is not a valid UUID
         return None  # Or raise an error or handle it as needed
+    
+
+def getChainOfComments(post_id):
+    comments = Comment.objects.filter(post_id=post_id)
+    chain_comments = []
+
+    for comment in comments:
+        if comment.comment_answer_id == "0":
+            chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0})
+
+    for post in chain_comments:
+        for comment in comments:
+            if str(comment.comment_answer_id) == str(post['comment'].id):
+                post['replies'].append(comment)
+                post['replies_count'] += 1
+        
+    return chain_comments
+    
+
+def getPostsWithCommentCount(vault_id):
+    posts = Post.objects.filter(vault_id=vault_id)
+    posts_with_count = []
+    for post in posts:
+        posts_with_count.append({'post': post, 'comment_count': Comment.objects.filter(post_id=post.id).count()})
+    return posts_with_count
     
