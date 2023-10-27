@@ -54,3 +54,39 @@
 .hide-reply-text {
     display: none;
 }
+
+.replies-button {
+    border: transparent;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.11);
+    color: white;
+    align-items: center;
+    display: flex;
+    font-family: var(--fonts);
+    padding: 5px 15px;
+    height: 30px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.makeReply-button {
+    border: 1px solid rgba(255, 255, 255, 0.736);
+    border-radius: 12px;
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.764);
+    display: flex;
+    align-items: center;
+    font-family: var(--fonts);
+    cursor: pointer;
+    padding: 2px 15px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    margin: 20px 0 20px 5%;
+}
+
+.buttons-functionalities {
+    margin-left: 4%;
+}

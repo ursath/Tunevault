@@ -54,27 +54,33 @@
                         {% with comment=a_comment.comment %}
                         {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" %}
 
-                        <button class="replies-button" data-target="{{ comment.id }}" onclick=toggleReplies(this)>
-                            <p>Responses</p>
-                        </button>
-                        
-                        <button class="makeReply-button" data-target="{{ comment.id }}" onclick=toggleMakeReply(this)>
-                            <p>Reply</p>
-                        </button>
-
-                        <form method="POST" class="hidden-makeReply" data-comment-id="{{ comment.id }}" style="width: 100%; margin-top:0; display:none;">
-                            {% csrf_token %}
-                            {{ form.content }}
-                            <button class="submit-button" type="submit">
-                                <i class="material-icons">send</i>
+                        <div class="buttons">
+                            <button class="replies-button" data-target="{{ comment.id }}" onclick="toggleReplies(this)">
+                                Responses
+                                <i onclick="toggleIcon(this)" class="material-icons">expand_more</i>
                             </button>
-                            <input type="hidden" name="comment_answer_id" value="{{ comment.id }}">
-                        </form> 
-                        
-                        <div class="hidden-replies" style="margin-left: 3%; display: none;" data-comment-id="{{ comment.id }}">
-                        {% for reply in a_comment.replies %}
-                        {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" %}
-                        {% endfor %}
+
+                            <button class="makeReply-button" data-target="{{ comment.id }}" onclick="toggleMakeReply(this)">
+                                <i class="material-icons" style="margin-right: 10px;">reply</i>
+                                Reply
+                            </button>
+                        </div>
+
+                        <div class="buttons-functionalities">
+                            <form method="POST" class="hidden-makeReply" data-comment-id="{{ comment.id }}" style="width: 100%; margin-top:0; display:none;">
+                                {% csrf_token %}
+                                {{ form.content }}
+                                <button class="submit-button" type="submit">
+                                    <i class="material-icons">send</i>
+                                </button>
+                                <input type="hidden" name="comment_answer_id" value="{{ comment.id }}">
+                            </form> 
+                            
+                            <div class="hidden-replies" style="display: none;" data-comment-id="{{ comment.id }}">
+                            {% for reply in a_comment.replies %}
+                            {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" %}
+                            {% endfor %}
+                            </div>
                         </div>
 
                         {% endwith %}
@@ -137,6 +143,14 @@
                     } else {
                         repliesContainer.style.display = 'none';
                     }
+                }
+            }
+
+            function toggleIcon(x) {
+                if (x.textContent === 'expand_more') {
+                    x.textContent = 'expand_less';
+                } else {
+                    x.textContent = 'expand_more';
                 }
             }
        </script>
