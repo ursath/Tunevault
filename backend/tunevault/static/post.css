@@ -67,6 +67,9 @@
     height: 30px;
     margin-right: 20px;
     cursor: pointer;
+    min-width: 130px;
+    text-align: center;
+    justify-content: center;
 }
 
 .makeReply-button {

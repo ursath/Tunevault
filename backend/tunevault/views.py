@@ -313,6 +313,7 @@ def music(request):
 class vaultPost(View):
     def get(self, request, post_id, *args, **kwargs):
         
+        comment_count = Comment.objects.filter(post_id=post_id).count()
         chain_comments = getChainOfComments(post_id)
         post = Post.objects.get(id=post_id)
         form = CommentForm()
@@ -321,6 +322,7 @@ class vaultPost(View):
             'post': post,
             'form': form,
             'comments': chain_comments,
+            'comment_count': comment_count,
         }
         return render(request, 'post.html', context)
     
@@ -334,12 +336,14 @@ class vaultPost(View):
             new_comment.post_id = post_id
             new_comment.save()
         
+        comment_count = Comment.objects.filter(post_id=post_id).count()
         chain_comments = getChainOfComments(post_id)
 
         context = {
             'post': post,
             'form': form,
             'comments': chain_comments,
+            'comment_count': comment_count,
         }
 
         return render(request, 'post.html', context)
@@ -351,12 +355,13 @@ def getChainOfComments(post_id):
 
     for comment in comments:
         if comment.comment_answer_id == "0":
-            chain_comments.append({'comment': comment, 'replies': []})
+            chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0})
 
     for post in chain_comments:
         for comment in comments:
             if str(comment.comment_answer_id) == str(post['comment'].id):
                 post['replies'].append(comment)
+                post['replies_count'] += 1
         
     return chain_comments
 

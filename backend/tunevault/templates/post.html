@@ -34,17 +34,25 @@
                     </div>
                     <div class="buttons" style="margin: 20px 0 0 10px">
                         <button class="replies-button" data-target="0" onclick="toggleReplies(this)" style="cursor:default">
-                            Responses
+                            {{comment_count}} responses
                         </button>
     
+                        {% if user.is_authenticated %}
                         <button class="makeReply-button" data-target="0" onclick="toggleMakeReply(this)">
                             <i class="material-icons" style="margin-right: 10px;">reply</i>
                             Reply
                         </button>
+                        {% else %}
+                        <a href="/login" style="text-decoration: none;">
+                        <button class="makeReply-button">
+                            <i class="material-icons" style="margin-right: 10px;">reply</i>
+                            Reply
+                        </button>
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
  
-                {% if user.is_authenticated %}
                 <div class="reply-box">
                     <form method="POST" id="comment-form" class="hidden-makeReply" style="width: 100%; margin-top:0; display: none;" data-comment-id="0">
                             <div class="reply-header">
@@ -60,7 +68,6 @@
                         <input type="hidden" name="comment_answer_id" value="0">
                     </form>
                 </div>
-                {% endif %}
 
                 <div class="commentaries">
                     {% for a_comment in comments %}
@@ -69,18 +76,28 @@
 
                         <div class="buttons">
                             <button class="replies-button" data-target="{{ comment.id }}" onclick="toggleReplies(this)">
-                                Responses
+                                {{ a_comment.replies_count }} {% if a_comment.replies_count == 1 %}response{% else %}responses{% endif %}
+                                {% if a_comment.replies_count != 0%}
                                 <i onclick="toggleIcon(this)" class="material-icons">expand_more</i>
+                                {% endif %}
                             </button>
 
+                            {% if user.is_authenticated %}
                             <button class="makeReply-button" data-target="{{ comment.id }}" onclick="toggleMakeReply(this)">
                                 <i class="material-icons" style="margin-right: 10px;">reply</i>
                                 Reply
                             </button>
+                            {% else %}
+                            <a href="/login" style="text-decoration: none;">
+                            <button class="makeReply-button">
+                                <i class="material-icons" style="margin-right: 10px;">reply</i>
+                                Reply
+                            </button>
+                            </a>
+                            {% endif %}
                         </div>
 
                         <div class="buttons-functionalities">
-                            {% if user.is_authenticated %}
                             <form method="POST" class="hidden-makeReply" data-comment-id="{{ comment.id }}" style="width: 100%; margin-top:0; display:none;" id="reply-form">
                                 <div class="reply-header">
                                     <p class="reply-text">Replying to @{{comment.user}}</p>
@@ -94,7 +111,6 @@
                                 </div>
                                 <input type="hidden" name="comment_answer_id" value="{{ comment.id }}">
                             </form> 
-                            {% endif %}
                             <div class="hidden-replies" style="display: none;" data-comment-id="{{ comment.id }}">
                             {% for reply in a_comment.replies %}
                             <div style="margin: 20px 0;">
@@ -121,10 +137,6 @@
                }
             }
 
-            document.getElementById('goBack').addEventListener('click', function() {
-                window.history.back();
-            });
-            
             function toggleReplies(button) {
                 const commentId = button.getAttribute('data-target');
                 const repliesContainer = document.querySelector(`.hidden-replies[data-comment-id="${commentId}"]`);
@@ -158,6 +170,18 @@
                     x.textContent = 'expand_more';
                 }
             }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const backButton = document.getElementById('goBack');
+
+                backButton.addEventListener('click', function () {
+                    const currentUrl = window.location.href;
+                    const urlParts = currentUrl.split('/');
+                    urlParts.splice(-2);
+                    const newUrl = urlParts.join('/');
+                    window.location.href = newUrl;
+                })
+            })
        </script>
     </body>
 </html>
