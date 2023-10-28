@@ -104,13 +104,19 @@
                     <hr>
                 </div>
                 
-                <div class="join-vault">
-                    
+                <div class="join-vault">      
+                    {% if user.is_authenticated %}
                     <button class="join-button" id="join-button">
                         Join the vault
                         <img height="20" width="20" class="mini-logo" src="{% static 'resources/logo-mini.png' %}">
                     </button>
-      
+                    {% else %}
+                    <a href="/login">
+                        <button class="join-button">
+                            Join the vault
+                            <img height="20" width="20" class="mini-logo" src="{% static 'resources/logo-mini.png' %}">
+                        </button>
+                    {% endif %}
                 </div>
             </div>
         </div>
