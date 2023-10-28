@@ -55,3 +55,17 @@
     cursor: pointer;
     color:white;
 }
+
+.star-rating .fa-star {
+    color: white; 
+}
+
+.star-rating .fa-star.rated {
+    color: #ffb503;
+}
+
+
+
+
+
+

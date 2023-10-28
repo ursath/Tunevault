@@ -276,6 +276,7 @@ def vault(request, vtype, id):
         new_post = form.save(commit=False)
         new_post.user = request.user
         new_post.vault_id = id
+        new_post.rating = form.cleaned_data['rating']
         new_post.save()
     posts = getPostsWithCommentCount(id)
 

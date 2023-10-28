@@ -45,6 +45,7 @@ class Post(models.Model):
     user = models.CharField(max_length=50)
     vault_id = models.CharField(max_length=50)
     likes = models.IntegerField(default=0)
+    rating = models.FloatField(default=0)
     date = models.DateField(default=datetime.now)
     title = models.TextField(max_length=60)
     content = models.TextField(max_length=597)
