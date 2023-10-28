@@ -189,4 +189,13 @@ def getPostsWithCommentCount(vault_id):
     for post in posts:
         posts_with_count.append({'post': post, 'comment_count': Comment.objects.filter(post_id=post.id).count()})
     return posts_with_count
-    
+
+def getVaultRating(vault_id):
+    posts = Post.objects.filter(vault_id=vault_id)
+    sum = 0
+    count = 0
+    for post in posts:
+        if post.rating != 0:
+            sum += post.rating
+            count += 1
+    return round(sum/count, 1) if count != 0 else 0

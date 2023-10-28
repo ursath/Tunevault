@@ -6,6 +6,8 @@
         <link rel="stylesheet" type="text/css" href="{% static 'commentBox.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'post.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'custom.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>
@@ -27,10 +29,19 @@
                             </div>
                             <p class="post-comment">{{post.title}}</p>
                         </div>
-                        <div class="post-likes-thumb">
-                            <p>4</p>
-                            <i onclick="toggleThumb(this)" class="material-icons thumb">thumb_up_off_alt</i>
+                        {% with rating=post.rating %}
+                        {% if rating != 0 %}
+                        <div class="rate">
+                            <span class="star-rating">  
+                                <i class="fa fa-star{% if rating >= 1 %} rated{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if rating >= 2 %} rated{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if rating >= 3 %} rated{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if rating >= 4 %} rated{% endif %}" aria-hidden="true"></i>
+                                <i class="fa fa-star{% if rating >= 5 %} rated{% endif %}" aria-hidden="true"></i>
+                            </span>
                         </div>
+                        {% endif %}
+                        {% endwith %}
                     </div>
                     <div class="buttons" style="margin: 20px 0 0 10px">
                         <button class="replies-button" data-target="0" onclick="toggleReplies(this)" style="cursor:default">
@@ -72,7 +83,7 @@
                 <div class="commentaries">
                     {% for a_comment in comments %}
                         {% with comment=a_comment.comment %}
-                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" %}
+                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false"  rating=0 %}
 
                         <div class="buttons">
                             <button class="replies-button" data-target="{{ comment.id }}" onclick="toggleReplies(this)">
@@ -114,7 +125,7 @@
                             <div class="hidden-replies" style="display: none;" data-comment-id="{{ comment.id }}">
                             {% for reply in a_comment.replies %}
                             <div style="margin: 20px 0;">
-                                {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" %}
+                                {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" rating=0 %}
                             </div>
                             {% endfor %}
                             </div>

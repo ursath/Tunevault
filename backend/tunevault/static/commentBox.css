@@ -40,22 +40,6 @@
     margin-right: 20px;
 }
 
-.likes-thumb {
-    margin-top: 10px;
-    display: flex;
-    margin-left: auto;
-    align-items: center;
-    margin-right: 5%;
-    height: 20px;
-    color:white;
-}
-
-.thumb {
-    margin-left: 10px;
-    cursor: pointer;
-    color:white;
-}
-
 .star-rating .fa-star {
     color: white; 
 }

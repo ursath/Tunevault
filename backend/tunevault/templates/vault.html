@@ -12,9 +12,17 @@
         <div class="Back">
             {% include 'NavBar.html' %}
             <div class="vault">
-                <div class="likesBox">
-                    <p>{{likes}}</p>
-                    <i onclick="toggleIcon(this)" class="material-icons like">favorite_border</i>
+                <div class="rateBox">
+                    <p style="margin-right: 10px;">{{rating}}</p>
+                    <div>
+                        <span class="star-rating">
+                            <i class="fa fa-star{% if rating >= 1 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 2 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 3 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 4 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 5 %} rated{% endif %}" aria-hidden="true"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="center">

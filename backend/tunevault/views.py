@@ -11,7 +11,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating
 
 load_dotenv()
 
@@ -279,8 +279,9 @@ def vault(request, vtype, id):
         new_post.rating = form.cleaned_data['rating']
         new_post.save()
     posts = getPostsWithCommentCount(id)
+    rating = getVaultRating(id)
 
-    context = {'vault': vault, 'posts': posts, 'form': form}
+    context = {'vault': vault, 'posts': posts, 'form': form, 'rating':rating }
     return render(request, 'vault.html', context)
 
 def gallery(request):
