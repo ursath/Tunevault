@@ -280,8 +280,9 @@ def vault(request, vtype, id):
         new_post.save()
     posts = getPostsWithCommentCount(id)
     rating = getVaultRating(id)
+    first_post = Post.objects.filter(user=request.user, vault_id=id).count() == 0
 
-    context = {'vault': vault, 'posts': posts, 'form': form, 'rating':rating }
+    context = {'vault': vault, 'posts': posts, 'form': form, 'rating':rating, 'first_post': first_post }
     return render(request, 'vault.html', context)
 
 def gallery(request):
@@ -294,20 +295,6 @@ def gallery(request):
 
 
 def music(request):
-    # {
-    #     'id_artist_1': {
-    #         'artist': 'artist',
-    #         'image': 'artistimg',
-    #         'likes': 0
-    #     },
-    #     'id_artist_2': {
-    #         'artist': 'artist',
-    #         'image': 'artistimg',
-    #         'likes': 0
-    #     },
-    #     }
-    # }
-
     context = format_top50()
     return render(request, 'music.html', context)
 
