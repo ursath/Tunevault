@@ -1,8 +1,12 @@
-.rate > input{
+  .rate > input{
     display: none;
   }
   
-  .rate{
+  .rate {
+    border: 0;
+  }
+
+  .rate-right {
     display: flex;
     border: 0;
     margin-left: auto;
