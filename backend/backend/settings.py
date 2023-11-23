@@ -56,6 +56,8 @@ AUTH_COOKIE_PATH = '/'
 AUTH_COOKIE_SAMESITE = 'None'
 # Application definition
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
