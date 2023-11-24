@@ -272,6 +272,13 @@ def signin(request):
 
     else:
         return render(request, 'login.html')
+    
+    
+@login_required(login_url='login')
+def logout(request):
+    auth.logout(request)
+    return redirect('login')
+
 
 def vault(request, vtype, id):
    # id es el ID del album/artista

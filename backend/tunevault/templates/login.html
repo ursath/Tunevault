@@ -16,9 +16,11 @@
 
         <div class="formBox signInBox">
             <div>
-                <button id="goBack" class="close-button">
+            <a href="/" style="text-decoration: none;">
+                <button class="close-button">
                     <i class="material-icons closeIcon">close</i>
                 </button>
+            </a>
                 
             <form method="POST"> 
             {% csrf_token %}
@@ -56,11 +58,15 @@
         </div>
     </div>
 
+<!---
+
     <script>
         document.getElementById('goBack').addEventListener('click', function() {
             window.history.back();
         });
     </script>
+
+-->
 
     </body>
 </html>
