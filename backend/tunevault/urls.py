@@ -2,6 +2,8 @@ from django.urls import path, include
 from . import views
 from django.contrib import admin
 from .views import vaultPost
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -16,3 +18,6 @@ urlpatterns = [
     path('vault/<str:vtype>/<str:id>', views.vault, name='vault'),
     path('vault/<str:vtype>/<str:id>/post/<str:post_id>', vaultPost.as_view(), name='post'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
