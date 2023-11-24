@@ -9,13 +9,7 @@
 
     <body>
         <div class="Back">
-
-            <a href="/">
-                <div class="imageBox">
-                    <img class="imageLogo" src="{% static 'resources/logo.png' %}" alt="logo" />
-                </div>
-            </a>
-
+            {% include 'NavBar.html' %}
             <div class="formBox">
                 <div style="display: flex; width: 100%; margin: 30px 0;">
                     <h3 style="text-align: center; width: 100%">@{{ user_profile.user }}</h3>
