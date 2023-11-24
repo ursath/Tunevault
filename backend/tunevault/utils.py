@@ -18,8 +18,7 @@ def get_artist(id):
     return result
 
 #se podrían pasar codigos de error para que el front los maneje
-#se debería hacer un fetch mientras que 
-def get_result_search(search, type, limit, offset):
+def get_result_search(search, type, limit, offset, genre = None):
     if ((type != 'artist' and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
     result = sp.search(search,limit,offset,type)
@@ -27,8 +26,13 @@ def get_result_search(search, type, limit, offset):
     if result[type]['items']==[]:
         return json.dumps({'error': 'No se encontraron artistas'})
     for items in result['artists']['items']:
-        queryResult = get_or_create_vault(items)
-        listToRet.append(queryResult)
+        if (genre != None):
+            if (genre in items['genres']):
+                queryResult = get_or_create_vault(items)
+                listToRet.append(queryResult)
+        else:
+            queryResult = get_or_create_vault(items)
+            listToRet.append(queryResult)
     jsonResult = {
         'type': type,
         'vaults': listToRet,
@@ -36,6 +40,29 @@ def get_result_search(search, type, limit, offset):
         'next': result[type]['next'],
     }
     return jsonResult
+
+#para sección de música
+def search_music(query, genre = None):
+    searchArtist = get_result_search(query, 'artist', 10, 0)
+    searchAlbum = get_result_search(query, 'album', 10, 0)
+    result = {searchArtist, searchAlbum}
+    return result
+
+#para seccion de podcast
+def search_podcast(query):
+    searchPodcast = get_result_search(query, 'show', 10, 0)
+    searchEpisode = get_result_search(query, 'episode', 10, 0)
+    result = {searchPodcast, searchEpisode}
+    return result
+
+#para barra de navegación
+def search_all(query):
+    searchArtist = get_result_search(query, 'artist', 10, 0)
+    searchAlbum = get_result_search(query, 'album', 10, 0)
+    searchPodcast = get_result_search(query, 'show', 10, 0)
+    searchEpisode = get_result_search(query, 'episode', 10, 0)
+    result = {searchArtist, searchAlbum, searchPodcast, searchEpisode}
+    return result
 
 def get_or_create_vault(item):
     try:
