@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tunevault',
-    'star_ratings',
 ]
 
 MIDDLEWARE = [
