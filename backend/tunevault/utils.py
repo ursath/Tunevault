@@ -17,15 +17,25 @@ def get_artist(id):
     result = sp.artist(id)
     return result
 
-def get_artist_search(string):
-    result = sp.search(string,1,0,"artist")
+#se podrían pasar codigos de error para que el front los maneje
+#se debería hacer un fetch mientras que 
+def get_result_search(search, type, limit, offset):
+    if ((type != 'artist' and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook") or limit < 0 or offset < 0):
+        return json.dumps({'error': 'Tipo de busqueda no valida'})
+    result = sp.search(search,limit,offset,type)
     listToRet = []
-    if result['artists']['items']==[]:
+    if result[type]['items']==[]:
         return json.dumps({'error': 'No se encontraron artistas'})
     for items in result['artists']['items']:
         queryResult = get_or_create_vault(items)
         listToRet.append(queryResult)
-    return listToRet
+    jsonResult = {
+        'type': type,
+        'vaults': listToRet,
+        'total': result[type]['total'],
+        'next': result[type]['next'],
+    }
+    return jsonResult
 
 def get_or_create_vault(item):
     try:
@@ -97,11 +107,12 @@ def get_or_create_by_id(vtype, id):
 def get_album_item(id):
     pass
 
-def get_top50_artists():
-    playlists = sp.playlist_tracks("37i9dQZF1DXcBWIGoYBM5M") # top50 playlist id
+def get_top50_artists(offset):
+    playlists = sp.playlist_tracks("37i9dQZF1DXcBWIGoYBM5M", None, 8, offset) # top50 playlist id
     list = []
     for item in playlists['items']:
-        list.append(item['track']['artists'])
+        if (item['track']['artists'] not in list):
+            list.append(item['track']['artists'])
     return list
 
 def format_top50():
@@ -119,19 +130,20 @@ def format_top50():
     #     },
     #     }
     # }
-    top50_list = get_top50_artists()
     top50_dict = {}
-    for item in top50_list:
-        for artist in item:
-            if artist['id'] not in top50_dict:
-                artist_data = get_artist(artist['id'])
-                top50_dict[artist['id']] = {
-                    'artist': artist_data['name'],
-                    'image': artist_data['images'][0]['url'],
-                    'likes': 0
-                }
-            else:
-                top50_dict[artist['id']]['likes'] += 1
+    offset = 0
+    while (len(top50_dict) < 9):
+        top50_list = get_top50_artists(offset)
+        for item in top50_list:
+            for artist in item:
+                if artist['id'] not in top50_dict:
+                    artist_data = get_artist(artist['id'])
+                    top50_dict[artist['id']] = {
+                        'artist': artist_data['name'],
+                        'image': artist_data['images'][0]['url'],
+                        'likes': 0
+                    }
+        offset += 8
     return {'top': top50_dict}
 
 def create_vault(id, type, title, description, genres, spotifyimg, external_url, authors, total_tracks, date):
