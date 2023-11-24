@@ -168,6 +168,7 @@ def settings_profile(request):
             user_profile.bio = bio
             user_profile.location = location
             user_profile.save()
+            
         if request.FILES.get('image') != None:
             image = request.FILES.get('image')
             bio = request.POST['bio']
@@ -181,6 +182,11 @@ def settings_profile(request):
         return redirect('settings')
     # TODO ver que anda
     return render(request, 'settingsProfile.html', {'user_profile': user_profile})
+
+
+def profile(request):
+    user_profile = Profile.objects.get(user=request.user)
+    return render(request, 'profile.html', {'user_profile': user_profile})
 
 
 # @login_required(login_url='signin')
@@ -240,7 +246,7 @@ def signup(request):
                 user_model = User.objects.get(username=username)
                 new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
                 new_profile.save()
-                return redirect('settings')
+                return redirect('profile')
         else:
             messages.info(request, 'Password not matching')
             return redirect('create_account')
@@ -259,7 +265,7 @@ def signin(request):
 
         if user is not None:
             auth.login(request, user)
-            return redirect('settings')
+            return redirect('home')
         else:
             messages.info(request, 'Invalid username or password')
             return redirect('login')
