@@ -6,7 +6,7 @@ import hashlib
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
-from .models import Comment, Post
+from .models import Comment, Post, Profile
 
 load_dotenv()
 
@@ -238,3 +238,23 @@ def getVaultRating(vault_id):
             sum += post.rating
             count += 1
     return round(sum/count, 1) if count != 0 else 0
+
+def get_profile(user):
+    profile = Profile.objects.get(user=user)
+    profile_data = {
+        'id': profile.id,
+        'user': profile.user.username,
+        'bio': profile.bio,
+        'profileimg': profile.profileimg.url,
+        'location': profile.location,
+        'followers': profile.followers,
+    }
+    return profile
+
+def get_recommended_profiles():
+    profiles = Profile.objects.all()
+    recommended_profiles = []
+    for profile in profiles:
+        if profile.followers > 0:
+            recommended_profiles.append(profile)
+    return recommended_profiles
