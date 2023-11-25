@@ -18,6 +18,7 @@ class Profile(models.Model):
     profileimg = models.ImageField(upload_to='profile_image', default='default_profile.jpg')
     location = models.CharField(max_length=100, blank=True)
     followers = models.PositiveIntegerField(default = 0)
+    isArtist = models.BooleanField(default=False)
     # TODO guardar artistas/albumes favoritos
 
     def __str__(self):
