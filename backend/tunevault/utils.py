@@ -3,6 +3,9 @@ import spotipy
 import json
 import uuid
 import hashlib
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
@@ -111,7 +114,7 @@ def get_or_create_by_id(vtype, id):
             artists = []
             for artist in item['artists']:
                 artistInfo = sp.artist(artist['id'])
-                artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']}) 
+                artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']})
             toRet = create_vault(item['id'], type, item['name'], 'None', item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
     else:
         pass #error
@@ -143,7 +146,7 @@ def get_top50_artists(offset):
     return list
 
 def format_top50(offset):
-    # formats data from get_top50_artists() in the following way 
+    # formats data from get_top50_artists() in the following way
     # {
     #     'id_artist_1': {
     #         'artist': 'artist',
@@ -204,7 +207,7 @@ def string_to_uuid(input_string):
     except ValueError:
         # Handle the case where the string is not a valid UUID
         return None  # Or raise an error or handle it as needed
-    
+
 
 def getChainOfComments(post_id):
     comments = Comment.objects.filter(post_id=post_id)
@@ -219,9 +222,9 @@ def getChainOfComments(post_id):
             if str(comment.comment_answer_id) == str(post['comment'].id):
                 post['replies'].append(comment)
                 post['replies_count'] += 1
-        
+
     return chain_comments
-    
+
 
 def getPostsWithCommentCount(vault_id):
     posts = Post.objects.filter(vault_id=vault_id)
@@ -260,20 +263,37 @@ def get_recommended_profiles():
         recommended_profiles.append(get_profile(profile.user))
     return {'membersList': recommended_profiles}
 
-#se podría scrapear de algun lugar para tener un top  
-#def get_top_podcasts():
-    #topPodcastsUrls = []
-    #scrapping? (https://podcastcharts.byspotify.com/latam)
-    #podcasts = sp.shows(topPodcastsUrls)
-    #podcastsfiltered = podcasts['shows']
-    #listToRet = []
-    #for podcast in podcastsfiltered:
-        #podcast = get_or_create_by_id('podcast', podcast[id])
-        #podcast_data = {
-        #    'artist': podcast['name'],
-        #    'image': podcast['images'][0]['url'],
-        #    'likes': 0
-        #}
-        #listToRet.append(podcast_data)
-    #return {'top': listToRet}
-    
+#se podría scrapear de algun lugar para tener un top
+def get_top_podcasts(limit=10):
+    topPodcastsUrls = scrap_arists(limit)
+
+    podcasts = sp.shows(topPodcastsUrls)
+    podcastsfiltered = podcasts['shows']
+    podcast_data = {}
+    for podcast in podcastsfiltered:
+        podcast_data[podcast['id']] = {
+            'artist': podcast['name'],
+            'image': podcast['images'][0]['url'],
+            'likes': 0
+        }
+
+    return {'top': podcast_data}
+
+def scrap_arists(limit):
+    browser=webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    browser = webdriver.Chrome(options=options)
+    browser.get("https://podcastcharts.byspotify.com/latam")
+    browser.implicitly_wait(5)
+    urlList=[]
+    elem= browser.find_elements(By.XPATH,'//div[@class="flex"]/div[@class="relative uppercase text-accent0 font-normal mr-4 flex justify-center items-center cursor-pointer"]/a')
+    i=0
+    for e in elem:
+        urlList.append(e.get_attribute('href').split('/')[-1])
+        i+=1
+        if i==limit:
+            break
+
+    browser.quit()
+    return urlList

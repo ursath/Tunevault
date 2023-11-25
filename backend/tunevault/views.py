@@ -11,8 +11,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile
-
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts
 load_dotenv()
 
 # Create your views here.
@@ -168,7 +167,7 @@ def settings_profile(request):
             user_profile.bio = bio
             user_profile.location = location
             user_profile.save()
-            
+
         if request.FILES.get('image') != None:
             image = request.FILES.get('image')
             bio = request.POST['bio']
@@ -272,8 +271,8 @@ def signin(request):
 
     else:
         return render(request, 'login.html')
-    
-    
+
+
 @login_required(login_url='login')
 def logout(request):
     auth.logout(request)
@@ -284,7 +283,7 @@ def vault(request, vtype, id):
    # id es el ID del album/artista
    # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones
     vault = get_or_create_by_id(vtype, id)
-    form = PostForm(request.POST)  
+    form = PostForm(request.POST)
     if form.is_valid():
         new_post = form.save(commit=False)
         new_post.user = request.user
@@ -321,7 +320,7 @@ def member(request, user):
 
 class vaultPost(View):
     def get(self, request, post_id, *args, **kwargs):
-        
+
         comment_count = Comment.objects.filter(post_id=post_id).count()
         chain_comments = getChainOfComments(post_id)
         post = Post.objects.get(id=post_id)
@@ -334,7 +333,7 @@ class vaultPost(View):
             'comment_count': comment_count,
         }
         return render(request, 'post.html', context)
-    
+
     def post(self, request, post_id, *args, **kwargs):
         post = Post.objects.get(id=post_id)
         form = CommentForm(request.POST)
@@ -344,7 +343,7 @@ class vaultPost(View):
             new_comment.user = request.user
             new_comment.post_id = post_id
             new_comment.save()
-        
+
         comment_count = Comment.objects.filter(post_id=post_id).count()
         chain_comments = getChainOfComments(post_id)
 
@@ -356,7 +355,7 @@ class vaultPost(View):
         }
 
         return render(request, 'post.html', context)
-    
+
 
 auth_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(auth_manager=auth_manager)
