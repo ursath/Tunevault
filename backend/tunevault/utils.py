@@ -258,7 +258,7 @@ def get_recommended_profiles():
     for profile in profiles:
         #if profile.followers > 0:
         recommended_profiles.append(get_profile(profile.user))
-    return recommended_profiles
+    return {'membersList': recommended_profiles}
 
 #se podría scrapear de algun lugar para tener un top  
 #def get_top_podcasts():

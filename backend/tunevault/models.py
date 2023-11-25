@@ -43,6 +43,7 @@ class Vault(models.Model):
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     #ahora muestro el post aun si el usuario borro su cuenta pero se debe manejar para que la redireccion sea a una pagina de error
+    #user = models.ForeignKey(Profile,related_name='profile', null = yes, on_delete=models.RESTRICT)
     user = models.CharField(max_length=50)
     vault_id = models.CharField(max_length=50)
     likes = models.IntegerField(default=0)
@@ -58,6 +59,7 @@ class Post(models.Model):
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     #ahora muestro el comentario aun si el usuario borro su cuenta pero se debe manejar para que la redireccion sea a una pagina de error
+    # user = models.ForeignKey(Profile,related_name='profile', null = yes, on_delete=models.RESTRICT)
     user = models.CharField(max_length=50)
     #se deja de mostrar el comentario si se borro el post 
     #tal vez se puede modificar el post para saber si fue borrado y en ese caso que no se muestre desde el front pero si se siga obteniendo para ser mostrados los comentarios asociados
@@ -65,6 +67,8 @@ class Comment(models.Model):
     #verificar como se maneja este caso dado que si se referencia a una primary key no puedo ponerlo en null
     #tal vez se podría crear una especie de comentario asociado a cada vault poniendo como en reddit las reglas de moderacion del vault
     # entonces por defecto el primer comentario hace referencia a ese default (aunque visualmente solo responda a un post) 
+    #sino con que null este en true 
+    # comment_answer_id = models.ForeignKey(Comment,related_name='comment_answer', on_delete=models.RESTRICT)
     comment_answer_id = models.CharField(max_length=50, default=0)
     likes = models.IntegerField(default=0)
     date = models.DateField(default=datetime.now)
