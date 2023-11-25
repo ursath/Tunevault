@@ -25,16 +25,35 @@ def get_result_search(search, type, limit, offset, genre = None):
     elif(type == "member"):
         listToRet = []
         total = 0
+        offset_copy = offset
+        next = False
+        finished = False
+
         for profile in Profile.objects:
             if profile.isArtist and (search in profile.user.get_username()):
-                listToRet.append(profile.user.get_username())
-                total += 1
+                
+                if offset_copy == 0:
+                    listToRet.append(profile.user.get_username())
+                else:
+                    offset_copy -= 1
+
+                if finished:
+                    next_flag = True
+                    break
+                else:
+                    total += 1
+                    
+            if not finished and total >= limit:
+                finished = True
+
+            if next_flag:
+                break  
         
         jsonResult = {
             'type': type,
             'members': listToRet,
             'total': total,
-            'next': False,
+            'next': next,
         }
 
     else:
