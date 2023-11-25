@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+:root {
+    --fonts: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
 .formBox {
     height: auto;
     width: 400px;
@@ -9,7 +15,7 @@
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 50px;
     padding-top: 20px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     font-size: 16px;
     color:white;
   } 
@@ -89,7 +95,7 @@
     outline: transparent;
     border: transparent;
     color:white;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     font-size: 16px;
   }
   
@@ -105,7 +111,7 @@
     width: 100%;
     height: 100%;
     color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     font-size: 16px;
     cursor: pointer;
     background-color: transparent;
@@ -130,5 +136,5 @@
     text-align: center;
     color: rgb(255, 59, 59);
     font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
   }

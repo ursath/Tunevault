@@ -4,7 +4,10 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'basicsSections.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'members.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   </head>
 <body>
     <div class='BasicsMembers'>
@@ -17,8 +20,84 @@
             <i class="material-icons SearchIcon">search</i>
         </div>
         <div class="BlackMP">
-            <h1 class='TrendingTittle'>Trending Vaults</h1>
+            <h1 class='TrendingTittle'>Recomended</h1>
+           
+            <div class="media-container">
+              <div class="media-scroller">
+                <!--   Group 1 -->
+                <div class="media-group" id="group-1">
+                  {% for user_data in membersList|slice:"0:5" %}
+                    <div class="media-element">
+                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
+                        <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
+                        <label class="profile-username">@{{ user_data.user }}</label>
+                      </a>
+                    </div>
+                  {% endfor %}
+                  <a class="next" href="#group-2" aria-label="next">
+                    <svg>
+                      <use href="#next"></use>
+                    </svg>
+                  </a>
+                </div>
+                <!-- Group 2   -->
+                <div class="media-group" id="group-2">
+                  <a class="previous" href="#group-1">
+                    <svg>
+                      <use href="#previous"></use>
+                    </svg>
+                  </a>
+                  {% for user_data in membersList|slice:"5:11" %}
+                    <div class="media-element">
+                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
+                        <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
+                        <label class="profile-username">@{{ user_data.user }}</label>
+                      </a>
+                    </div>
+                  {% endfor %}
+                  <a class="next" href="#group-3" aria-label="next">
+                    <svg>
+                      <use href="#next"></use>
+                    </svg>
+                  </a>
+                </div>
+                <!-- Group 3   -->
+                <div class="media-group" id="group-3">
+                  <a class="previous" href="#group-2">
+                    <svg>
+                      <use href="#previous"></use>
+                    </svg>
+                  </a>
+                  {% for user_data in membersList|slice:"11:16" %}
+                    <div class="media-element">
+                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
+                        <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
+                        <label class="profile-username">@{{ user_data.user }}</label>
+                      </a>
+                    </div>
+                  {% endfor %}
+                </div>
+                
+              </div>
+            </div>
+
+            <svg>
+              <symbol id="next" viewBox="0 0 256 512">
+                <path fill="white"
+                  d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z" />
+              </symbol>
+              <symbol id="previous" viewBox="0 0 256 512">
+                <path fill="white"
+                  d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
+              </symbol>
+            </svg>
+
         </div>
     </div>
+
+<script>
+
+</script>
+  
 </body>
 </html>

@@ -63,7 +63,7 @@ class Comment(models.Model):
     user = models.CharField(max_length=50)
     #se deja de mostrar el comentario si se borro el post 
     #tal vez se puede modificar el post para saber si fue borrado y en ese caso que no se muestre desde el front pero si se siga obteniendo para ser mostrados los comentarios asociados
-    post_id = models.ForeignKey(Profile,related_name='post', on_delete=models.CASCADE)
+    post_id = models.CharField(max_length=50)
     #verificar como se maneja este caso dado que si se referencia a una primary key no puedo ponerlo en null
     #tal vez se podría crear una especie de comentario asociado a cada vault poniendo como en reddit las reglas de moderacion del vault
     # entonces por defecto el primer comentario hace referencia a ese default (aunque visualmente solo responda a un post) 

@@ -11,11 +11,8 @@
         <div class="Back">
             {% include 'NavBar.html' %}
             <div class="formBox">
-                <div style="display: flex; width: 100%; margin: 30px 0;">
-                    <h3 style="text-align: center; width: 100%">@{{ user_profile.user }}</h3>
-                    <a href="/" style="margin-left: auto">
-                        <i class="material-icons closeIcon">close</i>
-                    </a>
+                <div style="margin-left: auto; cursor: pointer;">
+                    <i class="material-icons closeIcon" id="goBack">close</i>
                 </div>
 
                 <form method="POST" enctype="multipart/form-data">
@@ -23,7 +20,7 @@
                     
                     <div style="display: flex;">   
                             <div class="profileImage">
-                                <h3></h3>
+                                <h3>@{{ user_profile.user }}</h3>
                                 <figure>
                                     <img class="image-large" src="{{user_profile.profileimg.url}}" alt="profile image">
                                 </figure>
@@ -81,6 +78,17 @@
               var popup = document.getElementById("popup");
               popup.style.display = "none";
             }
+
+            
+            document.getElementById('goBack').addEventListener('click', function() {
+                var previousPage = document.referrer;
+                if (previousPage.includes('settings')) {
+                    window.location.href = '/';
+                } else {
+                    window.history.back();
+                }
+            });
+    
             </script>
 
     </body>

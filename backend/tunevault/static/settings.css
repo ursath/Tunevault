@@ -21,7 +21,7 @@
     padding-bottom: 3%;
     padding-left: 5%;
     padding-right: 5%;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     font-size: 16px;
     color:white;
     font-family: var(--fonts);

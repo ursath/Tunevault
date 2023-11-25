@@ -243,7 +243,7 @@ def getVaultRating(vault_id):
 def get_profile(user):
     profile = Profile.objects.get(user=user)
     profile_data = {
-        'user': profile.user.username,
+        'user': profile.user,
         'bio': profile.bio,
         'profileimg': profile.profileimg.url,
         'location': profile.location,

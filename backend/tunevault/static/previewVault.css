@@ -48,7 +48,7 @@
     height: 60px;
     color: white;
     margin-left: 150px;
-    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     justify-content: center;
     margin-top: 4px;
     font-weight: 700;
@@ -67,7 +67,7 @@
 
 .title {
     font-size: 18px;
-    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     font-weight: 700;
     margin-top: 13px;    
     margin-left: var(--margin-box);    
@@ -76,7 +76,7 @@
 }
 
 .type {
-    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-family: var(--fonts);
     font-size: 18px; 
     margin-left: var(--margin-box);    
     margin-top: -15px;
