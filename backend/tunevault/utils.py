@@ -22,26 +22,63 @@ def get_artist(id):
 
 #se podrían pasar codigos de error para que el front los maneje
 def get_result_search(search, type, limit, offset, genre = None):
-    if ((type != 'artist' and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook") or limit < 0 or offset < 0):
+    if ((type != 'artist' and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
-    result = sp.search(search,limit,offset,type)
-    listToRet = []
-    if result[type]['items']==[]:
-        return json.dumps({'error': 'No se encontraron artistas'})
-    for items in result['artists']['items']:
-        if (genre != None):
-            if (genre in items['genres']):
+    
+    elif(type == "member"):
+        listToRet = []
+        total = 0
+        offset_copy = offset
+        next = False
+        finished = False
+
+        for profile in Profile.objects:
+            if profile.isArtist and (search in profile.user.get_username()):
+                
+                if offset_copy == 0:
+                    listToRet.append(profile.user.get_username())
+                else:
+                    offset_copy -= 1
+
+                if finished:
+                    next_flag = True
+                    break
+                else:
+                    total += 1
+                    
+            if not finished and total >= limit:
+                finished = True
+
+            if next_flag:
+                break  
+        
+        jsonResult = {
+            'type': type,
+            'members': listToRet,
+            'total': total,
+            'next': next,
+        }
+
+    else:
+        result = sp.search(search,limit,offset,type)
+        listToRet = []
+        if result[type]['items']==[]:
+            return json.dumps({'error': 'No se encontraron artistas'})
+        for items in result['artists']['items']:
+            if (genre != None):
+                if (genre in items['genres']):
+                    queryResult = get_or_create_vault(items)
+                    listToRet.append(queryResult)
+            else:
                 queryResult = get_or_create_vault(items)
                 listToRet.append(queryResult)
-        else:
-            queryResult = get_or_create_vault(items)
-            listToRet.append(queryResult)
-    jsonResult = {
-        'type': type,
-        'vaults': listToRet,
-        'total': result[type]['total'],
-        'next': result[type]['next'],
-    }
+        jsonResult = {
+            'type': type,
+            'vaults': listToRet,
+            'total': result[type]['total'],
+            'next': result[type]['next'],
+        }
+
     return jsonResult
 
 #para sección de música
@@ -58,13 +95,19 @@ def search_podcast(query):
     result = {searchPodcast, searchEpisode}
     return result
 
+def search_member(query):
+    searchMember = get_result_search(query, 'member', 10, 0)
+    result = {searchMember}
+    return result
+
 #para barra de navegación
 def search_all(query):
     searchArtist = get_result_search(query, 'artist', 10, 0)
     searchAlbum = get_result_search(query, 'album', 10, 0)
     searchPodcast = get_result_search(query, 'show', 10, 0)
     searchEpisode = get_result_search(query, 'episode', 10, 0)
-    result = {searchArtist, searchAlbum, searchPodcast, searchEpisode}
+    searchMember = get_result_search(query, 'member', 10, 0)
+    result = {searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember}
     return result
 
 def get_or_create_vault(item):
