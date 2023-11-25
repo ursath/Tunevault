@@ -249,7 +249,7 @@ def get_profile(user):
         'location': profile.location,
         'followers': profile.followers,
     }
-    return profile
+    return profile_data
 
 #conectar con spotify
 def get_recommended_profiles():
@@ -257,5 +257,23 @@ def get_recommended_profiles():
     recommended_profiles = []
     for profile in profiles:
         #if profile.followers > 0:
-        recommended_profiles.append(profile)
+        recommended_profiles.append(get_profile(profile.user))
     return recommended_profiles
+
+#se podría scrapear de algun lugar para tener un top  
+#def get_top_podcasts():
+    #topPodcastsUrls = []
+    #scrapping? (https://podcastcharts.byspotify.com/latam)
+    #podcasts = sp.shows(topPodcastsUrls)
+    #podcastsfiltered = podcasts['shows']
+    #listToRet = []
+    #for podcast in podcastsfiltered:
+        #podcast = get_or_create_by_id('podcast', podcast[id])
+        #podcast_data = {
+        #    'artist': podcast['name'],
+        #    'image': podcast['images'][0]['url'],
+        #    'likes': 0
+        #}
+        #listToRet.append(podcast_data)
+    #return {'top': listToRet}
+    
