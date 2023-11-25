@@ -21,9 +21,9 @@
             <li class="NavItem"><a href="/members/" class="Item">Members</a></li>
             <li class="NavItem">
             {% if user.is_authenticated %}
-            <a href="/profile/" class="Item">
-                <div class="profile-button" class="Item">
-                    <i class="material-icons">account_circle</i>
+            <a href="/profile/">
+                <div class="profile-button" >
+                    <i class="material-icons" style="font-size: 30px;">account_circle</i>
                 </div>
             </a>
             {% else %}
@@ -51,12 +51,12 @@
         const menuItems = document.querySelectorAll('.NavItem')
         menuItems.forEach(function (item) {
             const menuItemUrl = item.querySelector('a').getAttribute('href')
-            if (currentRelativePath === menuItemUrl || currentRelativePath.includes('artist') && menuItemUrl == "/music/" ||
-                currentRelativePath.includes('album') && menuItemUrl == "/music/" || currentRelativePath.includes('podcast') && menuItemUrl == "/podcasts/") {
-                if(menuItemUrl == '/profile/') {
-                    item.classList.add('profile-active')
-                }
-                else item.classList.add('active')
+            if (currentRelativePath == menuItemUrl || currentRelativePath.includes('artist') && menuItemUrl == "/music/" ||
+                currentRelativePath.includes('album') && menuItemUrl == "/music/" || 
+                currentRelativePath.includes('podcast') && menuItemUrl == "/podcasts/" ||
+                currentRelativePath.includes('profile') && menuItemUrl == "/profile/"
+            ) {
+                item.classList.add('active')
             }
         })
     });

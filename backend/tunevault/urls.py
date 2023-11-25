@@ -12,6 +12,7 @@ urlpatterns = [
     path('podcasts/', views.podcasts, name='podcasts'),
     path('login/', views.signin, name='login'),
     path('create_account/', views.signup, name='create_account'),
+    path('logout/', views.logout, name='logout'),
     path('members/', views.members, name='members'),
     path('settings/', views.settings_profile, name='settings'),
     path('profile/', views.profile, name='profile'),

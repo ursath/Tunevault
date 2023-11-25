@@ -6,17 +6,17 @@
 
 .BasicsMusic {
     background: linear-gradient(180deg, #3399d9 0%, #0B022D 100%);
-    height: 600px;
+    height: 500px;
 }
 
 .BasicsPodcast {
     background: linear-gradient(180deg, #a939ce 0%, #0B022D 100%);
-    height: 600px;
+    height: 500px;
 }
 
 .BasicsMembers {
     background: linear-gradient(180deg, #cb6a1a 0%, #0B022D 100%);
-    height: 600px;
+    height: 500px;
 }
 
 .HeaderMP {
@@ -99,11 +99,12 @@
 }
 
 .BlackMP {
-    height:80px;
+    height:auto;
     width: 100%;
     margin-top: 360px;
     background-color: black;
     color:white;
+    min-height: 100vh;
 }
 
 .TrendingTittle {

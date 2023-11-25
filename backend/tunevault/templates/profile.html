@@ -9,13 +9,7 @@
 
     <body>
         <div class="Back">
-
-            <a href="/">
-                <div class="imageBox">
-                    <img class="imageLogo" src="{% static 'resources/logo.png' %}" alt="logo" />
-                </div>
-            </a>
-
+            {% include 'NavBar.html' %}
             <div class="formBox">
                 <div style="display: flex; width: 100%; margin: 30px 0;">
                     <h3 style="text-align: center; width: 100%">@{{ user_profile.user }}</h3>
@@ -51,11 +45,43 @@
                     <div class="buttonBox">
                         <a href="/settings" style = "text-decoration: none">
                             <div class="editButton"> 
-                                Edit Profile <i class="material-icons" style="margin-left: 5px;">edit</i>
+                                Edit profile <i class="material-icons" style="margin-left: 5px;">edit</i>
                             </div>
                         </a>
+                        <div class="logoutButton" onclick="showPopup()"> 
+                            <span style="display: flex; align-items: center;"> 
+                                Log out <i class="material-icons" style="margin-left: 10px;">logout</i>
+                            </button>
+                        </div>                         
+                    </div>
                 </form>
             </div>
+
+            <div id="popup" class="popup" style="display: none;">
+                <span onclick="closePopup()" class="closeButton"><i class="material-icons">close</i></span>
+                <h4>Are you sure you want to log out?</h4>
+                <p>If you do so, your session will be closed.</p>
+                <div class="buttonBox">
+                    <div class="editButton" onclick="closePopup()" style="margin-right: 25px; width: 100px;"> Cancel </div>
+                    <a href="/logout" style = "text-decoration: none">  
+                        <div class="logoutButton" style="width: 100px;"> Log out </div> 
+                    </a>
+                </div>
+            </div>
+
         </div>
+
+        <script>
+            function showPopup() {
+              var popup = document.getElementById("popup");
+              popup.style.display = "block";
+            }
+            
+            function closePopup() {
+              var popup = document.getElementById("popup");
+              popup.style.display = "none";
+            }
+            </script>
+
     </body>
 </html>
