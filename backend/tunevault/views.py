@@ -301,7 +301,7 @@ def gallery(request):
 
 
 def music(request):
-    context = format_top50()
+    context = format_top50(0)
     return render(request, 'music.html', context)
 
 

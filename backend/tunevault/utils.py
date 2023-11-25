@@ -142,7 +142,7 @@ def get_top50_artists(offset):
             list.append(item['track']['artists'])
     return list
 
-def format_top50():
+def format_top50(offset):
     # formats data from get_top50_artists() in the following way 
     # {
     #     'id_artist_1': {
@@ -158,9 +158,11 @@ def format_top50():
     #     }
     # }
     top50_dict = {}
-    offset = 0
+    isLastPage = False
     while (len(top50_dict) < 9):
         top50_list = get_top50_artists(offset)
+        if (len(top50_list) < 9):
+            islastPage = True
         for item in top50_list:
             for artist in item:
                 if artist['id'] not in top50_dict:
@@ -170,8 +172,7 @@ def format_top50():
                         'image': artist_data['images'][0]['url'],
                         'likes': 0
                     }
-        offset += 8
-    return {'top': top50_dict}
+    return {'top': top50_dict, 'isLastPage': isLastPage}
 
 def create_vault(id, type, title, description, genres, spotifyimg, external_url, authors, total_tracks, date):
     str = type.lower() + id
@@ -242,7 +243,6 @@ def getVaultRating(vault_id):
 def get_profile(user):
     profile = Profile.objects.get(user=user)
     profile_data = {
-        'id': profile.id,
         'user': profile.user.username,
         'bio': profile.bio,
         'profileimg': profile.profileimg.url,
@@ -251,10 +251,11 @@ def get_profile(user):
     }
     return profile
 
+#conectar con spotify
 def get_recommended_profiles():
     profiles = Profile.objects.all()
     recommended_profiles = []
     for profile in profiles:
-        if profile.followers > 0:
-            recommended_profiles.append(profile)
+        #if profile.followers > 0:
+        recommended_profiles.append(profile)
     return recommended_profiles

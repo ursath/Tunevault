@@ -43,7 +43,7 @@ class Vault(models.Model):
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     #ahora muestro el post aun si el usuario borro su cuenta pero se debe manejar para que la redireccion sea a una pagina de error
-    user = models.ForeignKey(Profile,related_name='profile', on_delete=models.RESTRICT)
+    user = models.CharField(max_length=50)
     vault_id = models.CharField(max_length=50)
     likes = models.IntegerField(default=0)
     rating = models.FloatField(default=0)
@@ -58,7 +58,7 @@ class Post(models.Model):
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     #ahora muestro el comentario aun si el usuario borro su cuenta pero se debe manejar para que la redireccion sea a una pagina de error
-    user = models.ForeignKey(Post,related_name='comment', on_delete=models.RESTRICT)
+    user = models.CharField(max_length=50)
     #se deja de mostrar el comentario si se borro el post 
     #tal vez se puede modificar el post para saber si fue borrado y en ese caso que no se muestre desde el front pero si se siga obteniendo para ser mostrados los comentarios asociados
     post_id = models.ForeignKey(Profile,related_name='post', on_delete=models.CASCADE)
