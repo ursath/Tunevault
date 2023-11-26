@@ -44,8 +44,7 @@
             </select>
         </div>
         <div class='BlackMP'>
-            <h1 class='TrendingTittle'>Results found for: {{ query }}</h1>
-
+            <h1 class='TrendingTittle'>Results found for {{ result.0.query }}:</h1>
             <div class="btn-group">
                 <button onclick="showContent('artists')" id="artistsBtn" class = "btn-left activeButton">Artists</button>
                 <button onclick="showContent('albums')" id="albumsBtn" class = "btn-right">Albums</button>

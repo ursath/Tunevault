@@ -121,13 +121,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 10%;
+    margin-top: 30px;
     margin-bottom: 50px;
 }
 
 .gallery-item {
     flex: 0 0 calc(33.33% - 80px);
-    margin-bottom: 80px;
+    margin-bottom: 130px;
 }
 
 

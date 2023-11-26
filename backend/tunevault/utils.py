@@ -103,6 +103,7 @@ def get_result_search(search, type, limit, offset, genre = None):
             'vaults': listToRet,
             'total': result[type+'s']['total'],
             'next': result[type+'s']['next'],
+            'query': search
         }
 
     return jsonResult

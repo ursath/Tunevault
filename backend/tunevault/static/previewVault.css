@@ -19,6 +19,24 @@
     position: absolute;
     z-index: 0;
     font-family: var(--fonts);
+    overflow: hidden;  /* Agregado para ocultar el contenido que se desborda */
+}
+
+.text-container {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(100% - 2 * var(--margin-box));
+}
+
+.vaultPrev {
+    width: 247px;
+    height: 320px;
+    border-radius: 8px;
+    background: var(--fondo);
+    position: absolute;
+    z-index: 0;
+    font-family: var(--fonts);
 }
 
 .imgVault {
