@@ -3,6 +3,9 @@ import spotipy
 import json
 import uuid
 import hashlib
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
@@ -19,26 +22,71 @@ def get_artist(id):
 
 #se podrían pasar codigos de error para que el front los maneje
 def get_result_search(search, type, limit, offset, genre = None):
-    if ((type != 'artist' and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook") or limit < 0 or offset < 0):
+    if ((type != "artist" and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
-    result = sp.search(search,limit,offset,type)
-    listToRet = []
-    if result[type]['items']==[]:
-        return json.dumps({'error': 'No se encontraron artistas'})
-    for items in result['artists']['items']:
-        if (genre != None):
-            if (genre in items['genres']):
-                queryResult = get_or_create_vault(items)
+
+    elif(type == "member"):
+        listToRet = []
+        total = 0
+        offset_copy = offset
+        next = False
+        finished = False
+
+        for profile in Profile.objects:
+            if profile.isArtist and (search in profile.user.get_username()):
+
+                if offset_copy == 0:
+                    listToRet.append(profile.user.get_username())
+                else:
+                    offset_copy -= 1
+
+                if finished:
+                    next_flag = True
+                    break
+                else:
+                    total += 1
+
+            if not finished and total >= limit:
+                finished = True
+
+            if next_flag:
+                break
+
+        jsonResult = {
+            'type': type,
+            'members': listToRet,
+            'total': total,
+            'next': next,
+        }
+
+    else:
+        result = sp.search(search,limit,offset,type)
+        listToRet = []
+        if result[type + 's']['items']==[]:
+            return json.dumps({'error': 'No se encontraron artistas'})
+        for items in result[type + 's']['items']:
+            if (genre != None):
+                if (genre in items['genres']):
+                        queryResult = {
+                                type: items['name'],
+                                'image': items['images'][0]['url'],
+                                'likes': 0
+                        }
+                        listToRet.append(queryResult)
+            else:
+                queryResult = {
+                                type: items['name'],
+                                'image': items['images'][0]['url'],
+                                'likes': 0
+                            }
                 listToRet.append(queryResult)
-        else:
-            queryResult = get_or_create_vault(items)
-            listToRet.append(queryResult)
-    jsonResult = {
-        'type': type,
-        'vaults': listToRet,
-        'total': result[type]['total'],
-        'next': result[type]['next'],
-    }
+        jsonResult = {
+            'type': type,
+            'vaults': listToRet,
+            'total': result[type+'s']['total'],
+            'next': result[type+'s']['next'],
+        }
+
     return jsonResult
 
 #para sección de música
@@ -46,7 +94,7 @@ def search_music(query, genre = None):
     searchArtist = get_result_search(query, 'artist', 10, 0)
     searchAlbum = get_result_search(query, 'album', 10, 0)
     result = {searchArtist, searchAlbum}
-    return result
+    return {'result' : result }
 
 #para seccion de podcast
 def search_podcast(query):
@@ -55,13 +103,19 @@ def search_podcast(query):
     result = {searchPodcast, searchEpisode}
     return result
 
+def search_member(query):
+    searchMember = get_result_search(query, 'member', 10, 0)
+    result = {searchMember}
+    return result
+
 #para barra de navegación
 def search_all(query):
     searchArtist = get_result_search(query, 'artist', 10, 0)
     searchAlbum = get_result_search(query, 'album', 10, 0)
     searchPodcast = get_result_search(query, 'show', 10, 0)
     searchEpisode = get_result_search(query, 'episode', 10, 0)
-    result = {searchArtist, searchAlbum, searchPodcast, searchEpisode}
+    searchMember = get_result_search(query, 'member', 10, 0)
+    result = {searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember}
     return result
 
 def get_or_create_vault(item):
@@ -111,7 +165,7 @@ def get_or_create_by_id(vtype, id):
             artists = []
             for artist in item['artists']:
                 artistInfo = sp.artist(artist['id'])
-                artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']}) 
+                artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']})
             toRet = create_vault(item['id'], type, item['name'], 'None', item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
     else:
         pass #error
@@ -143,7 +197,7 @@ def get_top50_artists(offset):
     return list
 
 def format_top50(offset):
-    # formats data from get_top50_artists() in the following way 
+    # formats data from get_top50_artists() in the following way
     # {
     #     'id_artist_1': {
     #         'artist': 'artist',
@@ -204,7 +258,7 @@ def string_to_uuid(input_string):
     except ValueError:
         # Handle the case where the string is not a valid UUID
         return None  # Or raise an error or handle it as needed
-    
+
 
 def getChainOfComments(post_id):
     comments = Comment.objects.filter(post_id=post_id)
@@ -219,9 +273,9 @@ def getChainOfComments(post_id):
             if str(comment.comment_answer_id) == str(post['comment'].id):
                 post['replies'].append(comment)
                 post['replies_count'] += 1
-        
+
     return chain_comments
-    
+
 
 def getPostsWithCommentCount(vault_id):
     posts = Post.objects.filter(vault_id=vault_id)
@@ -260,20 +314,36 @@ def get_recommended_profiles():
         recommended_profiles.append(get_profile(profile.user))
     return {'membersList': recommended_profiles}
 
-#se podría scrapear de algun lugar para tener un top  
-#def get_top_podcasts():
-    #topPodcastsUrls = []
-    #scrapping? (https://podcastcharts.byspotify.com/latam)
-    #podcasts = sp.shows(topPodcastsUrls)
-    #podcastsfiltered = podcasts['shows']
-    #listToRet = []
-    #for podcast in podcastsfiltered:
-        #podcast = get_or_create_by_id('podcast', podcast[id])
-        #podcast_data = {
-        #    'artist': podcast['name'],
-        #    'image': podcast['images'][0]['url'],
-        #    'likes': 0
-        #}
-        #listToRet.append(podcast_data)
-    #return {'top': listToRet}
-    
+#se podría scrapear de algun lugar para tener un top
+def get_top_podcasts(limit=10):
+    topPodcastsUrls = scrap_arists(limit)
+
+    podcasts = sp.shows(topPodcastsUrls)
+    podcastsfiltered = podcasts['shows']
+    podcast_data = {}
+    for podcast in podcastsfiltered:
+        podcast_data[podcast['id']] = {
+            'artist': podcast['name'],
+            'image': podcast['images'][0]['url'],
+            'likes': 0
+        }
+
+    return {'top': podcast_data}
+
+def scrap_arists(limit):
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=true")
+    browser = webdriver.Chrome(options=options)
+    browser.get("https://podcastcharts.byspotify.com/latam")
+    browser.implicitly_wait(5)
+    urlList=[]
+    elem= browser.find_elements(By.XPATH,'//div[@class="flex"]/div[@class="relative uppercase text-accent0 font-normal mr-4 flex justify-center items-center cursor-pointer"]/a')
+    i=0
+    for e in elem:
+        urlList.append(e.get_attribute('href').split('/')[-1])
+        i+=1
+        if i==limit:
+            break
+
+    browser.quit()
+    return urlList

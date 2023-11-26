@@ -126,10 +126,20 @@
 
 .gallery-item {
     flex: 0 0 calc(33.33% - 80px);
+<<<<<<< HEAD
     margin-bottom: 140px;
 }
 
 
 .gallery-page-nav {
     margin-top: -40px;   
+=======
+    margin-bottom: 30px;
+}
+
+.searchButton {
+    background-color: transparent;
+    border-color: transparent;
+    cursor: pointer;
+>>>>>>> refs/remotes/origin/main
 }

@@ -9,6 +9,7 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('music/', views.music, name='music'),
+    path('music/<str:query>', views.music_search, name='music_search'),
     path('podcasts/', views.podcasts, name='podcasts'),
     path('login/', views.signin, name='login'),
     path('create_account/', views.signup, name='create_account'),

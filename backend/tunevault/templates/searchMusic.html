@@ -5,21 +5,21 @@
     <link rel="stylesheet" type="text/css" href="{% static 'basicsSections.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-
-<body class="Black">
+  </head>
+<body>
     <div class='BasicsMusic'>
         {% include 'NavBar.html' %}
         <div class='HeaderMP'>
             <h1 class="Title">Music</h1>
         </div>
         
+
         <form method="POST"> 
             {% csrf_token %}
 
             <div class="Search">
                 <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
-                <button type='submit' class="searchButton">
+                <button type='submit'>
                     <i class="material-icons SearchIcon">search</i>
                 </button> 
             </div>
@@ -44,21 +44,15 @@
             </select>
         </div>
         <div class='BlackMP'>
-            <h1 class='TrendingTittle'>Trending Vaults</h1>
+            <h1 class='TrendingTittle'>Artists</h1>
             <div class='gallery'>
-                {% for artist_id, artist_data in top.items %}
-                    <div class='gallery-item'>
-                        {% with artist_description="/vault/artist/"|add:artist_id %}
-                            {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist_data.image description=artist_description likes=artist_data.likes  title=artist_data.artist %}
-                        {% endwith %}
-                    </div>
-                {% endfor %}
-                <div class='gallery-page-nav'>
-                {% include 'pagination.html'  %}                
-                </div>
-            </div>      
+            {{ result }}
+            </div>
+            <h1 class='TrendingTittle'>Albums</h1>
+            <div class='gallery'>
+            {{ result }}
+            </div>
         </div>
     </div>
-
 </body>
 </html>
