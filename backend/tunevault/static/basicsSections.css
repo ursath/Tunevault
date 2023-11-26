@@ -121,13 +121,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    /*margin-top: 10%;*/
+    margin-top: 10%;
     margin-bottom: 50px;
 }
 
 .gallery-item {
     flex: 0 0 calc(33.33% - 80px);
-    margin-bottom: 140px;
+    margin-bottom: 80px;
 }
 
 
@@ -183,5 +183,5 @@
 }
 
 .btn-group button.activeButton:hover {
-    background-color: rgb(67, 115, 203);
+    background-color: rgb(34, 61, 111)
 }
