@@ -11,6 +11,7 @@ urlpatterns = [
     path('music/', views.music, name='music'),
     path('music/<str:query>', views.music_search, name='music_search'),
     path('podcasts/', views.podcasts, name='podcasts'),
+    path('podcasts/<str:query>', views.podcasts_search, name='podcasts_search'),
     path('login/', views.signin, name='login'),
     path('create_account/', views.signup, name='create_account'),
     path('logout/', views.logout, name='logout'),
