@@ -127,7 +127,7 @@
 
 .gallery-item {
     flex: 0 0 calc(33.33% - 80px);
-    margin-bottom: 140px;
+    margin-bottom: 80px;
 }
 
 

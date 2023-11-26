@@ -26,12 +26,9 @@
               <div class="media-scroller">
                 <!--   Group 1 -->
                 <div class="media-group" id="group-1">
-                  {% for user_data in membersList|slice:"0:5" %}
+                  {% for user_data in membersList|slice:"2:7" %}
                     <div class="media-element">
-                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
-                        <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
-                        <label class="profile-username">@{{ user_data.user }}</label>
-                      </a>
+                      {% include 'previewProfile.html' with user_data=user_data %}
                     </div>
                   {% endfor %}
                   <a class="next" href="#group-2" aria-label="next">
@@ -47,12 +44,9 @@
                       <use href="#previous"></use>
                     </svg>
                   </a>
-                  {% for user_data in membersList|slice:"5:11" %}
+                  {% for user_data in membersList|slice:"7:13" %}
                     <div class="media-element">
-                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
-                        <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
-                        <label class="profile-username">@{{ user_data.user }}</label>
-                      </a>
+                      {% include 'previewProfile.html' with user_data=user_data %}
                     </div>
                   {% endfor %}
                   <a class="next" href="#group-3" aria-label="next">
@@ -68,13 +62,10 @@
                       <use href="#previous"></use>
                     </svg>
                   </a>
-                  {% for user_data in membersList|slice:"11:16" %}
-                    <div class="media-element">
-                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
-                        <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
-                        <label class="profile-username">@{{ user_data.user }}</label>
-                      </a>
-                    </div>
+                  {% for user_data in membersList|slice:"13:19" %}
+                  <div class="media-element">
+                    {% include 'previewProfile.html' with user_data=user_data %}
+                  </div>
                   {% endfor %}
                 </div>
                 
