@@ -24,7 +24,7 @@ def get_artist(id):
 def get_result_search(search, type, limit, offset, genre = None):
     if ((type != "artist" and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
-    
+
     elif(type == "member"):
         listToRet = []
         total = 0
@@ -34,7 +34,7 @@ def get_result_search(search, type, limit, offset, genre = None):
 
         for profile in Profile.objects:
             if profile.isArtist and (search in profile.user.get_username()):
-                
+
                 if offset_copy == 0:
                     listToRet.append(profile.user.get_username())
                 else:
@@ -45,13 +45,13 @@ def get_result_search(search, type, limit, offset, genre = None):
                     break
                 else:
                     total += 1
-                    
+
             if not finished and total >= limit:
                 finished = True
 
             if next_flag:
-                break  
-        
+                break
+
         jsonResult = {
             'type': type,
             'members': listToRet,
@@ -323,9 +323,8 @@ def get_top_podcasts(limit=10):
     return {'top': podcast_data}
 
 def scrap_arists(limit):
-    browser=webdriver.Chrome()
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
+    options.add_argument("--headless=true")
     browser = webdriver.Chrome(options=options)
     browser.get("https://podcastcharts.byspotify.com/latam")
     browser.implicitly_wait(5)
