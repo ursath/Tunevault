@@ -68,6 +68,7 @@ def get_result_search(search, type, limit, offset, genre = None):
             if (genre != None):
                 if (genre in items['genres']):
                         queryResult = {
+                                'id' : items['id'],
                                 type: items['name'],
                                 'image': items['images'][0]['url'],
                                 'likes': 0
@@ -75,6 +76,7 @@ def get_result_search(search, type, limit, offset, genre = None):
                         listToRet.append(queryResult)
             else:
                 queryResult = {
+                                'id' : items['id'],
                                 type: items['name'],
                                 'image': items['images'][0]['url'],
                                 'likes': 0
@@ -93,7 +95,7 @@ def get_result_search(search, type, limit, offset, genre = None):
 def search_music(query, genre = None):
     searchArtist = get_result_search(query, 'artist', 10, 0)
     searchAlbum = get_result_search(query, 'album', 10, 0)
-    result = {searchArtist, searchAlbum}
+    result = [searchArtist, searchAlbum]
     return {'result' : result }
 
 #para seccion de podcast

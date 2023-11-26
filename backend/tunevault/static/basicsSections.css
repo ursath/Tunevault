@@ -134,3 +134,48 @@
     border-color: transparent;
     cursor: pointer;
 }
+
+.btn-group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.btn-right {
+    background-color: #414141; 
+    border: 1px solid #414141; 
+    padding: 10px 30px;
+    cursor: pointer; 
+    float: left; 
+    border-radius: 0 15px 15px 0;
+    color: white; 
+    font-family: var(--fonts);
+    font-weight: bold;
+}
+  
+.btn-left {
+    background-color: #414141; 
+    border: 1px solid #414141; 
+    padding: 10px 30px;
+    cursor: pointer; 
+    float: left; 
+    border-radius: 15px 0 0 15px;
+    color: white; 
+    font-family: var(--fonts);
+    font-weight: bold;
+}
+
+.btn-group button:hover {
+    background-color: rgb(67, 115, 203);
+}
+
+.btn-group button.activeButton {
+    background-color: rgb(39, 39, 39);
+    border: 1px solid rgb(49, 49, 49);
+}
+
+.btn-group button.activeButton:hover {
+    background-color: rgb(67, 115, 203);
+}

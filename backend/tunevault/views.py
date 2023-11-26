@@ -316,8 +316,12 @@ def music(request):
      
 
 def music_search(request, query):
-    context = search_music(query)
-    return render(request, 'searchMusic.html', context)
+    if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/music/' + query)
+    else:
+        context = search_music(query)
+        return render(request, 'searchMusic.html', context)
 
 
 def members(request):
