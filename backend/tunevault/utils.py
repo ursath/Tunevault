@@ -67,10 +67,18 @@ def get_result_search(search, type, limit, offset, genre = None):
         for items in result[type + 's']['items']:
             if (genre != None):
                 if (genre in items['genres']):
-                    queryResult = get_or_create_vault(items)
-                    listToRet.append(queryResult)
+                        queryResult = {
+                                type: items['name'],
+                                'image': items['images'][0]['url'],
+                                'likes': 0
+                        }
+                        listToRet.append(queryResult)
             else:
-                queryResult = get_or_create_vault(items)
+                queryResult = {
+                                type: items['name'],
+                                'image': items['images'][0]['url'],
+                                'likes': 0
+                            }
                 listToRet.append(queryResult)
         jsonResult = {
             'type': type,
