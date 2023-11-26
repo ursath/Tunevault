@@ -154,7 +154,7 @@ def profile(request):
 @login_required(login_url='signin')
 def settings_profile(request):
 
-    user_profile = Profile.objects.get(user=request.user)
+    user_profile = Profile.objects.get(user__username=request.user)
 
     if request.method == 'POST':
 
@@ -184,7 +184,7 @@ def settings_profile(request):
 
 
 def profile(request):
-    user_profile = Profile.objects.get(user=request.user)
+    user_profile = Profile.objects.get(user__username=request.user)
     return render(request, 'profile.html', {'user_profile': user_profile})
 
 
