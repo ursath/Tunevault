@@ -120,11 +120,16 @@
     height: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 10%;
     justify-content: center;
+    margin-bottom: 50px;
 }
 
 .gallery-item {
     flex: 0 0 calc(33.33% - 80px);
-    margin-bottom: 30px;
+    margin-bottom: 140px;
+}
+
+
+.gallery-page-nav {
+    margin-top: -40px;   
 }

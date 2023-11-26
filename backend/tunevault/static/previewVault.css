@@ -8,11 +8,11 @@
 
 .container {
     width: 240px;
-    height: 320px;
+    height: 100%;
 }
 
 .vaultPrev {
-    width: 260px;
+    width: 247px;
     height: 320px;
     border-radius: 8px;
     background: var(--fondo);
@@ -23,8 +23,8 @@
 
 .imgVault {
     border-radius: 8px;
-    width: 228px;
-    height: 213px;
+    width: 215px;
+    height: 215px;
     margin-top: var(--margin-box);
     margin-left: var(--margin-box);
     border-radius: 8px;
@@ -33,7 +33,7 @@
 
 .likesContainer {
     width: 272px;
-    height: 325px;
+    /* height: 125px; */
     margin-top: 156px;
     justify-content: right;
     position: relative;
