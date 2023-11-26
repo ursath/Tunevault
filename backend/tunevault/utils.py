@@ -67,18 +67,36 @@ def get_result_search(search, type, limit, offset, genre = None):
         for items in result[type + 's']['items']:
             if (genre != None):
                 if (genre in items['genres']):
-                        queryResult = {
+                        if (items['images'] == []):
+                            queryResult = {
+                                'id' : items['id'],
                                 type: items['name'],
-                                'image': items['images'][0]['url'],
+                                'image': 'https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-dimensions/1700?v=v2&px=-1',
                                 'likes': 0
-                        }
-                        listToRet.append(queryResult)
-            else:
-                queryResult = {
+                            }
+                        else:
+                            queryResult = {
+                                'id' : items['id'],
                                 type: items['name'],
                                 'image': items['images'][0]['url'],
                                 'likes': 0
                             }
+                        listToRet.append(queryResult)
+            else:
+                if (items['images'] == []):
+                    queryResult = {
+                        'id' : items['id'],
+                        type: items['name'],
+                        'image': 'https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-dimensions/1700?v=v2&px=-1',
+                        'likes': 0
+                    }
+                else:
+                    queryResult = {
+                        'id' : items['id'],
+                        type: items['name'],
+                        'image': items['images'][0]['url'],
+                        'likes': 0
+                    }
                 listToRet.append(queryResult)
         jsonResult = {
             'type': type,
@@ -93,20 +111,20 @@ def get_result_search(search, type, limit, offset, genre = None):
 def search_music(query, genre = None):
     searchArtist = get_result_search(query, 'artist', 10, 0)
     searchAlbum = get_result_search(query, 'album', 10, 0)
-    result = {searchArtist, searchAlbum}
+    result = [searchArtist, searchAlbum]
     return {'result' : result }
 
 #para seccion de podcast
 def search_podcast(query):
     searchPodcast = get_result_search(query, 'show', 10, 0)
     searchEpisode = get_result_search(query, 'episode', 10, 0)
-    result = {searchPodcast, searchEpisode}
-    return result
+    result = [searchPodcast, searchEpisode]
+    return {'result' : result }
 
 def search_member(query):
     searchMember = get_result_search(query, 'member', 10, 0)
-    result = {searchMember}
-    return result
+    result = searchMember
+    return {'result' : result }
 
 #para barra de navegación
 def search_all(query):
