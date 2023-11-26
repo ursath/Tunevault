@@ -55,36 +55,36 @@
                 <div class='gallery'>
                     {% for artist in result.0.vaults %}
                         {% with artist_id=artist.id %}
-                            <div class='gallery-item'>
-                                {% with artist_description="/vault/artist/"|add:artist_id %}
-                                    {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist.image description=artist_description likes=artist.likes  title=artist.artist %}
-                                {% endwith %}
-                            </div>
-                        {% endwith %}
-                    {% endfor %}
-                </div>
+                        <div class='gallery-item'>
+                            {% with artist_description="/vault/artist/"|add:artist_id %}
+                                {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist.image description=artist_description likes=artist.likes  title=artist.artist %}
+                            {% endwith %}
+                        </div>
+                    {% endwith %}
+                {% endfor %}
             </div>
-            
-            <div id="albumsContent" class="content" style="display: none;">
-                <div class='gallery'>
-                    {% for album in result.1.vaults %}
-                        {% with album_id=album.id %}
-                            <div class='gallery-item'>
-                                {% with album_description="/vault/album/"|add:album_id %}
-                                    {% include 'previewVault.html' with vtype='Album' spotifyimg=album.image description=album_description likes=album.likes  title=album.album %}
-                                {% endwith %}
-                            </div>
-                        {% endwith %}
-                    {% endfor %}
-                </div>
-            </div>
-            
         </div>
+        
+        <div id="albumsContent" class="content" style="display: none;">
+            <div class='gallery'>
+                {% for album in result.1.vaults %}
+                    {% with album_id=album.id %}
+                        <div class='gallery-item'>
+                            {% with album_description="/vault/album/"|add:album_id %}
+                                {% include 'previewVault.html' with vtype='Album' spotifyimg=album.image description=album_description likes=album.likes  title=album.album %}
+                            {% endwith %}
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+        
     </div>
+</div>
 
-    <script>
-        function showContent(contentType) {
-            var artistsBtn = document.getElementById('artistsBtn');
+<script>
+    function showContent(contentType) {
+        var artistsBtn = document.getElementById('artistsBtn');
         var albumsBtn = document.getElementById('albumsBtn');
 
         var artistsContent = document.getElementById('artistsContent');

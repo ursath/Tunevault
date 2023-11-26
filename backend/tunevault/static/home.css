@@ -80,6 +80,7 @@
     width: 600px;
     outline: transparent;
     border: transparent;
+    font-family: var(--fonts);
 }
 
 .InputSearch::placeholder {
@@ -88,4 +89,14 @@
 
 .subTitle {
     color:white;
+}
+
+.hasBackground {
+    position: absolute;
+    z-index: 10;
+}
+
+.background {
+    position: absolute;
+    z-index: 5;
 }

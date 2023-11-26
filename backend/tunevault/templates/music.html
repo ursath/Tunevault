@@ -6,7 +6,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body>
+
+<body class="Black">
     <div class='BasicsMusic'>
         {% include 'NavBar.html' %}
         <div class='HeaderMP'>
@@ -52,7 +53,10 @@
                         {% endwith %}
                     </div>
                 {% endfor %}
-            </div>
+                <div class='gallery-page-nav'>
+                {% include 'pagination.html'  %}                
+                </div>
+            </div>      
         </div>
     </div>
 
