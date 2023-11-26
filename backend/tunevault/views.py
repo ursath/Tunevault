@@ -11,7 +11,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music
 load_dotenv()
 
 # Create your views here.
@@ -307,16 +307,28 @@ def gallery(request):
 
 
 def music(request):
-    context = format_top50(0)
-    return render(request, 'music.html', context)
+     if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/music/' + query)
+     else:
+        context = format_top50(0)
+        return render(request, 'music.html', context)
+     
+
+def music_search(request, query):
+    context = search_music(query)
+    return render(request, 'searchMusic.html', context)
+
 
 def members(request):
     context = get_recommended_profiles()
     return render(request, 'members.html', context)
 
+
 def member(request, user):
     user_profile = get_profile(user)
     return render(request, 'profile.html', {'user_profile': user_profile})
+
 
 class vaultPost(View):
     def get(self, request, post_id, *args, **kwargs):

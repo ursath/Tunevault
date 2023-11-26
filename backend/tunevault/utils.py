@@ -86,7 +86,7 @@ def search_music(query, genre = None):
     searchArtist = get_result_search(query, 'artist', 10, 0)
     searchAlbum = get_result_search(query, 'album', 10, 0)
     result = {searchArtist, searchAlbum}
-    return result
+    return {'result' : result }
 
 #para seccion de podcast
 def search_podcast(query):
