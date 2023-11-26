@@ -30,6 +30,7 @@ def get_result_search(search, type, limit, offset, genre = None):
         total = 0
         offset_copy = offset
         next = False
+        next_flag = False
         finished = False
 
         for profile in Profile.objects:
@@ -314,7 +315,7 @@ def getVaultRating(vault_id):
     return round(sum/count, 1) if count != 0 else 0
 
 def get_profile(user):
-    profile = Profile.objects.get(user=user)
+    profile = Profile.objects.get(user__username=user)
     profile_data = {
         'user': profile.user,
         'bio': profile.bio,
