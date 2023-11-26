@@ -19,7 +19,7 @@
 
             <div class="Search">
                 <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
-                <button type='submit'>
+                <button type='submit' class="searchButton">
                     <i class="material-icons SearchIcon">search</i>
                 </button> 
             </div>
@@ -44,15 +44,67 @@
             </select>
         </div>
         <div class='BlackMP'>
-            <h1 class='TrendingTittle'>Artists</h1>
-            <div class='gallery'>
-            {{ result }}
+            <h1 class='TrendingTittle'>Results found for: {{ query }}</h1>
+
+            <div class="btn-group">
+                <button onclick="showContent('artists')" id="artistsBtn" class = "btn-left activeButton">Artists</button>
+                <button onclick="showContent('albums')" id="albumsBtn" class = "btn-right">Albums</button>
             </div>
-            <h1 class='TrendingTittle'>Albums</h1>
-            <div class='gallery'>
-            {{ result }}
+            
+            <div id="artistsContent" class="content">
+                <div class='gallery'>
+                    {% for artist in result.0.vaults %}
+                        {% with artist_id=artist.id %}
+                        <div class='gallery-item'>
+                            {% with artist_description="/vault/artist/"|add:artist_id %}
+                                {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist.image description=artist_description likes=artist.likes  title=artist.artist %}
+                            {% endwith %}
+                        </div>
+                    {% endwith %}
+                {% endfor %}
             </div>
         </div>
+        
+        <div id="albumsContent" class="content" style="display: none;">
+            <div class='gallery'>
+                {% for album in result.1.vaults %}
+                    {% with album_id=album.id %}
+                        <div class='gallery-item'>
+                            {% with album_description="/vault/album/"|add:album_id %}
+                                {% include 'previewVault.html' with vtype='Album' spotifyimg=album.image description=album_description likes=album.likes  title=album.album %}
+                            {% endwith %}
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+        </div>
+        
     </div>
+</div>
+
+<script>
+    function showContent(contentType) {
+        var artistsBtn = document.getElementById('artistsBtn');
+        var albumsBtn = document.getElementById('albumsBtn');
+
+        var artistsContent = document.getElementById('artistsContent');
+        var albumsContent = document.getElementById('albumsContent');
+
+        if (contentType === 'artists') {
+            artistsBtn.classList.add('activeButton');
+            albumsBtn.classList.remove('activeButton');
+
+            artistsContent.style.display = 'block';
+            albumsContent.style.display = 'none';
+
+        } else if (contentType === 'albums') {
+            artistsBtn.classList.remove('activeButton');
+            albumsBtn.classList.add('activeButton');
+
+            artistsContent.style.display = 'none';
+            albumsContent.style.display = 'block';
+        }
+        }
+    </script>
 </body>
 </html>
