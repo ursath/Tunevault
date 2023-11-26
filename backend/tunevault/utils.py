@@ -60,7 +60,7 @@ def get_result_search(search, type, limit, offset, genre = None):
         }
 
     else:
-        result = sp.search(search,limit,offset,type)
+        result = sp.search(search,limit,offset,type, 'ES')
         listToRet = []
         if result[type + 's']['items']==[]:
             return json.dumps({'error': 'No se encontraron artistas'})
