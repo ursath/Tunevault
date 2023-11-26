@@ -22,7 +22,7 @@ def get_artist(id):
 
 #se podrían pasar codigos de error para que el front los maneje
 def get_result_search(search, type, limit, offset, genre = None):
-    if ((type != 'artist' and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member") or limit < 0 or offset < 0):
+    if ((type != "artist" and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
 
     elif(type == "member"):
@@ -62,9 +62,9 @@ def get_result_search(search, type, limit, offset, genre = None):
     else:
         result = sp.search(search,limit,offset,type)
         listToRet = []
-        if result[type]['items']==[]:
+        if result[type + 's']['items']==[]:
             return json.dumps({'error': 'No se encontraron artistas'})
-        for items in result['artists']['items']:
+        for items in result[type + 's']['items']:
             if (genre != None):
                 if (genre in items['genres']):
                     queryResult = get_or_create_vault(items)
@@ -75,8 +75,8 @@ def get_result_search(search, type, limit, offset, genre = None):
         jsonResult = {
             'type': type,
             'vaults': listToRet,
-            'total': result[type]['total'],
-            'next': result[type]['next'],
+            'total': result[type+'s']['total'],
+            'next': result[type+'s']['next'],
         }
 
     return jsonResult
