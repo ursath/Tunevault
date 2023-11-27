@@ -188,8 +188,15 @@ def get_or_create_by_id(vtype, id):
                 artistInfo = sp.artist(artist['id'])
                 artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']})
             toRet = create_vault(item['id'], type, item['name'], 'None', item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
+    elif type == 'episode':
+        try:
+            toRet = Vault.objects.get(id=uuid_str)
+        except :
+            item=sp.episode(id, 'ES')
+            publisher=[{'name': item['show']['publisher'], 'image': item['show']['images'][0]['url']}]
+            toRet = create_vault(id=item['id'], type=type, title=item['name'], description=item['description'],genres= 'None', spotifyimg=item['images'][0]['url'],external_url= item['external_urls']['spotify'],authors= publisher, total_tracks= item['duration_ms'] // 1000 // 60, date= item['release_date'])
     else:
-        pass #error
+        pass
     return {
         'id': toRet.id,
         'title': toRet.title,

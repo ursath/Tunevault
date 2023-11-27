@@ -37,6 +37,8 @@
                     <p class="type">Artist</p>
                     {% elif  vault.type == 'podcast' %}
                     <p class="type">Podcast</p>
+                    {% elif  vault.type == 'episode' %}
+                    <p class="type">Episode</p>
                     {% endif %}
                     <div class="info-header">
                     <h2>{{vault.title}}</h2>
@@ -63,23 +65,26 @@
                         {% elif  vault.type == 'podcast' %}
                         <p class="info-separation">·</p>
                         <p class="info-item-2">{{vault.total_tracks}} episodes </p>
+                        {% elif  vault.type == 'episode' %}
+                        <p class="info-separation">·</p>
+                        <p class="info-item-2">{{vault.total_tracks}} min </p>
                         {% endif %}
                     </div>
-                    {% if vault.type == 'podcast' %}
+                    {% if vault.type == 'podcast' or vault.type == 'episode' %}
                     <div class="description">
                         <p>{{vault.description}}</p>
-                    </div>  
+                    </div>
                     {% endif %}
                 </div>
 
-                
-                
+
+
                 <form method="POST" id="comment-form" style="display: none;" >
                     {% csrf_token %}
                     <div class="rate-area">
                         {% if first_post %}
                         <button class="rate-text">
-                            Rate this vault: 
+                            Rate this vault:
                         </button>
                         <div class="rate">
                             <input type="radio" name="rating" id="rating5" value="5" required /><label for="rating5" title="5"></label>
@@ -88,7 +93,7 @@
                             <input type="radio" name="rating" id="rating2" value="2" required /><label for="rating2" title="2"></label>
                             <input type="radio" name="rating" id="rating1" value="1" required /><label for="rating1" title="1"></label>
                         </div>
-                    
+
                         {% else %}
                             <button class="rate-text">
                                 Rate this vault: <span style="color: gray; margin-left: 5px;"> you have already rated this vault. </span>
@@ -120,8 +125,8 @@
                     {% endfor %}
                     <hr>
                 </div>
-                
-                <div class="join-vault">      
+
+                <div class="join-vault">
                     {% if user.is_authenticated %}
                     <button class="join-button" id="join-button">
                         Join the vault
@@ -152,7 +157,7 @@
                 var commentForm = document.getElementById("comment-form");
                 joinButton.addEventListener("click", function() {
                     if (commentForm.style.display === "none" || commentForm.style.display === "") {
-                        commentForm.style.display = "block"; 
+                        commentForm.style.display = "block";
                     } else {
                         commentForm.style.display = "none";
                     }
