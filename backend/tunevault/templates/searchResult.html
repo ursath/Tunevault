@@ -96,13 +96,14 @@
             {% if result.4.members %}
             <div class='gallery'>
                 {% for user_data in result.4.members %}
-                <h2  class="sub-title">jsjs{{ user_data }}</h2>
+                    <div class='gallery2-item'>
                     {% include 'previewProfile.html' with user_data=user_data %}
+                    </div>
                 {% endfor %}
             </div>
             {% else %}
                 <div class="no-results-mem">
-                    <i class="material-icons noResultsIcon">search_off</i>
+                    <i style="color: white;" class="material-icons noResultsIcon">search_off</i>
                     <p style="color: white;">No results found</p>
                 </div>
             {% endif %}
