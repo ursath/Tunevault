@@ -37,19 +37,20 @@ def verify_artist(url):
 
 #se podrían pasar codigos de error para que el front los maneje
 def get_result_search(search, type, limit, offset, genre = None):
-    if ((type != "artist" and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member") or limit < 0 or offset < 0):
+    if ((type != "artist" and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member_common" and type !="member_artist") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
 
-    elif(type == "member"):
+    elif(type == "member_artist" or type == "member_common"):
         listToRet = []
         total = 0
         offset_copy = offset
         next = False
         next_flag = False
         finished = False
+        filterArtist = type == "member_artist"
 
         for profile in Profile.objects.all():
-            if profile.isArtist and (search in profile.user.get_username()):
+            if (not filterArtist or profile.isArtist) and (search in profile.user.get_username()):
 
                 if offset_copy == 0:
                     listToRet.append(profile.user.get_username())
@@ -140,8 +141,9 @@ def search_podcast(query):
     return {'result' : result }
 
 def search_member(query):
-    searchMember = get_result_search(query, 'member', 10, 0)
-    result = searchMember
+    searchCommon = get_result_search(query, 'member_common', 10, 0)
+    searchArtist = get_result_search(query, 'member_artist', 10, 0)
+    result = [searchCommon, searchArtist]
     return {'result' : result }
 
 #para barra de navegación
