@@ -152,8 +152,9 @@ def search_all(query, results):
     searchAlbum = get_result_search(query, 'album', results, 0)
     searchPodcast = get_result_search(query, 'show', results, 0)
     searchEpisode = get_result_search(query, 'episode', results, 0)
-    searchMember = get_result_search(query, 'member', results, 0)
-    result = [searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember]
+    searchMemberCommon = get_result_search(query, 'member_common', results, 0)
+    searchMemberArtist = get_result_search(query, 'member_artist', results, 0)
+    result = [searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMemberArtist, searchMemberCommon]
     return {'result' : result }
 
 def get_or_create_vault(item):
