@@ -12,7 +12,7 @@ import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist, search_member, search_all
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist, search_member, search_all, get_posts
 
 load_dotenv()
 
@@ -179,10 +179,8 @@ def profile(request, user=None):
         user = request.user.username
 
     user_profile = get_profile(user)
-    user_posts = Post.objects.filter(user=user_profile['user'])
-    user_comments = Comment.objects.filter(user=user_profile['user'])
+    user_posts = get_posts(user)
     user_post_length = len(user_posts)
-    user_comment_length = len(user_comments)
 
     follower = request.user.username
     userToFollow = user
@@ -199,8 +197,6 @@ def profile(request, user=None):
         'user_profile': user_profile,
         'user_posts': user_posts,
         'user_post_length': user_post_length,
-        'user_comments': user_comments,
-        'user_comment_length': user_comment_length,
         'button_text': button_text,
         'user_followers': user_followers,
         'user_following': user_following,

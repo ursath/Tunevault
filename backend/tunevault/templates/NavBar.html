@@ -35,13 +35,11 @@
             {% endif %}
             </li>
             <li class="NavItem">
-            <div class="search">
-                <input class="Item" type="text" id="searcher" name="query"/>
-                <button class="search-btn">
-                    <a href="/search/aa{{query}}">
-                        <i class="material-icons">search</i>
-                    </a>
-                </button>
+                <div class="search">
+                    <input class="Item" type="text" id="searcher" name="query"/>
+                    <button class="search-btn" onclick="search()">
+                            <i class="material-icons">search</i>
+                    </button>
             </div>
             </li>
 
@@ -64,6 +62,13 @@
             }
         })
     });
+
+    function search(){
+        var query = document.getElementById("searcher").value;
+
+        // Redirigir a la página de búsqueda con el valor ingresado
+        window.location.href = "/search/" + encodeURIComponent(query);
+    }
     </script>
     
 </body>

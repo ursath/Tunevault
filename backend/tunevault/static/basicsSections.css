@@ -20,8 +20,8 @@
 }
 
 .BasicsSearch {
-    background: linear-gradient(180deg, #3D13E5 0%, #0B022D 100%);
-    height: 800px;
+    background: linear-gradient(180deg, #3D13E5 0%, #000000 100%);
+    height: 120%;
     display: flex;
     flex-direction: column;
 }

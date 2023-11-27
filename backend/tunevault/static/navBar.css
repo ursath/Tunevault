@@ -122,6 +122,6 @@ input {
 }   
 
 .search-btn {
-    border-radius: 0px 24px 0px 24px;
-    color: rebeccapurple;
+    border-radius: 0px 24px 24px 0px;
+    border-color: transparent;
 }
