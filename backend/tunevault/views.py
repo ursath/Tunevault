@@ -19,18 +19,6 @@ load_dotenv()
 def home(request):
     return render(request, 'home.html')
 
-def music(request):
-    return render(request, 'music.html')
-
-def podcasts(request):
-    return render(request, 'podcasts.html')
-
-def members(request):
-    return render(request, 'members.html')
-
-def profile(request):
-    return render(request, 'profile.html')
-
 
 # class CustomProviderAuthView(ProviderAuthView):
 #     def post(self, request, *args, **kwargs):
@@ -154,7 +142,7 @@ def profile(request):
 @login_required(login_url='signin')
 def settings_profile(request):
 
-    user_profile = Profile.objects.get(user=request.user)
+    user_profile = Profile.objects.get(user__username=request.user)
 
     if request.method == 'POST':
 
@@ -184,7 +172,7 @@ def settings_profile(request):
 
 
 def profile(request):
-    user_profile = Profile.objects.get(user=request.user)
+    user_profile = Profile.objects.get(user__username=request.user)
     return render(request, 'profile.html', {'user_profile': user_profile})
 
 
@@ -323,10 +311,24 @@ def music_search(request, query):
         context = search_music(query)
         return render(request, 'searchMusic.html', context)
 
-#TODO: reemplazar por el nombre del template
-def podcast_search(request, query):
-    context = search_podcast(query)
-    return render(request, '.html', context)
+
+def podcasts(request):
+     if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/podcasts/' + query)
+     else:
+        context = get_top_podcasts()
+        return render(request, 'podcasts.html', context)
+
+
+def podcasts_search(request, query):
+    if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/podcasts/' + query)
+    else:
+        context = search_podcast(query)
+        return render(request, 'searchPodcasts.html', context)
+
 
 def members(request):
     context = get_recommended_profiles()

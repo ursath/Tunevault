@@ -12,10 +12,18 @@
         <div class='HeaderMP'>
             <h1 class="Title">Podcasts</h1>
         </div>
-        <div class="Search">
-            <input class="InputSearch" placeholder='What do you want to talk about?' style="color: white" type="text" id="searcher" />
-            <i class="material-icons SearchIcon">search</i>
-        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="Search">
+                <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
+                <button type='submit' class="searchButton">
+                    <i class="material-icons SearchIcon">search</i>
+                </button>
+            </div>
+        </form>
+
         <div class="Filters">
             <label class='Label'>FILTER BY</label>
             <select class='SelectPodcast'>
@@ -34,8 +42,18 @@
                 <option value="3">New</option>
             </select>
         </div>
-        <div class="BlackMP">
+
+        <div class='BlackMP'>
             <h1 class='TrendingTittle'>Trending Vaults</h1>
+            <div class='gallery'>
+                {% for artist_id, artist_data in top.items %}
+                    <div class='gallery-item'>
+                        {% with artist_description="/vault/podcast/"|add:artist_id %}
+                            {% include 'previewVault.html' with vtype='Podcast' spotifyimg=artist_data.image description=artist_description likes=artist_data.likes  title=artist_data.artist %}
+                        {% endwith %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>

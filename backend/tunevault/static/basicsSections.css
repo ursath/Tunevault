@@ -185,3 +185,17 @@
 .btn-group button.activeButton:hover {
     background-color: rgb(34, 61, 111)
 }
+
+.no-results {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    font-family: var(--fonts);
+}
+
+.noResultsIcon {
+    margin-right: 10px;
+    color: white;
+}

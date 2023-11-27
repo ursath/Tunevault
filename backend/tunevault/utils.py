@@ -38,6 +38,7 @@ def get_result_search(search, type, limit, offset, genre = None):
 
                 if offset_copy == 0:
                     listToRet.append(profile.user.get_username())
+                    print(profile.user.get_username())
                 else:
                     offset_copy -= 1
 
@@ -194,10 +195,6 @@ def get_or_create_by_id(vtype, id):
                 image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
             else:
                 image = item['images'][0]['url']
-            if (item['genres']== []):
-                genre = ['None']
-            else:
-                genre = item['genres']
             publisher = [{'name': item['publisher'], 'image': image}]
             toRet = create_vault(item['id'], type, item['name'], item['description'], 'None', image, item['external_urls']['spotify'], publisher, item['total_episodes'], 'None')
     elif type == 'album':
@@ -222,8 +219,23 @@ def get_or_create_by_id(vtype, id):
                     image_artist = artistInfo['images'][0]['url']
                 artists.append({'name': artist['name'], 'image': image_artist})
             toRet = create_vault(item['id'], type, item['name'], 'None', genre, image_album, item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
+    elif type == 'episode':
+        try:
+            toRet = Vault.objects.get(id=uuid_str)
+        except :
+            item=sp.episode(id, 'ES')
+            if (item['images']== []):
+                image_episode = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image_episode = item['images'][0]['url']
+            if (item['show']['images']== []):
+                image_publisher = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image_publisher = item['show']['images'][0]['url']
+            publisher=[{'name': item['show']['publisher'], 'image': image_publisher}]
+            toRet = create_vault(id=item['id'], type=type, title=item['name'], description=item['description'],genres= 'None', spotifyimg=image_episode,external_url= item['external_urls']['spotify'],authors= publisher, total_tracks= item['duration_ms'] // 1000 // 60, date= item['release_date'])
     else:
-        pass #error
+        pass
     return {
         'id': toRet.id,
         'title': toRet.title,
