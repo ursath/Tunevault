@@ -29,9 +29,8 @@
 .HeaderMP {
     font-size: large;
     font-family: var(--fonts);
-    position: absolute;
-    top: 15%;
-    left: 46%;
+    display: flex;
+    justify-content: center;
     text-align: center;
     color:white;
 }
@@ -48,10 +47,8 @@
     background-color: rgb(29, 29, 29);
     border-radius: 24px;
     display: flex;
-    place-items: center;
-    position: absolute;
-    top: 30%;
-    left: 28%;
+    align-items: center;
+    justify-content: center;
     padding-right: 10px;   
 }
 
@@ -76,11 +73,12 @@
 }
 
 .Filters {
-    position: absolute;
-    top: 37%;
-    left: 37%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color:white;
     font-family: var(--fonts);
+    margin-top: 30px;
 }
 
 .SelectMusic {
@@ -108,7 +106,7 @@
 .BlackMP {
     height:auto;
     width: 100%;
-    margin-top: 360px;
+    margin-top: 100px;
     background-color: black;
     color:white;
     min-height: 50vh;
@@ -191,4 +189,18 @@
 
 .btn-group button.activeButton:hover {
     background-color: rgb(34, 61, 111)
+}
+
+.no-results {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+    font-family: var(--fonts);
+}
+
+.noResultsIcon {
+    margin-right: 10px;
+    color: white;
 }

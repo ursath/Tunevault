@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'basicsSections.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+<body>
+<div class='BasicsMembers'>
+    {% include 'NavBar.html' %}
+    <div class='HeaderMP'>
+        <div>
+            <h1 class="Title">Members</h1>
+            <form method="POST"> 
+                {% csrf_token %}
+                <div class="Search">
+                    <input class="InputSearch" placeholder='Who are you looking for?' type="text" name="query" style="color: white"/>
+                    <button type='submit' class="searchButton">
+                        <i class="material-icons SearchIcon">search</i>
+                    </button> 
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class='BlackMP'>
+        {% if result.0.vaults %}
+        <h1 class='TrendingTittle'>Results found for {{ result.0.query }}:</h1>
+        {% else %}
+        <h1 class='TrendingTittle'></h1>
+        {% endif %}
+        <div class="btn-group">
+            <button onclick="showContent('artists')" id="artistsBtn" class = "btn-left activeButton">Artists</button>
+            <button onclick="showContent('accounts')" id="accountsBtn" class = "btn-right">Accounts</button>
+        </div>
+        
+        
+        <div id="artistsContent" class="content">
+            {{result}}
+        </div>
+        
+        <div id="accountsContent" class="content" style="display: none;">
+           
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function showContent(contentType) {
+        var artistsBtn = document.getElementById('artistsBtn');
+        var accountsBtn = document.getElementById('accountsBtn');
+
+        var artistsContent = document.getElementById('artistsContent');
+        var accountsContent = document.getElementById('accountsContent');
+
+        if (contentType === 'artists') {
+            artistsBtn.classList.add('activeButton');
+            accountsBtn.classList.remove('activeButton');
+
+            artistsContent.style.display = 'block';
+            accountsContent.style.display = 'none';
+
+        } else if (contentType === 'accounts') {
+            artistsBtn.classList.remove('activeButton');
+            accountsBtn.classList.add('activeButton');
+
+            artistsContent.style.display = 'none';
+            accountsContent.style.display = 'block';
+        }
+        }
+    </script>
+</body>
+</html>

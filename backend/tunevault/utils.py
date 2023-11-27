@@ -10,6 +10,7 @@ from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
 from .models import Comment, Post, Profile
+import re
 
 load_dotenv()
 
@@ -19,6 +20,20 @@ sp = spotipy.Spotify(auth_manager=auth_manager)
 def get_artist(id):
     result = sp.artist(id)
     return result
+
+def verify_artist(url):
+    # given a spotify url, uses regex to find the id of the artist and then
+    # verifies if the artist exists in spotify
+    # example url: https://open.spotify.com/artist/7jy3rLJdDQY21OgRLCZ9sD?si=bWz-CxINQQeKfQfhHdbg3Q
+    # the id is 7jy3rLJdDQY21OgRLCZ9sD
+
+    regex = r"artist\/([a-zA-Z0-9]+)\?"
+    matches = re.search(regex, url)
+    id = matches.group(1)
+    if get_artist(id) is not None:
+        return True
+    else:  
+        return False
 
 #se podrían pasar codigos de error para que el front los maneje
 def get_result_search(search, type, limit, offset, genre = None):
@@ -30,13 +45,15 @@ def get_result_search(search, type, limit, offset, genre = None):
         total = 0
         offset_copy = offset
         next = False
+        next_flag = False
         finished = False
 
-        for profile in Profile.objects:
+        for profile in Profile.objects.all():
             if profile.isArtist and (search in profile.user.get_username()):
 
                 if offset_copy == 0:
                     listToRet.append(profile.user.get_username())
+                    print(profile.user.get_username())
                 else:
                     offset_copy -= 1
 
@@ -71,7 +88,7 @@ def get_result_search(search, type, limit, offset, genre = None):
                             queryResult = {
                                 'id' : items['id'],
                                 type: items['name'],
-                                'image': 'https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-dimensions/1700?v=v2&px=-1',
+                                'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
                                 'likes': 0
                             }
                         else:
@@ -87,7 +104,7 @@ def get_result_search(search, type, limit, offset, genre = None):
                     queryResult = {
                         'id' : items['id'],
                         type: items['name'],
-                        'image': 'https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-dimensions/1700?v=v2&px=-1',
+                        'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
                         'likes': 0
                     }
                 else:
@@ -134,14 +151,21 @@ def search_all(query, results):
     searchPodcast = get_result_search(query, 'show', results, 0)
     searchEpisode = get_result_search(query, 'episode', results, 0)
     searchMember = get_result_search(query, 'member', results, 0)
-    result = {searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember}
-    return result
+    result = [searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember]
+    return {'result' : result }
 
 def get_or_create_vault(item):
     try:
         toRet = Vault.objects.filter(id=item['id'])
     except:
-        toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
+        image = item['images'][0]['url']
+        genre = item['genres']
+        if (item['images']== []):
+            image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+        elif (item['genres']== []):
+            genre = ['None']
+        
+        toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],genre,image)
     return {
         'id': toRet.id,
         'title': toRet.title,
@@ -167,27 +191,66 @@ def get_or_create_by_id(vtype, id):
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.artist(id)
-            artist = [{'name': item['name'], 'image': item['images'][0]['url']}]
-            toRet = create_vault(item['id'], type, item['name'], 'None', item['genres'], item['images'][0]['url'], item['external_urls']['spotify'], artist, 0, 'None')
+            if (item['images']== []):
+                image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image = item['images'][0]['url']
+            if (item['genres']== []):
+                genre = ['None']
+            else:
+                genre = item['genres']
+            artist = [{'name': item['name'], 'image': image}]
+            toRet = create_vault(item['id'], type, item['name'], 'None', genre, image, item['external_urls']['spotify'], artist, 0, 'None')
     elif type == 'podcast':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.show(id, None)
-            publisher = [{'name': item['publisher'], 'image': item['images'][0]['url']}]
-            toRet = create_vault(item['id'], type, item['name'], item['description'], 'None', item['images'][0]['url'], item['external_urls']['spotify'], publisher, item['total_episodes'], 'None')
+            if (item['images']== []):
+                image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image = item['images'][0]['url']
+            publisher = [{'name': item['publisher'], 'image': image}]
+            toRet = create_vault(item['id'], type, item['name'], item['description'], 'None', image, item['external_urls']['spotify'], publisher, item['total_episodes'], 'None')
     elif type == 'album':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.album(id, None)
+            if (item['images']== []):
+                image_album = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image_album = item['images'][0]['url']
+            if (item['genres']== []):
+                genre_album = ['None']
+            else:
+                genre_album = item['genres']
             artists = []
             for artist in item['artists']:
                 artistInfo = sp.artist(artist['id'])
-                artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']})
-            toRet = create_vault(item['id'], type, item['name'], 'None', item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
+                if (artistInfo['images']== []):
+                    image_artist = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+                else:
+                    image_artist = artistInfo['images'][0]['url']
+                artists.append({'name': artist['name'], 'image': image_artist})
+            toRet = create_vault(item['id'], type, item['name'], 'None', genre_album, image_album, item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
+    elif type == 'episode':
+        try:
+            toRet = Vault.objects.get(id=uuid_str)
+        except :
+            item=sp.episode(id, 'ES')
+            if (item['images']== []):
+                image_episode = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image_episode = item['images'][0]['url']
+            if (item['show']['images']== []):
+                image_publisher = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image_publisher = item['show']['images'][0]['url']
+            publisher=[{'name': item['show']['publisher'], 'image': image_publisher}]
+            toRet = create_vault(id=item['id'], type=type, title=item['name'], description=item['description'],genres= 'None', spotifyimg=image_episode,external_url= item['external_urls']['spotify'],authors= publisher, total_tracks= item['duration_ms'] // 1000 // 60, date= item['release_date'])
     else:
-        pass #error
+        pass
     return {
         'id': toRet.id,
         'title': toRet.title,
@@ -314,7 +377,7 @@ def getVaultRating(vault_id):
     return round(sum/count, 1) if count != 0 else 0
 
 def get_profile(user):
-    profile = Profile.objects.get(user=user)
+    profile = Profile.objects.get(user__username=user)
     profile_data = {
         'user': profile.user,
         'bio': profile.bio,

@@ -13,12 +13,20 @@
     <div class='BasicsMembers'>
         {% include 'NavBar.html' %}
         <div class='HeaderMP'>
+          <div>
             <h1 class="Title">Members</h1>
+            <form method="POST"> 
+              {% csrf_token %}
+              <div class="Search">
+                  <input class="InputSearch" placeholder='Who are you looking for?' type="text" name="query" style="color: white"/>
+                  <button type='submit' class="searchButton">
+                      <i class="material-icons SearchIcon">search</i>
+                  </button> 
+              </div>
+          </form>
+          </div>
         </div>
-        <div class="Search">
-            <input class="InputSearch" placeholder='Who are you looking for?' style="color: white" type="text" id="searcher" />
-            <i class="material-icons SearchIcon">search</i>
-        </div>
+
         <div class="BlackMP">
             <h1 class='TrendingTittle'>Recomended</h1>
            

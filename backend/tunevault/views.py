@@ -11,25 +11,15 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, search_all
+
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist, search_member, search_all
+
 load_dotenv()
 
 # Create your views here.
 
 def home(request):
     return render(request, 'home.html')
-
-def music(request):
-    return render(request, 'music.html')
-
-def podcasts(request):
-    return render(request, 'podcasts.html')
-
-def members(request):
-    return render(request, 'members.html')
-
-def profile(request):
-    return render(request, 'profile.html')
 
 
 # class CustomProviderAuthView(ProviderAuthView):
@@ -154,7 +144,7 @@ def profile(request):
 @login_required(login_url='signin')
 def settings_profile(request):
 
-    user_profile = Profile.objects.get(user=request.user)
+    user_profile = Profile.objects.get(user__username=request.user)
 
     if request.method == 'POST':
 
@@ -184,7 +174,7 @@ def settings_profile(request):
 
 
 def profile(request):
-    user_profile = Profile.objects.get(user=request.user)
+    user_profile = Profile.objects.get(user__username=request.user)
     return render(request, 'profile.html', {'user_profile': user_profile})
 
 
@@ -223,6 +213,7 @@ def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
+        isArtist = 'isArtist' in request.POST and request.POST['isArtist'] == 'on'
         password = request.POST['password']
         password2 = request.POST['password2']
 
@@ -233,6 +224,28 @@ def signup(request):
             elif User.objects.filter(username=username).exists():
                 messages.info(request, 'Username already exists, please choose another one')
                 return redirect('create_account')
+            elif isArtist:
+                if request.POST['link'] is not None:
+                    if not verify_artist(request.POST['link']):
+                        messages.info(request, "You must provide a valid Spotify profile for artists")
+                        return redirect('create_account')
+                    else:
+                        user = User.objects.create_user(username=username, email=email, password=password)
+                        user.save()
+
+                        #log user in and redirect to settings page
+                        user_login = auth.authenticate(username=username, password=password)
+                        auth.login(request, user_login)
+
+                        #create a Profile object for the new user
+                        user_model = User.objects.get(username=username)
+                        new_profile = Profile.objects.create(user=user_model, id_user=user_model.id, isArtist=isArtist)
+                        new_profile.save()
+                        return redirect('profile')
+
+                else:
+                    messages.info(request, "You must verify your Spotify profile")
+                    return redirect('create_account')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
@@ -243,7 +256,7 @@ def signup(request):
 
                 #create a Profile object for the new user
                 user_model = User.objects.get(username=username)
-                new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
+                new_profile = Profile.objects.create(user=user_model, id_user=user_model.id, isArtist=isArtist)
                 new_profile.save()
                 return redirect('profile')
         else:
@@ -323,10 +336,24 @@ def music_search(request, query):
         context = search_music(query)
         return render(request, 'searchMusic.html', context)
 
-#TODO: reemplazar por el nombre del template
-def podcast_search(request, query):
-    context = search_podcast(query)
-    return render(request, '.html', context)
+
+def podcasts(request):
+     if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/podcasts/' + query)
+     else:
+        context = get_top_podcasts()
+        return render(request, 'podcasts.html', context)
+
+
+def podcasts_search(request, query):
+    if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/podcasts/' + query)
+    else:
+        context = search_podcast(query)
+        return render(request, 'searchPodcasts.html', context)
+
 
 def all_search(request, query):
     if request.method == 'POST':
@@ -338,9 +365,22 @@ def all_search(request, query):
         return render(request, 'searchResult.html', context)
 
 def members(request):
-    context = get_recommended_profiles()
-    return render(request, 'members.html', context)
+    if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/members/' + query)
+    else:
+        context = get_recommended_profiles()
+        return render(request, 'members.html', context)
 
+
+def members_search(request, query):
+    if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/members/' + query)
+    else: 
+        context = search_member(query)
+        return render(request, 'searchMembers.html', context)
+    
 
 def member(request, user):
     user_profile = get_profile(user)
