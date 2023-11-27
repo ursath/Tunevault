@@ -10,48 +10,102 @@
     <body>
         <div class="Back">
             {% include 'NavBar.html' %}
-            <div class="formBox">
-                <div style="margin-left: auto; cursor: pointer;">
-                    <i class="material-icons closeIcon" id="goBack">close</i>
-                </div>
+
+            <div class="formContainer">
+            <div class="formBox" style="padding:0;">
 
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     
-                    <div style="display: flex;">   
-                            <div class="profileImage">
-                                <h3>@{{ user_profile.user }}</h3>
+                    <div style="display: flex; margin-top: 60px;">   
+                            <div class="profileImage" style="margin-left: 20px;">
+                                <div>
                                 <figure>
-                                    <img class="image-large" src="{{user_profile.profileimg.url}}" alt="profile image">
+                                    <img class="image-large" src="{{user_profile.profileimg}}" alt="profile image">
                                 </figure>
+                                    <div style="margin-left: 50px; font-size: 20px;">
+                                        <label style="font-weight: bold;">{{ user_profile.user }}</label>
+                                        <br>
+                                        <label style="color: rgb(182, 182, 182)">Profile</label>
+                                    </div>
+                                </div>
                             </div>
                     
 
-                        <div style="padding: 8%">
-                            <div class="item">
-                                <label class="label" for="location">Location</label>
-                                <div class="static-item">{{user_profile.location}}</div>
+                        <div class="profileInfo">
+
+                            <div class="followers">
+                                <div class="followersItem"> 
+                                    <p style="margin: 0;">{{user_followers}}</p>
+                                    <p class="mini-text">Followers</p>
+                                </div>
+                                <div class="followersItem"> 
+                                    <p style="margin: 0;">{{user_following}}</p>
+                                    <p class="mini-text">Following</p>
+                                </div>
+                                <div class="followersItem"> 
+                                    <p style="margin: 0;">{{user_comment_length}}</p>
+                                    <p class="mini-text">Comments</p>
+                                </div>
                             </div>
-                            <div class="item">
-                                <label class="label" for="about">Biography</label>  
-                                <div class="static-item">{{user_profile.bio}}</div>
+                            
+                            <div class="bio">
+                                {% if not user_profile.bio and not user_profile.location %}
+                                    <div style="text-align: center;">
+                                        <p>No data</p>
+                                    </div>
+                                    {% else %}
+                                    <p style="margin: 0 0 0 5px;">{{user_profile.bio}}</p>  
+                                    {% if user_profile.location %}
+                                        <div class="location">
+                                            <i class="material-icons" style="margin-right: 5px;">place</i>
+                                            <p style="margin: 0;">{{user_profile.location}}</p>  
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </form>
+                            
+                        <div class="buttonBox">
+                            {% if isCurrentUser %}
+                            <a href="/settings" style = "text-decoration: none">
+                                <div class="editButton"> 
+                                    Edit profile <i class="material-icons" style="margin-left: 5px;">edit</i>
+                                </div>
+                            </a>
+                            <div class="logoutButton" onclick="showPopup()"> 
+                                <div style="display: flex; align-items: center;"> 
+                                    Log out <i class="material-icons" style="margin-left: 10px;">logout</i>
+                                </div>
                             </div> 
+                            {% else %}
+                            <form action="{% url 'follow' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{user_profile.user}}" name="user" />
+                                    <button class="followButton" type="submit" style="display: flex; align-items: center;"> 
+                                        {{button_text}}
+                                    </button>
+                            </form> 
+                            {% endif %}                
                         </div>
                     </div>
+                </div>
 
-                    <div class="buttonBox">
-                        <a href="/settings" style = "text-decoration: none">
-                            <div class="editButton"> 
-                                Edit profile <i class="material-icons" style="margin-left: 5px;">edit</i>
-                            </div>
-                        </a>
-                        <div class="logoutButton" onclick="showPopup()"> 
-                            <span style="display: flex; align-items: center;"> 
-                                Log out <i class="material-icons" style="margin-left: 10px;">logout</i>
-                            </button>
-                        </div>                         
+                <div class="comments-favs">
+                    <div class="btn-group">
+                        <button onclick="showContent('comments')" id="commentsBtn" class = "btn-left activeButton">Comments</button>
+                        <button onclick="showContent('favs')" id="favsBtn" class = "btn-right">Favourites</button>
                     </div>
-                </form>
+
+                    <div id="commentsContent" class="comments">
+                            {{user_comments}}
+                    </div>
+
+                    <div id="favsContent" class="favs" style="display: none;">
+                            favs
+                    </div>
+                </div>
+            </div>
             </div>
 
             <div id="popup" class="popup" style="display: none;">
@@ -65,10 +119,32 @@
                     </a>
                 </div>
             </div>
-
         </div>
 
         <script>
+            function showContent(contentType) {
+                var commentsBtn = document.getElementById('commentsBtn');
+                var favsBtn = document.getElementById('favsBtn');
+
+                var commentsContent = document.getElementById('commentsContent');
+                var favsContent = document.getElementById('favsContent');
+
+                if (contentType === 'comments') {
+                    commentsBtn.classList.add('activeButton');
+                    favsBtn.classList.remove('activeButton');
+
+                    commentsContent.style.display = 'block';
+                    favsContent.style.display = 'none';
+
+                } else if (contentType === 'favs') {
+                    commentsBtn.classList.remove('activeButton');
+                    favsBtn.classList.add('activeButton');
+
+                    commentsContent.style.display = 'none';
+                    favsContent.style.display = 'block';
+                }
+            }
+
             function showPopup() {
               var popup = document.getElementById("popup");
               popup.style.display = "block";
@@ -79,17 +155,7 @@
               popup.style.display = "none";
             }
 
-            
-            document.getElementById('goBack').addEventListener('click', function() {
-                var previousPage = document.referrer;
-                if (previousPage.includes('settings')) {
-                    window.location.href = '/';
-                } else {
-                    window.history.back();
-                }
-            });
-    
-            </script>
+        </script>
 
     </body>
 </html>

@@ -1,8 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-:root {
-    --fonts: 'Poppins', Arial, Helvetica, sans-serif;
-}
   
   .rate > input{
     display: none;
@@ -26,7 +22,7 @@
   .rate > label:before{
     display: inline-block;
     font-size: 1.1rem;
-    font-family: var(--fonts);
+    font-family: FontAwesome;
     content: "\f005";
     margin:0;
     padding:0.3rem .2rem;

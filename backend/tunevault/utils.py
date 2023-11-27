@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
-from .models import Comment, Post, Profile
+from .models import Comment, Post, Profile,VaultFavs
 import re
 
 load_dotenv()
@@ -32,28 +32,28 @@ def verify_artist(url):
     id = matches.group(1)
     if get_artist(id) is not None:
         return True
-    else:  
+    else:
         return False
 
 #se podrían pasar codigos de error para que el front los maneje
 def get_result_search(search, type, limit, offset, genre = None):
-    if ((type != "artist" and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member") or limit < 0 or offset < 0):
+    if ((type != "artist" and type !="album" and type != "playlist" and type !="track" and type !="show" and type != "episode" and type !="audiobook" and type !="member_common" and type !="member_artist") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
 
-    elif(type == "member"):
+    elif(type == "member_artist" or type == "member_common"):
         listToRet = []
         total = 0
         offset_copy = offset
         next = False
         next_flag = False
         finished = False
+        filterArtist = type == "member_artist"
 
         for profile in Profile.objects.all():
-            if profile.isArtist and (search in profile.user.get_username()):
+            if (not filterArtist or profile.isArtist) and (search in profile.user.get_username()):
 
                 if offset_copy == 0:
-                    listToRet.append(profile.user.get_username())
-                    print(profile.user.get_username())
+                    listToRet.append(get_profile(profile.user.get_username()))
                 else:
                     offset_copy -= 1
 
@@ -74,6 +74,7 @@ def get_result_search(search, type, limit, offset, genre = None):
             'members': listToRet,
             'total': total,
             'next': next,
+            'query': search
         }
 
     else:
@@ -140,8 +141,9 @@ def search_podcast(query):
     return {'result' : result }
 
 def search_member(query):
-    searchMember = get_result_search(query, 'member', 10, 0)
-    result = searchMember
+    searchCommon = get_result_search(query, 'member_common', 10, 0)
+    searchArtist = get_result_search(query, 'member_artist', 10, 0)
+    result = [searchCommon, searchArtist]
     return {'result' : result }
 
 #para barra de navegación
@@ -164,7 +166,7 @@ def get_or_create_vault(item):
             image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
         elif (item['genres']== []):
             genre = ['None']
-        
+
         toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],genre,image)
     return {
         'id': toRet.id,
@@ -395,6 +397,18 @@ def get_recommended_profiles():
         #if profile.followers > 0:
         recommended_profiles.append(get_profile(profile.user))
     return {'membersList': recommended_profiles}
+def fav_or_unfav_vault(vault_id, user):
+    vaultfav=VaultFavs.objects.filter(user=user, vault=vault_id)
+    if(vaultfav.exists()):
+        vaultfav.delete()
+    else:
+        newvaultfav=VaultFavs.objects.create(user=user, vault=vault_id)
+        newvaultfav.save()
+
+def get_user_vault_favs(user):
+    return VaultFavs.objects.filter(user=user)
+def get_vault_fav_count(vault_id):
+    return VaultFavs.objects.filter(vault=vault_id).count()
 
 #se podría scrapear de algun lugar para tener un top
 def get_top_podcasts(limit=10):

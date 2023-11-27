@@ -17,12 +17,13 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('members/', views.members, name='members'),
     path('members/<str:query>', views.members_search, name='members_search'),
-    path('members/profile/<str:user>', views.member, name='member'),
     path('settings/', views.settings_profile, name='settings'),
     path('profile/', views.profile, name='profile'),
+    path('profile/<str:user>', views.profile, name='profile'),
     path('vault/<str:vtype>/<str:id>', views.vault, name='vault'),
     path('vault/<str:vtype>/<str:id>/post/<str:post_id>', vaultPost.as_view(), name='post'),
     path('search/<str:query>', views.all_search, name='search'),
+    path('follow/', views.follow, name='follow'),
 ]
 
 if settings.DEBUG:
