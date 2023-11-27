@@ -72,7 +72,7 @@ def get_result_search(search, type, limit, offset, genre = None):
                             queryResult = {
                                 'id' : items['id'],
                                 type: items['name'],
-                                'image': 'https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-dimensions/1700?v=v2&px=-1',
+                                'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
                                 'likes': 0
                             }
                         else:
@@ -88,7 +88,7 @@ def get_result_search(search, type, limit, offset, genre = None):
                     queryResult = {
                         'id' : items['id'],
                         type: items['name'],
-                        'image': 'https://community.spotify.com/t5/image/serverpage/image-id/55829iC2AD64ADB887E2A5/image-dimensions/1700?v=v2&px=-1',
+                        'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
                         'likes': 0
                     }
                 else:
@@ -135,14 +135,21 @@ def search_all(query):
     searchPodcast = get_result_search(query, 'show', 10, 0)
     searchEpisode = get_result_search(query, 'episode', 10, 0)
     searchMember = get_result_search(query, 'member', 10, 0)
-    result = {searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember}
-    return result
+    result = [searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember]
+    return {'result' : result }
 
 def get_or_create_vault(item):
     try:
         toRet = Vault.objects.filter(id=item['id'])
     except:
-        toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],item['genres'],item['images'][0]['url'])
+        image = item['images'][0]['url']
+        genre = item['genres']
+        if (item['images']== []):
+            image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+        elif (item['genres']== []):
+            genre = ['None']
+        
+        toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],genre,image)
     return {
         'id': toRet.id,
         'title': toRet.title,
@@ -168,25 +175,53 @@ def get_or_create_by_id(vtype, id):
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.artist(id)
-            artist = [{'name': item['name'], 'image': item['images'][0]['url']}]
-            toRet = create_vault(item['id'], type, item['name'], 'None', item['genres'], item['images'][0]['url'], item['external_urls']['spotify'], artist, 0, 'None')
+            if (item['images']== []):
+                image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image = item['images'][0]['url']
+            if (item['genres']== []):
+                genre = ['None']
+            else:
+                genre = item['genres']
+            artist = [{'name': item['name'], 'image': image}]
+            toRet = create_vault(item['id'], type, item['name'], 'None', genre, image, item['external_urls']['spotify'], artist, 0, 'None')
     elif type == 'podcast':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.show(id, None)
-            publisher = [{'name': item['publisher'], 'image': item['images'][0]['url']}]
-            toRet = create_vault(item['id'], type, item['name'], item['description'], 'None', item['images'][0]['url'], item['external_urls']['spotify'], publisher, item['total_episodes'], 'None')
+            if (item['images']== []):
+                image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image = item['images'][0]['url']
+            if (item['genres']== []):
+                genre = ['None']
+            else:
+                genre = item['genres']
+            publisher = [{'name': item['publisher'], 'image': image}]
+            toRet = create_vault(item['id'], type, item['name'], item['description'], 'None', image, item['external_urls']['spotify'], publisher, item['total_episodes'], 'None')
     elif type == 'album':
         try:
             toRet = Vault.objects.get(id=uuid_str)
         except:
             item = sp.album(id, None)
+            if (item['images']== []):
+                image_album = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+            else:
+                image_album = item['images'][0]['url']
+            if (item['genres']== []):
+                genre_album = ['None']
+            else:
+                genre_album = item['genres']
             artists = []
             for artist in item['artists']:
                 artistInfo = sp.artist(artist['id'])
-                artists.append({'name': artist['name'], 'image': artistInfo['images'][0]['url']})
-            toRet = create_vault(item['id'], type, item['name'], 'None', item['genres'],item['images'][0]['url'], item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
+                if (artistInfo['images']== []):
+                    image_artist = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
+                else:
+                    image_artist = artistInfo['images'][0]['url']
+                artists.append({'name': artist['name'], 'image': image_artist})
+            toRet = create_vault(item['id'], type, item['name'], 'None', genre, image_album, item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
     else:
         pass #error
     return {
