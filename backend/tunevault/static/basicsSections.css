@@ -19,6 +19,13 @@
     height: 500px;
 }
 
+.BasicsSearch {
+    background: linear-gradient(180deg, #3D13E5 0%, #0B022D 100%);
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
 .HeaderMP {
     font-size: large;
     font-family: var(--fonts);

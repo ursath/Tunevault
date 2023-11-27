@@ -120,3 +120,8 @@ input {
 .profile-button {
     color: white;
 }   
+
+.search-btn {
+    border-radius: 0px 24px 0px 24px;
+    color: rebeccapurple;
+}

@@ -11,7 +11,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, search_all
 load_dotenv()
 
 # Create your views here.
@@ -327,6 +327,15 @@ def music_search(request, query):
 def podcast_search(request, query):
     context = search_podcast(query)
     return render(request, '.html', context)
+
+def all_search(request, query):
+    if request.method == 'POST':
+        query = request.POST['query']
+        print("hial")
+        return redirect('/search/' + query)
+    else:
+        context = search_all(query,3)
+        return render(request, 'searchResult.html', context)
 
 def members(request):
     context = get_recommended_profiles()

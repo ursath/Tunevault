@@ -128,12 +128,12 @@ def search_member(query):
     return {'result' : result }
 
 #para barra de navegación
-def search_all(query):
-    searchArtist = get_result_search(query, 'artist', 10, 0)
-    searchAlbum = get_result_search(query, 'album', 10, 0)
-    searchPodcast = get_result_search(query, 'show', 10, 0)
-    searchEpisode = get_result_search(query, 'episode', 10, 0)
-    searchMember = get_result_search(query, 'member', 10, 0)
+def search_all(query, results):
+    searchArtist = get_result_search(query, 'artist', results, 0)
+    searchAlbum = get_result_search(query, 'album', results, 0)
+    searchPodcast = get_result_search(query, 'show', results, 0)
+    searchEpisode = get_result_search(query, 'episode', results, 0)
+    searchMember = get_result_search(query, 'member', results, 0)
     result = {searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember}
     return result
 
