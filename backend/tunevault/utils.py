@@ -218,7 +218,7 @@ def get_or_create_by_id(vtype, id):
                 else:
                     image_artist = artistInfo['images'][0]['url']
                 artists.append({'name': artist['name'], 'image': image_artist})
-            toRet = create_vault(item['id'], type, item['name'], 'None', genre, image_album, item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
+            toRet = create_vault(item['id'], type, item['name'], 'None', genre_album, image_album, item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
     elif type == 'episode':
         try:
             toRet = Vault.objects.get(id=uuid_str)
