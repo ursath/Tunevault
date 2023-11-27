@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'basicsSections.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'globals.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'searchResults.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body class="Black">
+    <div class='BasicsSearch'>
+        {% include 'NavBar.html' %}
+        <div class='header'>
+            <h1 class="Title">Search results</h1>
+        </div>
+        
+        <div class=''>
+            <div class="sub-header">
+                <h2  class="sub-title">Albums</h2>
+                <button class="view-all">View all</button>
+            </div>
+            <div class='gallery'>
+                {% for artist_id, artist_data in top.items %}
+                    <div class='gallery-item'>
+                        {% with artist_description="/vault/artist/"|add:artist_id %}
+                            {% include 'previewVault.html' with vtype='Artist' spotifyimg=artist_data.image description=artist_description likes=artist_data.likes  title=artist_data.artist %}
+                        {% endwith %}
+                    </div>
+                {% endfor %}
+            </div>      
+        </div>
+    </div>
+
+</body>
+</html>

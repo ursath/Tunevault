@@ -9,9 +9,11 @@
 <div class="containerPag">
     <nav>    
         <ul class="pagination">
-        <li class="page-item ">
-            <a class="page-link" href="#" tabindex="-1">Previous</a>
-        </li>
+        {% if currentPage != 1 %}
+            <li class="page-item ">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+        {% endif %}
         <li class="page-item "><a class="page-link" href="#">1</a></li>
         <li class="page-item "><a class="page-link" href="#">2</a></li>
         <li class="page-item"><a class="page-link" href="#">3</a></li>
@@ -21,6 +23,9 @@
         </ul>
   </nav>
 </div>
-</ody>
+</body>
+<script>
+    var currentPage = 1
+</script>
 </html>
 
