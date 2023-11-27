@@ -386,6 +386,7 @@ def get_profile(user):
         'profileimg': profile.profileimg.url,
         'location': profile.location,
         'followers': profile.followers,
+        'isArtist': profile.isArtist
     }
     return profile_data
 

@@ -10,8 +10,11 @@
             <div class="profilePrev">
                 <a href="/profile/{{user_data.user}}" style="text-decoration: none; color: white;">
                     <img src="{{user_data.profileimg}}" alt="profile" class="profile-image"/>
-                    <div class="profile-username-grid">
-                        <label class="profile-username">@{{ user_data.user }}</label>
+                    <div class="profile-username-grid" style="display: flex; align-items: center;">
+                        <label class="profile-username">{{ user_data.user }}</label>
+                        {% if isArtist %}
+                            <i class="material-icons" style="color: rgb(0, 128, 255); margin-left: 10px;">verified</i>
+                        {% endif %}
                     </div>
                 </a>
             </div>
