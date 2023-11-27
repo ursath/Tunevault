@@ -12,7 +12,7 @@ import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist, search_member
 
 load_dotenv()
 
@@ -356,9 +356,22 @@ def podcasts_search(request, query):
 
 
 def members(request):
-    context = get_recommended_profiles()
-    return render(request, 'members.html', context)
+    if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/members/' + query)
+    else:
+        context = get_recommended_profiles()
+        return render(request, 'members.html', context)
 
+
+def members_search(request, query):
+    if request.method == 'POST':
+        query = request.POST['query']
+        return redirect('/members/' + query)
+    else: 
+        context = search_member(query)
+        return render(request, 'searchMembers.html', context)
+    
 
 def member(request, user):
     user_profile = get_profile(user)
