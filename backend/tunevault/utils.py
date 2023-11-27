@@ -387,6 +387,25 @@ def get_profile(user):
     }
     return profile_data
 
+def get_posts(user):
+    posts = Post.objects.filter(user=user).values()
+    postsToRet = []
+    for post in posts:
+        vault_data = Vault.objects.filter(external_url__contains= post['vault_id']).values()
+        postFormated = {
+            'post_id': post['id'],
+            'content': post['title'],
+            'date': post['date'],
+            'rating': post['rating'],
+            'likes': post['likes'],
+            'vault_id': post['vault_id'],
+            'vault_name': vault_data[0]['title'],
+            'vault_image': vault_data[0]['spotifyimg'],
+            'vault_vtype': vault_data[0]['vtype']
+        }
+        postsToRet.append(postFormated)
+    return postsToRet
+
 #conectar con spotify
 def get_recommended_profiles():
     profiles = Profile.objects.all()
@@ -429,3 +448,4 @@ def scrap_arists(limit):
 
     browser.quit()
     return urlList
+    
