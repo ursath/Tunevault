@@ -11,19 +11,22 @@
     <div class='BasicsMusic'>
         {% include 'NavBar.html' %}
         <div class='HeaderMP'>
+            <div>
             <h1 class="Title">Music</h1>
-        </div>
         
-        <form method="POST"> 
-            {% csrf_token %}
+        
+            <form method="POST"> 
+                {% csrf_token %}
 
-            <div class="Search">
-                <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
-                <button type='submit' class="searchButton">
-                    <i class="material-icons SearchIcon">search</i>
-                </button> 
+                <div class="Search">
+                    <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
+                    <button type='submit' class="searchButton">
+                        <i class="material-icons SearchIcon">search</i>
+                    </button> 
+                </div>
+            </form>
             </div>
-        </form>
+        </div>
 
         <div class="Filters">
             <label class='Label'>FILTER BY</label>

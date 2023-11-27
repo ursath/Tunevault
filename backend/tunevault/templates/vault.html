@@ -13,7 +13,11 @@
             {% include 'NavBar.html' %}
             <div class="vault">
                 <div class="rateBox">
+                    {% if rating == 0 %} 
+                    <p style="margin-right: 10px;">Unrated</p>
+                    {% else %}
                     <p style="margin-right: 10px;">{{rating}}</p>
+                    {% endif %}
                     <div>
                         <span class="star-rating">
                             <i class="fa fa-star{% if rating >= 1 %} rated{% endif %}" aria-hidden="true"></i>
@@ -23,6 +27,7 @@
                             <i class="fa fa-star{% if rating >= 5 %} rated{% endif %}" aria-hidden="true"></i>
                         </span>
                     </div>
+                    
 
                 </div>
 
