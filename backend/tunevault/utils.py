@@ -7,6 +7,7 @@ from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
 from .models import Comment, Post, Profile
+import re
 
 load_dotenv()
 
@@ -16,6 +17,28 @@ sp = spotipy.Spotify(auth_manager=auth_manager)
 def get_artist(id):
     result = sp.artist(id)
     return result
+
+def verify_artist(url):
+    # given a spotify url, uses regex to find the id of the artist and then
+    # verifies if the artist exists in spotify
+    # returns True if the artist exists, False otherwise
+    # example url: https://open.spotify.com/artist/7jy3rLJdDQY21OgRLCZ9sD?si=bWz-CxINQQeKfQfhHdbg3Q
+    # the id is 7jy3rLJdDQY21OgRLCZ9sD
+
+    regex = r"artist\/([a-zA-Z0-9]+)\?"
+    matches = re.search(regex, url)
+
+    if matches:
+        id = matches.group(1)
+        try:
+            get_artist(id)
+            # return f"Verified artist: {get_artist(id)['name']}"
+            return True
+        except:
+            return False
+    else:
+        return False
+
 
 #se podrían pasar codigos de error para que el front los maneje
 def get_result_search(search, type, limit, offset, genre = None):

@@ -11,7 +11,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile, verify_artist
 
 load_dotenv()
 
@@ -224,6 +224,7 @@ def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
+        isArtist = request.POST['isArtist']
         password = request.POST['password']
         password2 = request.POST['password2']
 
@@ -234,6 +235,14 @@ def signup(request):
             elif User.objects.filter(username=username).exists():
                 messages.info(request, 'Username already exists, please choose another one')
                 return redirect('create_account')
+            elif isArtist:
+                if (request.POST['spotify_url'] is not None):
+                    if (verify_artist(request.POST['link']) is False):
+                        messages.info("You must provide a valid Spotify profile for artists")
+                        return redirect('create_account')
+                else: 
+                    messages.info("You must verify your Spotify profile")
+                    return redirect('create_account')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
@@ -244,7 +253,7 @@ def signup(request):
 
                 #create a Profile object for the new user
                 user_model = User.objects.get(username=username)
-                new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
+                new_profile = Profile.objects.create(user=user_model, id_user=user_model.id, isArtist=isArtist)
                 new_profile.save()
                 return redirect('profile')
         else:
