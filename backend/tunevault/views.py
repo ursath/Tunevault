@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Profile, Post, Comment, Vault
+from .models import Profile, Post, Comment, Vault, FollowersCount
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, auth
 from .forms import PostForm, CommentForm
@@ -12,7 +12,7 @@ import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist, search_member
+from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist, search_member, search_all
 
 load_dotenv()
 
@@ -177,7 +177,22 @@ def profile(request):
     user_profile = Profile.objects.get(user__username=request.user)
     return render(request, 'profile.html', {'user_profile': user_profile})
 
+@login_required(login_url='signin')
+def follow(request):
+    if request.method == 'POST':
+        follower = request.POST['follower']
+        user = request.POST['user']
 
+        if FollowersCount.objects.filter(follower=follower, user=user).first():
+            delete_follower = FollowersCount.objects.get(follower=follower, user=user)
+            delete_follower.delete()
+            return redirect('/members/'+user)
+        else:
+            new_follower = FollowersCount.objects.create(follower=follower, user=user)
+            new_follower.save()
+            return redirect('/members/'+user)
+    else:
+        return redirect('/')
 # @login_required(login_url='signin')
 # def profile(request, pk):
 #     user_object = User.objects.get(username=pk)
@@ -355,6 +370,15 @@ def podcasts_search(request, query):
         return render(request, 'searchPodcasts.html', context)
 
 
+def all_search(request, query):
+    if request.method == 'POST':
+        query = request.POST['query']
+        print("hial")
+        return redirect('/search/' + query)
+    else:
+        context = search_all(query,3)
+        return render(request, 'searchResult.html', context)
+
 def members(request):
     if request.method == 'POST':
         query = request.POST['query']
@@ -375,7 +399,33 @@ def members_search(request, query):
 
 def member(request, user):
     user_profile = get_profile(user)
-    return render(request, 'profile.html', {'user_profile': user_profile})
+    user_posts = Post.objects.filter(user=user_profile['user'])
+    user_comments = Comment.objects.filter(user=user_profile['user'])
+    user_post_length = len(user_posts)
+    user_comment_length = len(user_comments)
+
+    follower = request.user.username
+    userToFollow = user
+
+    if FollowersCount.objects.filter(follower=follower, user=userToFollow).first():
+        button_text = 'Unfollow'
+    else:
+        button_text = 'Follow'
+
+    user_followers = len(FollowersCount.objects.filter(user=userToFollow))
+    user_following = len(FollowersCount.objects.filter(follower=follower))
+
+    context = {
+        'user_profile': user_profile,
+        'user_posts': user_posts,
+        'user_post_length': user_post_length,
+        'user_comments': user_comments,
+        'user_comment_length': user_comment_length,
+        'button_text': button_text,
+        'user_followers': user_followers,
+        'user_following': user_following,
+    }
+    return render(request, 'profile.html', context)
 
 
 class vaultPost(View):

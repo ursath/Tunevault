@@ -22,6 +22,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('vault/<str:vtype>/<str:id>', views.vault, name='vault'),
     path('vault/<str:vtype>/<str:id>/post/<str:post_id>', vaultPost.as_view(), name='post'),
+    path('search/<str:query>', views.all_search, name='search'),
 ]
 
 if settings.DEBUG:
