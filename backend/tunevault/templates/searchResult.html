@@ -20,7 +20,7 @@
             {% if result.0.vaults %}
             <div class="sub-header">
                 <h2  class="sub-title">Artists</h2>
-                <button class="view-all">View all</button>
+                <button class="view-all" onclick="viewAll('music')">View all</button>
             </div>
             <div class='sub-gallery'>
                 {% for artist_data in result.0.vaults %}
@@ -36,7 +36,7 @@
             {% if result.1.vaults %}
             <div class="sub-header">
                 <h2  class="sub-title">Albums</h2>
-                <button class="view-all">View all</button>
+                <button class="view-all" onclick="viewAll('music')">View all</button>
             </div>
             <div class='sub-gallery'>
                 {% for album in result.1.vaults %}
@@ -54,7 +54,7 @@
             {% if result.2.vaults %}
             <div class="sub-header">
                 <h2  class="sub-title">Podcasts</h2>
-                <button class="view-all">View all</button>
+                <button class="view-all" onclick="viewAll('podcasts')">View all</button>
             </div>
             <div class='sub-gallery'>
                 {% for podcast in result.2.vaults %}
@@ -73,7 +73,7 @@
             {% if result.3.vaults %}
             <div class="sub-header">
                 <h2  class="sub-title">Episodes</h2>
-                <button class="view-all">View all</button>
+                <button class="view-all" onclick="viewAll('podcasts')">View all</button>
             </div>
             <div class='sub-gallery'>
                 {% for episode in result.3.vaults %}
@@ -91,7 +91,7 @@
         
             <div class="sub-header">
                 <h2  class="sub-title">Members</h2>
-                <button class="view-all">View all</button>
+                <button class="view-all" onclick="viewAll('members')">View all</button>
             </div>
             {% if result.4.members %}
             <div class='gallery'>
@@ -112,5 +112,15 @@
         
     </div>
 
+    <script>
+        function viewAll(page){
+            var currentURL = window.location.href;
+
+            var urlParts = currentURL.split('/');
+            const query = urlParts[ urlParts.indexOf("search")+1 ]
+        
+            window.location.href = "/"+page+"/" + encodeURIComponent(query);
+        }
+    </script>
 </body>
 </html>
