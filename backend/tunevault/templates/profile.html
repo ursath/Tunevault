@@ -36,15 +36,15 @@
 
                             <div class="followers">
                                 <div class="followersItem"> 
-                                    <p style="margin: 0;">100</p>
+                                    <p style="margin: 0;">{{user_followers}}</p>
                                     <p class="mini-text">Followers</p>
                                 </div>
                                 <div class="followersItem"> 
-                                    <p style="margin: 0;">100</p>
+                                    <p style="margin: 0;">{{user_following}}</p>
                                     <p class="mini-text">Following</p>
                                 </div>
                                 <div class="followersItem"> 
-                                    <p style="margin: 0;">100</p>
+                                    <p style="margin: 0;">{{user_comment_length}}</p>
                                     <p class="mini-text">Comments</p>
                                 </div>
                             </div>
@@ -59,23 +59,27 @@
                         </form>
                             
                         <div class="buttonBox">
-                            {% if true %}
-                            <div class="followButton" onclick="showPopup()"> 
-                                <span style="display: flex; align-items: center;"> 
-                                    Follow
-                                </button>
-                            </div>    
-                            {% else %}
+                            {% if isCurrentUser %}
                             <a href="/settings" style = "text-decoration: none">
                                 <div class="editButton"> 
                                     Edit profile <i class="material-icons" style="margin-left: 5px;">edit</i>
                                 </div>
                             </a>
                             <div class="logoutButton" onclick="showPopup()"> 
-                                <span style="display: flex; align-items: center;"> 
+                                <div style="display: flex; align-items: center;"> 
                                     Log out <i class="material-icons" style="margin-left: 10px;">logout</i>
-                                </button>
+                                </div>
                             </div> 
+                            {% else %}
+                            <form action="{% url 'follow' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{user_profile.user}}" name="user" />
+                                <div class="followButton"> 
+                                    <button type="submit" style="display: flex; align-items: center;"> 
+                                        {{button_text}}
+                                    </button>
+                                </div>  
+                            </form> 
                             {% endif %}                
                         </div>
                     </div>
