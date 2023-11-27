@@ -15,10 +15,15 @@
         <div class='HeaderMP'>
           <div>
             <h1 class="Title">Members</h1>
-            <div class="Search">
-                <input class="InputSearch" placeholder='Who are you looking for?' style="color: white" type="text" id="searcher" />
-                <i class="material-icons SearchIcon">search</i>
-            </div>
+            <form method="POST"> 
+              {% csrf_token %}
+              <div class="Search">
+                  <input class="InputSearch" placeholder='Who are you looking for?' type="text" name="query" style="color: white"/>
+                  <button type='submit' class="searchButton">
+                      <i class="material-icons SearchIcon">search</i>
+                  </button> 
+              </div>
+          </form>
           </div>
         </div>
 
@@ -31,7 +36,7 @@
                 <div class="media-group" id="group-1">
                   {% for user_data in membersList|slice:"0:5" %}
                     <div class="media-element">
-                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
+                      <a href="/members/profile/{{user_data.user}}" style="text-decoration: none; color: white;">
                         <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
                         <label class="profile-username">@{{ user_data.user }}</label>
                       </a>
@@ -52,7 +57,7 @@
                   </a>
                   {% for user_data in membersList|slice:"5:11" %}
                     <div class="media-element">
-                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
+                      <a href="/members/profile/{{user_data.user}}" style="text-decoration: none; color: white;">
                         <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
                         <label class="profile-username">@{{ user_data.user }}</label>
                       </a>
@@ -73,7 +78,7 @@
                   </a>
                   {% for user_data in membersList|slice:"11:16" %}
                     <div class="media-element">
-                      <a href="/members/{{user_data.user}}" style="text-decoration: none; color: white;">
+                      <a href="/members/profile/{{user_data.user}}" style="text-decoration: none; color: white;">
                         <img src="{{user_data.profileimg}}" alt="logo" class="profile-image"/>
                         <label class="profile-username">@{{ user_data.user }}</label>
                       </a>

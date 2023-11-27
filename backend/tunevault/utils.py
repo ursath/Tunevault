@@ -33,7 +33,7 @@ def get_result_search(search, type, limit, offset, genre = None):
         next_flag = False
         finished = False
 
-        for profile in Profile.objects:
+        for profile in Profile.objects.all():
             if profile.isArtist and (search in profile.user.get_username()):
 
                 if offset_copy == 0:
