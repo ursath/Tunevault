@@ -74,6 +74,7 @@ def get_result_search(search, type, limit, offset, genre = None):
             'members': listToRet,
             'total': total,
             'next': next,
+            'query': search
         }
 
     else:
