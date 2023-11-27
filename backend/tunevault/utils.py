@@ -53,8 +53,7 @@ def get_result_search(search, type, limit, offset, genre = None):
             if (not filterArtist or profile.isArtist) and (search in profile.user.get_username()):
 
                 if offset_copy == 0:
-                    listToRet.append(profile.user.get_username())
-                    print(profile.user.get_username())
+                    listToRet.append(get_profile(profile.user.get_username()))
                 else:
                     offset_copy -= 1
 
