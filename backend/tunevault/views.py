@@ -213,7 +213,7 @@ def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
-        isArtist = request.POST['isArtist']
+        isArtist = 'isArtist' in request.POST and request.POST['isArtist'] == 'on'
         password = request.POST['password']
         password2 = request.POST['password2']
 
@@ -225,12 +225,26 @@ def signup(request):
                 messages.info(request, 'Username already exists, please choose another one')
                 return redirect('create_account')
             elif isArtist:
-                if (request.POST['spotify_url'] is not None):
-                    if (verify_artist(request.POST['link']) is False):
-                        messages.info("You must provide a valid Spotify profile for artists")
+                if request.POST['link'] is not None:
+                    if not verify_artist(request.POST['link']):
+                        messages.info(request, "You must provide a valid Spotify profile for artists")
                         return redirect('create_account')
-                else: 
-                    messages.info("You must verify your Spotify profile")
+                    else:
+                        user = User.objects.create_user(username=username, email=email, password=password)
+                        user.save()
+
+                        #log user in and redirect to settings page
+                        user_login = auth.authenticate(username=username, password=password)
+                        auth.login(request, user_login)
+
+                        #create a Profile object for the new user
+                        user_model = User.objects.get(username=username)
+                        new_profile = Profile.objects.create(user=user_model, id_user=user_model.id, isArtist=isArtist)
+                        new_profile.save()
+                        return redirect('profile')
+
+                else:
+                    messages.info(request, "You must verify your Spotify profile")
                     return redirect('create_account')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
