@@ -56,19 +56,30 @@ class Post(models.Model):
     def __str__(self):
         return self.user
 
+class VaultFavs(models.Model):
+    user = models.ForeignKey(User,related_name='user_favs', on_delete=models.CASCADE)
+    vault = models.ForeignKey('Vault',related_name='vault_favs', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.user.username+self.vault.title
+
+class PostFavs(models.Model):
+    user = models.ForeignKey(User,related_name='user_post_favs', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post',related_name='post_favs', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.user.username + self.post.title
 
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     #ahora muestro el comentario aun si el usuario borro su cuenta pero se debe manejar para que la redireccion sea a una pagina de error
     # user = models.ForeignKey(Profile,related_name='profile', null = yes, on_delete=models.RESTRICT)
     user = models.CharField(max_length=50)
-    #se deja de mostrar el comentario si se borro el post 
+    #se deja de mostrar el comentario si se borro el post
     #tal vez se puede modificar el post para saber si fue borrado y en ese caso que no se muestre desde el front pero si se siga obteniendo para ser mostrados los comentarios asociados
     post_id = models.CharField(max_length=50)
     #verificar como se maneja este caso dado que si se referencia a una primary key no puedo ponerlo en null
     #tal vez se podría crear una especie de comentario asociado a cada vault poniendo como en reddit las reglas de moderacion del vault
-    # entonces por defecto el primer comentario hace referencia a ese default (aunque visualmente solo responda a un post) 
-    #sino con que null este en true 
+    # entonces por defecto el primer comentario hace referencia a ese default (aunque visualmente solo responda a un post)
+    #sino con que null este en true
     # comment_answer_id = models.ForeignKey(Comment,related_name='comment_answer', on_delete=models.RESTRICT)
     comment_answer_id = models.CharField(max_length=50, default=0)
     likes = models.IntegerField(default=0)
@@ -77,7 +88,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.user
-    
+
 class FollowersCount(models.Model):
     follower = models.CharField(max_length=100)
     user = models.CharField(max_length=100)

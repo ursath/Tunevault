@@ -21,7 +21,7 @@
                             <div class="profileImage" style="margin-left: 20px;">
                                 <div>
                                 <figure>
-                                    <img class="image-large" src="{{user_profile.profileimg.url}}" alt="profile image">
+                                    <img class="image-large" src="{{user_profile.profileimg}}" alt="profile image">
                                 </figure>
                                     <div style="margin-left: 50px; font-size: 20px;">
                                         <label style="font-weight: bold;">{{ user_profile.user }}</label>
@@ -50,11 +50,19 @@
                             </div>
                             
                             <div class="bio">
-                                <p style="margin: 0 0 0 5px;">{{user_profile.bio}}</p>  
-                                <div class="location">
-                                    <i class="material-icons" style="margin-right: 5px;">place</i>
-                                    <p style="margin: 0;">{{user_profile.location}}</p>  
-                                </div>
+                                {% if not user_profile.bio and not user_profile.location %}
+                                    <div style="text-align: center;">
+                                        <p>No data</p>
+                                    </div>
+                                    {% else %}
+                                    <p style="margin: 0 0 0 5px;">{{user_profile.bio}}</p>  
+                                    {% if user_profile.location %}
+                                        <div class="location">
+                                            <i class="material-icons" style="margin-right: 5px;">place</i>
+                                            <p style="margin: 0;">{{user_profile.location}}</p>  
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                         </form>
                             
@@ -74,11 +82,9 @@
                             <form action="{% url 'follow' %}" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" value="{{user_profile.user}}" name="user" />
-                                <div class="followButton"> 
-                                    <button type="submit" style="display: flex; align-items: center;"> 
+                                    <button class="followButton" type="submit" style="display: flex; align-items: center;"> 
                                         {{button_text}}
                                     </button>
-                                </div>  
                             </form> 
                             {% endif %}                
                         </div>
@@ -92,7 +98,7 @@
                     </div>
 
                     <div id="commentsContent" class="comments">
-                            comments
+                            {{user_comments}}
                     </div>
 
                     <div id="favsContent" class="favs" style="display: none;">
