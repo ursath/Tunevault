@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
-from .models import Comment, Post, Profile
+from .models import Comment, Post, Profile,VaultFavs
 import re
 
 load_dotenv()
@@ -32,7 +32,7 @@ def verify_artist(url):
     id = matches.group(1)
     if get_artist(id) is not None:
         return True
-    else:  
+    else:
         return False
 
 #se podrían pasar codigos de error para que el front los maneje
@@ -165,7 +165,7 @@ def get_or_create_vault(item):
             image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
         elif (item['genres']== []):
             genre = ['None']
-        
+
         toRet = create_vault(item['id'],item['name'],item['external_urls']['spotify'],genre,image)
     return {
         'id': toRet.id,
@@ -396,6 +396,18 @@ def get_recommended_profiles():
         #if profile.followers > 0:
         recommended_profiles.append(get_profile(profile.user))
     return {'membersList': recommended_profiles}
+def fav_or_unfav_vault(vault_id, user):
+    vaultfav=VaultFavs.objects.filter(user=user, vault=vault_id)
+    if(vaultfav.exists()):
+        vaultfav.delete()
+    else:
+        newvaultfav=VaultFavs.objects.create(user=user, vault=vault_id)
+        newvaultfav.save()
+
+def get_user_vault_favs(user):
+    return VaultFavs.objects.filter(user=user)
+def get_vault_fav_count(vault_id):
+    return VaultFavs.objects.filter(vault=vault_id).count()
 
 #se podría scrapear de algun lugar para tener un top
 def get_top_podcasts(limit=10):
