@@ -269,7 +269,7 @@ def signup(request):
                 messages.info(request, 'Username already exists, please choose another one')
                 return redirect('create_account')
             elif isArtist:
-                if request.POST['link'] is not None:
+                if request.POST['link'] != '':
                     if not verify_artist(request.POST['link']):
                         messages.info(request, "You must provide a valid Spotify profile for artists")
                         return redirect('create_account')
