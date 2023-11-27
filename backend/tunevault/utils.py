@@ -29,10 +29,16 @@ def verify_artist(url):
 
     regex = r"artist\/([a-zA-Z0-9]+)\?"
     matches = re.search(regex, url)
+
+    if matches == None:
+        return False
+    
     id = matches.group(1)
-    if get_artist(id) is not None:
+
+    try:
+        get_artist(id)
         return True
-    else:
+    except spotipy.SpotifyException:
         return False
 
 #se podrían pasar codigos de error para que el front los maneje
