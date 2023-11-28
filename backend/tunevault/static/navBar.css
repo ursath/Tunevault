@@ -89,12 +89,17 @@
 }
 #searcher {
     color: black;
+    border: transparent;
 }
 
 input {
     background-color: none;
     width: 190px;
     opacity: 100%;
+}
+
+input:focus {
+    outline: none;
 }
 
 .Item:hover {
@@ -124,4 +129,11 @@ input {
 .search-btn {
     border-radius: 0px 24px 24px 0px;
     border-color: transparent;
+    height: 26px; 
+    display: column;
+    align-items: center;
+}
+
+.search-icon {
+    
 }

@@ -32,7 +32,7 @@ def verify_artist(url):
 
     if matches == None:
         return False
-    
+
     id = matches.group(1)
 
     try:
@@ -158,8 +158,9 @@ def search_all(query, results):
     searchAlbum = get_result_search(query, 'album', results, 0)
     searchPodcast = get_result_search(query, 'show', results, 0)
     searchEpisode = get_result_search(query, 'episode', results, 0)
-    searchMember = get_result_search(query, 'member', results, 0)
-    result = [searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMember]
+    searchMemberCommon = get_result_search(query, 'member_common', results, 0)
+    searchMemberArtist = get_result_search(query, 'member_artist', results, 0)
+    result = [searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMemberArtist, searchMemberCommon]
     return {'result' : result }
 
 def get_or_create_vault(item):
@@ -427,16 +428,25 @@ def get_recommended_profiles():
         if len(recommended_profiles) == 12:
             break
     return {'membersList': recommended_profiles}
-def fav_or_unfav_vault(vault_id, user):
-    vaultfav=VaultFavs.objects.filter(user=user, vault=vault_id)
-    if(vaultfav.exists()):
-        vaultfav.delete()
-    else:
-        newvaultfav=VaultFavs.objects.create(user=user, vault=vault_id)
-        newvaultfav.save()
+
 
 def get_user_vault_favs(user):
-    return VaultFavs.objects.filter(user=user)
+   vaults=VaultFavs.objects.filter(user=user).distinct()
+   toret={}
+   for vault in vaults:
+       print(vault)
+       auxvault=Vault.objects.get(external_url=vault)
+       print(auxvault.title)
+       toret[auxvault.id]={
+              'artist':auxvault.title,
+              'vtype':auxvault.vtype,
+              'description':auxvault.description,
+              'genres':auxvault.genres,
+              'image':auxvault.spotifyimg,
+              'likes':auxvault.likes,
+         }
+   return {'top':toret,'isLastPage':False}
+
 def get_vault_fav_count(vault_id):
     return VaultFavs.objects.filter(vault=vault_id).count()
 
@@ -473,4 +483,3 @@ def scrap_arists(limit):
 
     browser.quit()
     return urlList
-    

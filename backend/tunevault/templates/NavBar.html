@@ -38,7 +38,7 @@
                 <div class="search">
                     <input class="Item" type="text" id="searcher" name="query"/>
                     <button class="search-btn" onclick="search()">
-                            <i class="material-icons">search</i>
+                            <i class="material-icons search-icon">search</i>
                     </button>
             </div>
             </li>
@@ -65,7 +65,8 @@
 
     function search(){
         var query = document.getElementById("searcher").value;
-
+        if ( query == "")
+            return
         // Redirigir a la página de búsqueda con el valor ingresado
         window.location.href = "/search/" + encodeURIComponent(query);
     }
