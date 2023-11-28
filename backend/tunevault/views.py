@@ -16,6 +16,7 @@ from .utils import *
 
 load_dotenv()
 
+
 # Create your views here.
 
 def home(request):
@@ -143,7 +144,6 @@ def home(request):
 
 @login_required(login_url='signin')
 def settings_profile(request):
-
     user_profile = Profile.objects.get(user__username=request.user)
 
     if request.method == 'POST':
@@ -174,7 +174,6 @@ def settings_profile(request):
 
 
 def profile(request, user=None):
-
     if user is None:
         user = request.user.username
 
@@ -217,13 +216,15 @@ def follow(request):
         if FollowersCount.objects.filter(follower=follower, user=user).first():
             delete_follower = FollowersCount.objects.get(follower=follower, user=user)
             delete_follower.delete()
-            return redirect('/profile/'+user)
+            return redirect('/profile/' + user)
         else:
             new_follower = FollowersCount.objects.create(follower=follower, user=user)
             new_follower.save()
-            return redirect('/profile/'+user)
+            return redirect('/profile/' + user)
     else:
         return redirect('/')
+
+
 # @login_required(login_url='signin')
 # def profile(request, pk):
 #     user_object = User.objects.get(username=pk)
@@ -255,7 +256,6 @@ def follow(request):
 
 
 def signup(request):
-
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
@@ -279,11 +279,11 @@ def signup(request):
                         user = User.objects.create_user(username=username, email=email, password=password)
                         user.save()
 
-                        #log user in and redirect to settings page
+                        # log user in and redirect to settings page
                         user_login = auth.authenticate(username=username, password=password)
                         auth.login(request, user_login)
 
-                        #create a Profile object for the new user
+                        # create a Profile object for the new user
                         user_model = User.objects.get(username=username)
                         new_profile = Profile.objects.create(user=user_model, id_user=user_model.id, isArtist=isArtist)
                         new_profile.save()
@@ -296,11 +296,11 @@ def signup(request):
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.save()
 
-                #log user in and redirect to settings page
+                # log user in and redirect to settings page
                 user_login = auth.authenticate(username=username, password=password)
                 auth.login(request, user_login)
 
-                #create a Profile object for the new user
+                # create a Profile object for the new user
                 user_model = User.objects.get(username=username)
                 new_profile = Profile.objects.create(user=user_model, id_user=user_model.id, isArtist=isArtist)
                 new_profile.save()
@@ -314,7 +314,6 @@ def signup(request):
 
 
 def signin(request):
-
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -339,8 +338,8 @@ def logout(request):
 
 
 def vault(request, vtype, id):
-   # id es el ID del album/artista
-   # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones
+    # id es el ID del album/artista
+    # info: id, tipo (podcast/album), nombre, artista, descripcion, foto, foto del artista, likes, duracion, canciones
     vault = get_or_create_by_id(vtype, id)
     form = PostForm(request.POST)
     if form.is_valid():
@@ -356,66 +355,73 @@ def vault(request, vtype, id):
     is_fav = VaultFavs.objects.filter(user=request.user.username, vault=vault_id).exists()
     likes = get_vault_fav_count(Vault.objects.filter(external_url__contains=id).first())
 
-    context = {'vault': vault, 'posts': posts, 'form': form, 'rating':rating, 'first_post': first_post, 'is_fav': is_fav, 'vault_id': id, 'likes': likes }
+    context = {'vault': vault, 'posts': posts, 'form': form, 'rating': rating, 'first_post': first_post,
+               'is_fav': is_fav, 'vault_id': id, 'likes': likes}
     return render(request, 'vault.html', context)
+
 
 def gallery(request):
     # muestra los albums/artists/podcasts guardados en la bd
     # info: id, nombre, tipo, likes, fo
-    list=[]
+    list = []
     for vault in Vault.objects.all():
-        list.append({"id":vault.id, "title":vault.title, "vtype":vault.vtype, "likes":vault.likes, "spotifyimg":vault.spotifyimg})
+        list.append({"id": vault.id, "title": vault.title, "vtype": vault.vtype, "likes": vault.likes,
+                     "spotifyimg": vault.spotifyimg})
     return render(request, 'gallery.html', {list})
+
 
 def fav_or_unfav_vault(request):
     if request.method == 'POST':
         vault_id = request.POST['vault_id']
         vtype = request.POST['vtype']
         vault_id_path = request.POST['vault_id_path']
-        vaultfav=VaultFavs.objects.filter(user=request.user, vault=vault_id)
-        if(vaultfav.exists()):
+        vaultfav = VaultFavs.objects.filter(user=request.user, vault=vault_id)
+        if (vaultfav.exists()):
             vaultfav.delete()
-            Vault.objects.filter(id=vault_id).update(followers=F('followers')-1)
+            Vault.objects.filter(id=vault_id).update(followers=F('followers') - 1)
         else:
             vault = Vault.objects.get(id=vault_id)
-            newvaultfav=VaultFavs.objects.create(user=request.user.username, vault=vault)
+            newvaultfav = VaultFavs.objects.create(user=request.user.username, vault=vault)
             newvaultfav.save()
-            Vault.objects.filter(id=vault_id).update(followers=F('followers')+1)
-        return redirect('/vault/'+ vtype + '/' + vault_id_path)
+            Vault.objects.filter(id=vault_id).update(followers=F('followers') + 1)
+        return redirect('/vault/' + vtype + '/' + vault_id_path)
 
-#TOD?: hacerlo menos repetitivo
-def like_or_unlike_comment(request,comment_id):
-    if request.method=='POST':
-        auxComment=Comment.objects.get(id=comment_id)
+
+# TOD?: hacerlo menos repetitivo
+def like_or_unlike_comment(request, comment_id):
+    if request.method == 'POST':
+        auxComment = Comment.objects.get(id=comment_id)
         comment = likedComments.objects.filter(user=request.user, comment=auxComment)
-        if(comment.exists()):
+        if (comment.exists()):
             comment.delete()
-            Comment.objects.filter(comment=auxComment).update(likes=F('likes')-1)
+            Comment.objects.filter(comment=auxComment).update(likes=F('likes') - 1)
         else:
-            newcomment=likedComments.objects.create(user=request.user, id=comment_id)
+            newcomment = likedComments.objects.create(user=request.user, id=comment_id)
             newcomment.save()
-            Comment.objects.filter(comment=auxComment).update(likes=F('likes')+1)
+            Comment.objects.filter(comment=auxComment).update(likes=F('likes') + 1)
         return redirect(request.path_info)
+
 
 def like_or_unlike_post(request):
     if request.method == 'POST':
         post_id = request.POST['post_id']
-        auxPost=Post.objects.get(id=post_id)
-        post = likedPosts.objects.filter(post=auxPost,user=request.user)
-        if(post.exists()):
+        auxPost = Post.objects.get(id=post_id)
+        post = likedPosts.objects.filter(post=auxPost, user=request.user)
+        if (post.exists()):
             post.delete()
-            Post.objects.filter(post=auxPost).update(likes=F('likes')-1)
+            Post.objects.filter(post=auxPost).update(likes=F('likes') - 1)
         else:
-            newpost=Post.objects.create(user=request.user, id=post_id)
+            newpost = Post.objects.create(user=request.user, id=post_id)
             newpost.save()
-            Post.objects.filter(post=auxPost).update(likes=F('likes')+1)
+            Post.objects.filter(post=auxPost).update(likes=F('likes') + 1)
         return redirect(request.path_info)
 
+
 def music(request):
-     if request.method == 'POST':
+    if request.method == 'POST':
         query = request.POST['query']
         return redirect('/music/' + query)
-     else:
+    else:
         context = format_top50(0)
         return render(request, 'music.html', context)
 
@@ -425,15 +431,16 @@ def music_search(request, query):
         query = request.POST['query']
         return redirect('/music/' + query)
     else:
-        context = search_music(query)
+        genre = request.GET.get('genre', None)
+        context = search_music(query, genre=genre)
         return render(request, 'searchMusic.html', context)
 
 
 def podcasts(request):
-     if request.method == 'POST':
+    if request.method == 'POST':
         query = request.POST['query']
         return redirect('/podcasts/' + query)
-     else:
+    else:
         context = get_top_podcasts()
         return render(request, 'podcasts.html', context)
 
@@ -453,8 +460,9 @@ def all_search(request, query):
         print("hial")
         return redirect('/search/' + query)
     else:
-        context = search_all(query,3)
+        context = search_all(query, 3)
         return render(request, 'searchResult.html', context)
+
 
 def members(request):
     if request.method == 'POST':
@@ -476,7 +484,6 @@ def members_search(request, query):
 
 class vaultPost(View):
     def get(self, request, post_id, *args, **kwargs):
-
         comment_count = Comment.objects.filter(post_id=post_id).count()
         chain_comments = getChainOfComments(post_id, request)
         post = Post.objects.get(id=post_id)
