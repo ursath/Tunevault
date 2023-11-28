@@ -111,20 +111,26 @@
                             {% endfor %}
                             <hr>
                         {% else %}
-                                <div style="display: flex; justify-content: center; margin: 40px 0;">
-                                    <label><i class="material-icons noResultsIcon">search_off</i> No comments yet</label>
-                                </div>
+                            <div style="display: flex; justify-content: center; margin: 40px 0;">
+                                <label><i class="material-icons noResultsIcon">search_off</i> No comments yet</label>
+                            </div>
                         {% endif %}
                     </div>
 
                     <div id="favsContent" class="favs" style="display: none;">
-                        <div class='gallery-profile'>
-                            {% for fav_id, fav_data in user_favourites.top.items %}
-                                <div class='gallery-profile-item'>
-                                {% include 'miniPreviewVault.html' with vault=fav_data %}
-                                </div>
-                            {% endfor %}
-                        </div>
+                        {% if user_favourites.top %}
+                            <div class='gallery-profile'>
+                                {% for fav_id, fav_data in user_favourites.top.items %}
+                                    <div class='gallery-profile-item'>
+                                    {% include 'miniPreviewVault.html' with vault=fav_data %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div style="display: flex; justify-content: center; margin: 40px 0;">
+                                <label><i class="material-icons noResultsIcon">search_off</i> No favourites yet</label>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
