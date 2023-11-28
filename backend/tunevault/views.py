@@ -382,6 +382,31 @@ def fav_or_unfav_vault(request):
             newvaultfav.save()
             Vault.objects.filter(id=vault_id).update(followers=F('followers')+1)
         return redirect('/vault/'+ vtype + '/' + vault_id_path)
+#TOD?: hacerlo menos repetitivo
+def like_or_unlike_comment(request,comment_id):
+    if request.method=='POST':
+        comment = Comment.objects.filter(id=comment_id,user=request.user)
+        if(comment.exists()):
+            comment.delete()
+            Comment.objects.filter(id=comment_id).update(likes=F('likes')-1)
+        else:
+            newcomment=Comment.objects.create(user=request.user, id=comment_id)
+            Comment.objects.filter(id=comment_id).update(likes=F('likes')+1)
+            newcomment.save()
+        return redirect(request.path_info)
+
+def like_or_unlike_post(request):
+    if request.method == 'POST':
+        post_id = request.POST['post_id']
+        post = Post.objects.filter(id=post_id,user=request.user)
+        if(post.exists()):
+            post.delete()
+            Post.objects.filter(id=post_id).update(likes=F('likes')-1)
+        else:
+            newpost=Post.objects.create(user=request.user, id=post_id)
+            newpost.save()
+            Post.objects.filter(id=post_id).update(likes=F('likes')+1)
+        return redirect(request.path_info)
 
 def music(request):
      if request.method == 'POST':
