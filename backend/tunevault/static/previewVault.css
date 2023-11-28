@@ -67,15 +67,17 @@
     color: white;
     margin-left: 150px;
     font-family: var(--fonts);
+    display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 4px;
     font-weight: 700;
     font-size: 18px;
-    display: flex;
+    
 }
 
 .like {
-    margin-top: 16px;
+    /*margin-top: 20px;*/
 }
 
 .artist {
