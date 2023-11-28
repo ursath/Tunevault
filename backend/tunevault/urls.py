@@ -24,6 +24,7 @@ urlpatterns = [
     path('vault/<str:vtype>/<str:id>/post/<str:post_id>', vaultPost.as_view(), name='post'),
     path('search/<str:query>', views.all_search, name='search'),
     path('follow/', views.follow, name='follow'),
+    path('favourite/', views.fav_or_unfav_vault, name='favourite'),
 ]
 
 if settings.DEBUG:

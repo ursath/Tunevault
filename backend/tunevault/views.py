@@ -11,6 +11,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
+from django.db.models import F
 
 from .utils import *
 
@@ -350,8 +351,11 @@ def vault(request, vtype, id):
     posts = getPostsWithCommentCount(id)
     rating = getVaultRating(id)
     first_post = Post.objects.filter(user=request.user, vault_id=id).count() == 0
+    vault_id = Vault.objects.filter(external_url__contains=id).first().id
+    is_fav = VaultFavs.objects.filter(user=request.user.username, vault=vault_id).exists()
+    likes = get_vault_fav_count(Vault.objects.filter(external_url__contains=id).first())
 
-    context = {'vault': vault, 'posts': posts, 'form': form, 'rating':rating, 'first_post': first_post }
+    context = {'vault': vault, 'posts': posts, 'form': form, 'rating':rating, 'first_post': first_post, 'is_fav': is_fav, 'vault_id': id, 'likes': likes }
     return render(request, 'vault.html', context)
 
 def gallery(request):
@@ -362,17 +366,21 @@ def gallery(request):
         list.append({"id":vault.id, "title":vault.title, "vtype":vault.vtype, "likes":vault.likes, "spotifyimg":vault.spotifyimg})
     return render(request, 'gallery.html', {list})
 
-def fav_or_unfav_vault(vault_id, request):
+def fav_or_unfav_vault(request):
     if request.method == 'POST':
+        vault_id = request.POST['vault_id']
+        vtype = request.POST['vtype']
+        vault_id_path = request.POST['vault_id_path']
         vaultfav=VaultFavs.objects.filter(user=request.user, vault=vault_id)
         if(vaultfav.exists()):
             vaultfav.delete()
             Vault.objects.filter(id=vault_id).update(followers=F('followers')-1)
         else:
-            newvaultfav=VaultFavs.objects.create(user=request.user, vault=vault_id)
+            vault = Vault.objects.get(id=vault_id)
+            newvaultfav=VaultFavs.objects.create(user=request.user.username, vault=vault)
             newvaultfav.save()
             Vault.objects.filter(id=vault_id).update(followers=F('followers')+1)
-        return redirect('/vault/'+vault_id)
+        return redirect('/vault/'+ vtype + '/' + vault_id_path)
 
 def music(request):
      if request.method == 'POST':
