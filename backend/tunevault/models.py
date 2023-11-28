@@ -63,12 +63,16 @@ class VaultFavs(models.Model):
         return self.vault.external_url
 
 class likedPosts(models.Model):
-    user = models.ForeignKey(User,related_name='user_liked_posts', on_delete=models.CASCADE)
+    user = models.CharField(max_length=50)
     post = models.ForeignKey('Post',related_name='post_liked', on_delete=models.CASCADE)
     def __str__(self):
         return self.post.id
-    class Meta:
-        unique_together = [('user', 'post')]
+
+class likedComments(models.Model):
+    user= models.CharField(max_length=50)
+    comment = models.ForeignKey('Comment',related_name='comment_liked', on_delete=models.CASCADE)
+    def __str__(self):
+        return self.comment.id
 
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
