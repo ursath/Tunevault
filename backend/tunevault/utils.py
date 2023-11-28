@@ -45,7 +45,7 @@ def verify_artist(url):
 
 
 # se podrían pasar codigos de error para que el front los maneje
-def get_result_search(search, type, limit, offset, genre=None):
+def get_result_search(search, type, limit, offset, genre=None, album_type=None):
     if ((
             type != "artist" and type != "album" and type != "playlist" and type != "track" and type != "show" and type != "episode" and type != "audiobook" and type != "member_common" and type != "member_artist") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
@@ -108,6 +108,26 @@ def get_result_search(search, type, limit, offset, genre=None):
                                 Vault.objects.filter(external_url__contains=items['id']).first())
                         }
                     listToRet.append(queryResult)
+            elif album_type != None:
+                alb_type = items.get('album_type')
+                if alb_type and album_type in alb_type:
+                    if not items['images']:
+                        queryResult = {
+                            'id': items['id'],
+                            type: items['name'],
+                            'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
+                            'likes': get_vault_fav_count(
+                                Vault.objects.filter(external_url__contains=items['id']).first())
+                        }
+                    else:
+                        queryResult = {
+                            'id': items['id'],
+                            type: items['name'],
+                            'image': items['images'][0]['url'],
+                            'likes': get_vault_fav_count(
+                                Vault.objects.filter(external_url__contains=items['id']).first())
+                        }
+                    listToRet.append(queryResult)
             else:
                 if not items['images']:
                     queryResult = {
@@ -136,9 +156,9 @@ def get_result_search(search, type, limit, offset, genre=None):
 
 
 # para sección de música
-def search_music(query, genre=None):
+def search_music(query, genre=None, album_type=None):
     searchArtist = get_result_search(query, 'artist', 10, 0, genre=genre)
-    searchAlbum = get_result_search(query, 'album', 10, 0, genre=genre)
+    searchAlbum = get_result_search(query, 'album', 10, 0, album_type = album_type)
     result = [searchArtist, searchAlbum]
     return {'result': result}
 

@@ -432,7 +432,8 @@ def music_search(request, query):
         return redirect('/music/' + query)
     else:
         genre = request.GET.get('genre', None)
-        context = search_music(query, genre=genre)
+        album_type = request.GET.get('album_type', None)
+        context = search_music(query, genre=genre, album_type = album_type)
         return render(request, 'searchMusic.html', context)
 
 
