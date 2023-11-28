@@ -21,7 +21,7 @@
 
                 <div class="post">
                     <div style="display: flex;">
-                        <img class="image" height="40" width="40" src="https://us.123rf.com/450wm/thesomeday123/thesomeday1231709/thesomeday123170900021/85622928-icono-de-perfil-de-avatar-predeterminado-marcador-de-posici%C3%B3n-de-foto-gris-vectores-de.jpg">
+                        <img class="image-comment" height="40" width="40" src="{{img}}">
                         <div class="comment">
                             <div class="comment-header">
                                 <h4 class="comment-title">@{{ post.user }}</h4>
@@ -83,7 +83,7 @@
                 <div class="commentaries">
                     {% for a_comment in comments %}
                         {% with comment=a_comment.comment %}
-                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false"  rating=0 %}
+                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" rating=0 img=a_comment.img %}
 
                         <div class="buttons">
                             <button class="replies-button" data-target="{{ comment.id }}" onclick="toggleReplies(this)">
@@ -125,7 +125,7 @@
                             <div class="hidden-replies" style="display: none;" data-comment-id="{{ comment.id }}">
                             {% for reply in a_comment.replies %}
                             <div style="margin: 20px 0;">
-                                {% include 'commentBox.html' with username=reply.user date=reply.date title=reply.content type="false" id="false" post_id="false" rating=0 %}
+                                {% include 'commentBox.html' with username=reply.comment.user date=reply.comment.date title=reply.comment.content type="false" id="false" post_id="false" rating=0 img=reply.img %}
                             </div>
                             {% endfor %}
                             </div>

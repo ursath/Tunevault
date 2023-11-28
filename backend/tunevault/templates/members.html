@@ -28,22 +28,36 @@
         </div>
 
         <div class="BlackMP">
+            <div class="GlobalPadding">
             <h1 class='TrendingTittle'>Recomended</h1>
-           
+
+            {% if membersList|length < 5 %}
+            <div>
+              <div class='gallery' style="margin-top: 50px;">
+                {% for user_data in membersList %}
+                  <div class='gallery2-item'>
+                    {% include 'previewProfile.html' with user_data=user_data %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% else %}
             <div class="media-container">
               <div class="media-scroller">
                 <!--   Group 1 -->
                 <div class="media-group" id="group-1">
-                  {% for user_data in membersList|slice:"2:7" %}
+                  {% for user_data in membersList|slice:"0:4" %}
                     <div class="media-element">
                       {% include 'previewProfile.html' with user_data=user_data %}
                     </div>
                   {% endfor %}
+                  {% if membersList|length > 4 %}
                   <a class="next" href="#group-2" aria-label="next">
                     <svg>
                       <use href="#next"></use>
                     </svg>
                   </a>
+                  {% endif %}
                 </div>
                 <!-- Group 2   -->
                 <div class="media-group" id="group-2">
@@ -52,16 +66,18 @@
                       <use href="#previous"></use>
                     </svg>
                   </a>
-                  {% for user_data in membersList|slice:"7:13" %}
+                  {% for user_data in membersList|slice:"4:8" %}
                     <div class="media-element">
                       {% include 'previewProfile.html' with user_data=user_data %}
                     </div>
                   {% endfor %}
+                  {% if membersList|length > 8 %}
                   <a class="next" href="#group-3" aria-label="next">
                     <svg>
                       <use href="#next"></use>
                     </svg>
                   </a>
+                  {% endif %}
                 </div>
                 <!-- Group 3   -->
                 <div class="media-group" id="group-3">
@@ -70,7 +86,7 @@
                       <use href="#previous"></use>
                     </svg>
                   </a>
-                  {% for user_data in membersList|slice:"13:19" %}
+                  {% for user_data in membersList|slice:"8:12" %}
                   <div class="media-element">
                     {% include 'previewProfile.html' with user_data=user_data %}
                   </div>
@@ -79,7 +95,7 @@
                 
               </div>
             </div>
-
+            
             <svg>
               <symbol id="next" viewBox="0 0 256 512">
                 <path fill="white"
@@ -90,8 +106,10 @@
                   d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z" />
               </symbol>
             </svg>
+            {% endif %}
 
         </div>
+      </div>
     </div>
 
 <script>

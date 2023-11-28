@@ -90,3 +90,7 @@ font-family: var(--fonts);
     color: white;
 }
 
+.GlobalPadding {
+    padding: 0 15%;
+}
+

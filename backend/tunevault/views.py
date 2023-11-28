@@ -436,6 +436,7 @@ class vaultPost(View):
 
         context = {
             'post': post,
+            'img': Profile.objects.get(user__username=post.user).profileimg.url,
             'form': form,
             'comments': chain_comments,
             'comment_count': comment_count,

@@ -102,11 +102,19 @@
                     </div>
 
                     <div id="commentsContent" class="comments">
-                        {% for post in user_posts %}
+                        {% if user_posts %}
+                            {% for post in user_posts %}
+                                <hr>
+                                <div style="margin: 15px 0;">
+                                {% include 'commentBox.html' with username=post.vault_name date=post.date title=post.content type=post.vault_vtype id=post.vault_id post_id=post.post_id rating=post.rating img=post.vault_image %}
+                                </div>
+                            {% endfor %}
                             <hr>
-                            {% include 'commentBox.html' with username=post.vault_name date=post.date title=post.content type=post.vault_vtype id=post.vault_id post_id=post.post_id rating=post.rating img=post.vault_image %}
-                            
-                        {% endfor %}
+                        {% else %}
+                                <div style="display: flex; justify-content: center; margin: 40px 0;">
+                                    <label><i class="material-icons noResultsIcon">search_off</i> No comments yet</label>
+                                </div>
+                        {% endif %}
                     </div>
 
                     <div id="favsContent" class="favs" style="display: none;">

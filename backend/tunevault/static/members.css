@@ -26,9 +26,7 @@
     grid-auto-columns: 1fr;
   }
   .media-element {
-  
-    
-    margin: 0 50px;
+    margin: 0 30px;
   }
   .media-element > img {
     width: 100%;
@@ -42,7 +40,6 @@
     z-index: 10;
     position: absolute;
     width: 1rem;
-    padding: 1rem;
     background: rgb(0 0 0 / 0);
     opacity: 0;
   }

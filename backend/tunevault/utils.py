@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
-from .models import Comment, Post, Profile,VaultFavs
+from .models import Comment, Post, Profile,VaultFavs, User
 import re
 
 load_dotenv()
@@ -356,12 +356,12 @@ def getChainOfComments(post_id):
 
     for comment in comments:
         if comment.comment_answer_id == "0":
-            chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0})
+            chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0, 'img': Profile.objects.get(user__username=comment.user).profileimg.url})
 
     for post in chain_comments:
         for comment in comments:
             if str(comment.comment_answer_id) == str(post['comment'].id):
-                post['replies'].append(comment)
+                post['replies'].append({'comment': comment, 'img': Profile.objects.get(user__username=comment.user).profileimg.url})
                 post['replies_count'] += 1
 
     return chain_comments
@@ -371,7 +371,9 @@ def getPostsWithCommentCount(vault_id):
     posts = Post.objects.filter(vault_id=vault_id)
     posts_with_count = []
     for post in posts:
-        posts_with_count.append({'post': post, 'comment_count': Comment.objects.filter(post_id=post.id).count()})
+        user = Profile.objects.get(user__username=post.user)
+        print(user)
+        posts_with_count.append({'post': post, 'comment_count': Comment.objects.filter(post_id=post.id).count(), 'img': user.profileimg.url})
     return posts_with_count
 
 def getVaultRating(vault_id):
@@ -420,8 +422,10 @@ def get_recommended_profiles():
     profiles = Profile.objects.all()
     recommended_profiles = []
     for profile in profiles:
-        #if profile.followers > 0:
-        recommended_profiles.append(get_profile(profile.user))
+        if(profile.isArtist):
+            recommended_profiles.append(get_profile(profile.user))
+        if len(recommended_profiles) == 12:
+            break
     return {'membersList': recommended_profiles}
 def fav_or_unfav_vault(vault_id, user):
     vaultfav=VaultFavs.objects.filter(user=user, vault=vault_id)

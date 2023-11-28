@@ -47,6 +47,7 @@
             </select>
         </div>
         <div class='BlackMP'>
+        <div class="GlobalPadding">
             <h1 class='TrendingTittle'>Trending Vaults</h1>
             <div class='gallery'>
                 {% for artist_id, artist_data in top.items %}
@@ -59,7 +60,8 @@
                 <div class='gallery-page-nav'>
                 {% include 'pagination.html'  %}                
                 </div>
-            </div>      
+            </div>  
+        </div>    
         </div>
     </div>
 
