@@ -298,3 +298,8 @@
 .favs {
   padding: 20px 60px;
 }
+
+hr {
+  border: none;
+  border-top: 1px solid rgb(94, 94, 94); /* Cambiar el color y el grosor según tus preferencias */
+}

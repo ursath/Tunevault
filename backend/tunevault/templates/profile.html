@@ -24,8 +24,12 @@
                                     <img class="image-large" src="{{user_profile.profileimg}}" alt="profile image">
                                 </figure>
                                     <div style="margin-left: 50px; font-size: 20px;">
+                                        {% if user_profile.isArtist %}
+                                        <label style="font-weight: bold; display: flex; align-items: center;">{{ user_profile.user }} <i class="material-icons" style="color: rgb(0, 128, 255); margin-left: 10px;">verified</i></label>
+                                        {% else %}
                                         <label style="font-weight: bold;">{{ user_profile.user }}</label>
                                         <br>
+                                        {% endif %}
                                         <label style="color: rgb(182, 182, 182)">Profile</label>
                                     </div>
                                 </div>
@@ -44,7 +48,7 @@
                                     <p class="mini-text">Following</p>
                                 </div>
                                 <div class="followersItem"> 
-                                    <p style="margin: 0;">{{user_comment_length}}</p>
+                                    <p style="margin: 0;">{{user_post_length}}</p>
                                     <p class="mini-text">Comments</p>
                                 </div>
                             </div>
@@ -98,7 +102,11 @@
                     </div>
 
                     <div id="commentsContent" class="comments">
-                            {{user_comments}}
+                        {% for post in user_posts %}
+                            <hr>
+                            {% include 'commentBox.html' with username=post.vault_name date=post.date title=post.content type=post.vault_vtype id=post.vault_id post_id=post.post_id rating=post.rating img=post.vault_image %}
+                            
+                        {% endfor %}
                     </div>
 
                     <div id="favsContent" class="favs" style="display: none;">
@@ -107,6 +115,7 @@
                 </div>
             </div>
             </div>
+            
 
             <div id="popup" class="popup" style="display: none;">
                 <span onclick="closePopup()" class="closeButton"><i class="material-icons">close</i></span>
