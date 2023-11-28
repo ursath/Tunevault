@@ -478,13 +478,15 @@ class vaultPost(View):
     def get(self, request, post_id, *args, **kwargs):
 
         comment_count = Comment.objects.filter(post_id=post_id).count()
-        chain_comments = getChainOfComments(post_id)
+        chain_comments = getChainOfComments(post_id, request)
         post = Post.objects.get(id=post_id)
         form = CommentForm()
 
         context = {
             'post': post,
             'img': Profile.objects.get(user__username=post.user).profileimg.url,
+            'likes': get_post_likes_count(post),
+            'isLiked': is_post_liked_by_current_user(request.user.username, post),
             'form': form,
             'comments': chain_comments,
             'comment_count': comment_count,
@@ -502,11 +504,13 @@ class vaultPost(View):
             new_comment.save()
 
         comment_count = Comment.objects.filter(post_id=post_id).count()
-        chain_comments = getChainOfComments(post_id)
+        chain_comments = getChainOfComments(post_id, request)
 
         context = {
             'post': post,
             'form': form,
+            'likes': get_post_likes_count(post),
+            'isLiked': is_post_liked_by_current_user(request.user.username, post),
             'comments': chain_comments,
             'comment_count': comment_count,
         }

@@ -351,18 +351,18 @@ def string_to_uuid(input_string):
         return None  # Or raise an error or handle it as needed
 
 
-def getChainOfComments(post_id):
+def getChainOfComments(post_id, request):
     comments = Comment.objects.filter(post_id=post_id)
     chain_comments = []
 
     for comment in comments:
         if comment.comment_answer_id == "0":
-            chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0, 'img': Profile.objects.get(user__username=comment.user).profileimg.url})
+            chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0, 'img': Profile.objects.get(user__username=comment.user).profileimg.url, 'likes': get_comment_likes_count(comment), 'isLiked': is_comment_liked_by_current_user(request.user.username, comment)})
 
     for post in chain_comments:
         for comment in comments:
             if str(comment.comment_answer_id) == str(post['comment'].id):
-                post['replies'].append({'comment': comment, 'img': Profile.objects.get(user__username=comment.user).profileimg.url})
+                post['replies'].append({'comment': comment, 'img': Profile.objects.get(user__username=comment.user).profileimg.url, 'likes': get_comment_likes_count(post['comment']), 'isLiked': is_comment_liked_by_current_user(request.user.username, comment)})
                 post['replies_count'] += 1
 
     return chain_comments
@@ -449,14 +449,17 @@ def get_user_vault_favs(user):
 def get_vault_fav_count(vault_id):
     return VaultFavs.objects.filter(vault=vault_id).count()
 
-def get_comment_fav_count(vault_id):
-    return likedComments.objects.filter(vault=vault_id).count()
+def get_comment_likes_count(comment_id):
+    return likedComments.objects.filter(comment = comment_id).count()
 
-def get_post_fav_count(vault_id):
-    return likedPosts.objects.filter(vault=vault_id).count()
+def get_post_likes_count(post_id):
+    return likedPosts.objects.filter(post=post_id).count()
 
-def is_post_liked_by_current_user(user, post_id):
-    return likedPosts.objects.filter(user=user, post=post_id).exists()
+def is_post_liked_by_current_user(user, post):
+    return likedPosts.objects.filter(user=user, post=post).exists()
+
+def is_comment_liked_by_current_user(user, comment):
+    return likedComments.objects.filter(user=user, comment=comment).exists()
 
 #se podría scrapear de algun lugar para tener un top
 def get_top_podcasts(limit=10):
