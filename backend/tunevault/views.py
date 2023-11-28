@@ -12,7 +12,6 @@ import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 from django.db.models import F
-
 from .utils import *
 
 load_dotenv()
@@ -182,6 +181,7 @@ def profile(request, user=None):
     user_profile = get_profile(user)
     user_posts = get_posts(user)
     user_post_length = len(user_posts)
+    user_favourites = get_user_vault_favs(user)
 
     follower = request.user.username
     userToFollow = user
@@ -198,6 +198,7 @@ def profile(request, user=None):
         'user_profile': user_profile,
         'user_posts': user_posts,
         'user_post_length': user_post_length,
+        'user_favourites': user_favourites,
         'button_text': button_text,
         'user_followers': user_followers,
         'user_following': user_following,

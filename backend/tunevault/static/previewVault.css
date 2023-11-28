@@ -19,7 +19,7 @@
     position: absolute;
     z-index: 0;
     font-family: var(--fonts);
-    overflow: hidden;  /* Agregado para ocultar el contenido que se desborda */
+    overflow: hidden; 
 }
 
 .text-container {

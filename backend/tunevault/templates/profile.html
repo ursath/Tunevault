@@ -118,7 +118,13 @@
                     </div>
 
                     <div id="favsContent" class="favs" style="display: none;">
-                            favs
+                        <div class='gallery-profile'>
+                            {% for fav_id, fav_data in user_favourites.top.items %}
+                                <div class='gallery-profile-item'>
+                                {% include 'miniPreviewVault.html' with vault=fav_data %}
+                                </div>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -47,14 +47,14 @@
                     <h2>{{vault.title}}</h2>
                     <div class="button" style="display: flex; align-items: center;">
 
-                        <label style="margin-right: 8px;">{{likes}}</label>
+                        <p style="margin-right: 8px;">{{likes}}</p>
 
                         <form action="{% url 'favourite' %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" value="{{vault.id}}" name="vault_id" />
                             <input type="hidden" value="{{vault_id}}" name="vault_id_path" />
                             <input type="hidden" value="{{vault.type}}" name="vtype" />
-                            <button type="submit" >
+                            <button type="submit" style="background-color: transparent; border: none; color: white; display: flex; align-items: center;">
                                 {% if is_fav %}
                                 <i class="material-icons" style="cursor: pointer; margin-right: 20px;">favorite</i>
                                 {% else %}

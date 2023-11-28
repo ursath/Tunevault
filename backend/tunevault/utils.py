@@ -434,9 +434,7 @@ def get_user_vault_favs(user):
    vaults=VaultFavs.objects.filter(user=user).distinct()
    toret={}
    for vault in vaults:
-       print(vault)
        auxvault=Vault.objects.get(external_url=vault)
-       print(auxvault.title)
        toret[auxvault.id]={
               'artist':auxvault.title,
               'vtype':auxvault.vtype,
@@ -444,6 +442,7 @@ def get_user_vault_favs(user):
               'genres':auxvault.genres,
               'image':auxvault.spotifyimg,
               'likes':auxvault.likes,
+              'id': auxvault.external_url.split('/')[-1]
          }
    return {'top':toret,'isLastPage':False}
 
