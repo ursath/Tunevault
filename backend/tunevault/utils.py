@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault
 from dotenv import load_dotenv
-from .models import Comment, Post, Profile,VaultFavs, User
+from .models import Comment, Post, Profile,VaultFavs, User, likedComments, likedPosts
 import re
 
 load_dotenv()
@@ -448,6 +448,15 @@ def get_user_vault_favs(user):
 
 def get_vault_fav_count(vault_id):
     return VaultFavs.objects.filter(vault=vault_id).count()
+
+def get_comment_fav_count(vault_id):
+    return likedComments.objects.filter(vault=vault_id).count()
+
+def get_post_fav_count(vault_id):
+    return likedPosts.objects.filter(vault=vault_id).count()
+
+def is_post_liked_by_current_user(user, post_id):
+    return likedPosts.objects.filter(user=user, post=post_id).exists()
 
 #se podría scrapear de algun lugar para tener un top
 def get_top_podcasts(limit=10):
