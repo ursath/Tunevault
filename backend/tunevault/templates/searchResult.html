@@ -93,7 +93,7 @@
                 <h2  class="sub-title">Member artists</h2>
                 <button class="view-all" onclick="viewAll('members')">View all</button>
             </div>
-            <div class='gallery'>
+            <div class='gallery-mem'>
                 {% for user_data in result.4.members %}
                     <div class='gallery2-item'>
                     {% include 'previewProfile.html' with user_data=user_data %}
@@ -107,7 +107,7 @@
                 <button class="view-all" onclick="viewAll('members')">View all</button>
             </div>
             {% if result.5.members %}
-            <div class='gallery'>
+            <div class='gallery-mem'>
                 {% for user_data in result.5.members %}
                     <div class='gallery2-item'>
                     {% include 'previewProfile.html' with user_data=user_data %}
