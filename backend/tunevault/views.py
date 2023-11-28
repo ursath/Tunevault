@@ -431,9 +431,10 @@ def music_search(request, query):
         query = request.POST['query']
         return redirect('/music/' + query)
     else:
+        market = request.GET.get('market', None)
         genre = request.GET.get('genre', None)
         album_type = request.GET.get('album_type', None)
-        context = search_music(query, genre=genre, album_type = album_type)
+        context = search_music(query, genre=genre, album_type=album_type, market=market)
         return render(request, 'searchMusic.html', context)
 
 
@@ -451,8 +452,9 @@ def podcasts_search(request, query):
         query = request.POST['query']
         return redirect('/podcasts/' + query)
     else:
+        market = request.GET.get('market', None)
         explicit = request.GET.get('explicit', None)
-        context = search_podcast(query, explicit = explicit)
+        context = search_podcast(query, explicit=explicit, market=market)
         return render(request, 'searchPodcasts.html', context)
 
 
@@ -462,7 +464,8 @@ def all_search(request, query):
         print("hial")
         return redirect('/search/' + query)
     else:
-        context = search_all(query, 3)
+        market = request.GET.get('market', None)
+        context = search_all(query, 3, market=market)
         return render(request, 'searchResult.html', context)
 
 

@@ -45,7 +45,9 @@ def verify_artist(url):
 
 
 # se podrían pasar codigos de error para que el front los maneje
-def get_result_search(search, type, limit, offset, genre=None, album_type=None, explicit=None):
+def get_result_search(search, type, limit, offset, genre=None, album_type=None, explicit=None, market=None):
+    if market is None:
+        market = 'ES'
     if ((
             type != "artist" and type != "album" and type != "playlist" and type != "track" and type != "show" and type != "episode" and type != "audiobook" and type != "member_common" and type != "member_artist") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
@@ -83,7 +85,7 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
         }
 
     else:
-        result = sp.search(search, limit, offset, type, 'ES')
+        result = sp.search(search, limit, offset, type, market)
         listToRet = []
         if result[type + 's']['items'] == []:
             return json.dumps({'error': 'No se encontraron artistas'})
@@ -179,15 +181,15 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
 
 
 # para sección de música
-def search_music(query, genre=None, album_type=None):
-    searchArtist = get_result_search(query, 'artist', 10, 0, genre=genre)
-    searchAlbum = get_result_search(query, 'album', 10, 0, album_type=album_type)
+def search_music(query, genre=None, album_type=None, market=None):
+    searchArtist = get_result_search(query, 'artist', 10, 0, genre=genre, market=market)
+    searchAlbum = get_result_search(query, 'album', 10, 0, album_type=album_type, market=market)
     result = [searchArtist, searchAlbum]
     return {'result': result}
 
 
 # para seccion de podcast
-def search_podcast(query, explicit=None):
+def search_podcast(query, explicit=None, market=None):
     searchPodcast = get_result_search(query, 'show', 10, 0, explicit=explicit)
     searchEpisode = get_result_search(query, 'episode', 10, 0, explicit=explicit)
     result = [searchPodcast, searchEpisode]
@@ -202,13 +204,13 @@ def search_member(query):
 
 
 # para barra de navegación
-def search_all(query, results):
-    searchArtist = get_result_search(query, 'artist', results, 0)
-    searchAlbum = get_result_search(query, 'album', results, 0)
-    searchPodcast = get_result_search(query, 'show', results, 0)
-    searchEpisode = get_result_search(query, 'episode', results, 0)
-    searchMemberCommon = get_result_search(query, 'member_common', results, 0)
-    searchMemberArtist = get_result_search(query, 'member_artist', results, 0)
+def search_all(query, results, market=None):
+    searchArtist = get_result_search(query, 'artist', results, 0, market=market)
+    searchAlbum = get_result_search(query, 'album', results, 0, market=market)
+    searchPodcast = get_result_search(query, 'show', results, 0, market=market)
+    searchEpisode = get_result_search(query, 'episode', results, 0, market=market)
+    searchMemberCommon = get_result_search(query, 'member_common', results, 0, market=market)
+    searchMemberArtist = get_result_search(query, 'member_artist', results, 0, market=market)
     result = [searchArtist, searchAlbum, searchPodcast, searchEpisode, searchMemberArtist, searchMemberCommon]
     return {'result': result}
 
