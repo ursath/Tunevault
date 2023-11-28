@@ -96,14 +96,14 @@ def get_result_search(search, type, limit, offset, genre = None):
                                 'id' : items['id'],
                                 type: items['name'],
                                 'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
-                                'likes': 0
+                                'likes': get_vault_fav_count(Vault.objects.filter(external_url__contains=items['id']).first())
                             }
                         else:
                             queryResult = {
                                 'id' : items['id'],
                                 type: items['name'],
                                 'image': items['images'][0]['url'],
-                                'likes': 0
+                                'likes': get_vault_fav_count(Vault.objects.filter(external_url__contains=items['id']).first())
                             }
                         listToRet.append(queryResult)
             else:
@@ -112,14 +112,14 @@ def get_result_search(search, type, limit, offset, genre = None):
                         'id' : items['id'],
                         type: items['name'],
                         'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
-                        'likes': 0
+                        'likes': get_vault_fav_count(Vault.objects.filter(external_url__contains=items['id']).first())
                     }
                 else:
                     queryResult = {
                         'id' : items['id'],
                         type: items['name'],
                         'image': items['images'][0]['url'],
-                        'likes': 0
+                        'likes': get_vault_fav_count(Vault.objects.filter(external_url__contains=items['id']).first())
                     }
                 listToRet.append(queryResult)
         jsonResult = {
@@ -315,7 +315,7 @@ def format_top50(offset):
                     top50_dict[artist['id']] = {
                         'artist': artist_data['name'],
                         'image': artist_data['images'][0]['url'],
-                        'likes': 0
+                        'likes': get_vault_fav_count(Vault.objects.filter(external_url__contains=artist_data['id']).first())
                     }
     return {'top': top50_dict, 'isLastPage': isLastPage}
 
@@ -460,7 +460,7 @@ def get_top_podcasts(limit=10):
         podcast_data[podcast['id']] = {
             'artist': podcast['name'],
             'image': podcast['images'][0]['url'],
-            'likes': 0
+            'likes': get_vault_fav_count(Vault.objects.filter(external_url__contains=podcast['id']).first())
         }
 
     return {'top': podcast_data}
