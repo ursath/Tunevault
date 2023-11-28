@@ -451,7 +451,8 @@ def podcasts_search(request, query):
         query = request.POST['query']
         return redirect('/podcasts/' + query)
     else:
-        context = search_podcast(query)
+        explicit = request.GET.get('explicit', None)
+        context = search_podcast(query, explicit = explicit)
         return render(request, 'searchPodcasts.html', context)
 
 
