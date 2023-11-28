@@ -12,7 +12,7 @@ import json
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
 
-from .utils import get_or_create_by_id, format_top50, getChainOfComments, getPostsWithCommentCount, getVaultRating, get_recommended_profiles, get_profile,get_top_podcasts, search_music, search_podcast, verify_artist, search_member, search_all, get_posts
+from .utils import *
 
 load_dotenv()
 
@@ -174,7 +174,7 @@ def settings_profile(request):
 
 
 def profile(request, user=None):
-    
+
     if user is None:
         user = request.user.username
 
@@ -362,6 +362,17 @@ def gallery(request):
         list.append({"id":vault.id, "title":vault.title, "vtype":vault.vtype, "likes":vault.likes, "spotifyimg":vault.spotifyimg})
     return render(request, 'gallery.html', {list})
 
+def fav_or_unfav_vault(vault_id, request):
+    if request.method == 'POST':
+        vaultfav=VaultFavs.objects.filter(user=request.user, vault=vault_id)
+        if(vaultfav.exists()):
+            vaultfav.delete()
+            Vault.objects.filter(id=vault_id).update(followers=F('followers')-1)
+        else:
+            newvaultfav=VaultFavs.objects.create(user=request.user, vault=vault_id)
+            newvaultfav.save()
+            Vault.objects.filter(id=vault_id).update(followers=F('followers')+1)
+        return redirect('/vault/'+vault_id)
 
 def music(request):
      if request.method == 'POST':
@@ -370,7 +381,7 @@ def music(request):
      else:
         context = format_top50(0)
         return render(request, 'music.html', context)
-     
+
 
 def music_search(request, query):
     if request.method == 'POST':
@@ -421,7 +432,7 @@ def members_search(request, query):
     if request.method == 'POST':
         query = request.POST['query']
         return redirect('/members/' + query)
-    else: 
+    else:
         context = search_member(query)
         return render(request, 'searchMembers.html', context)
 

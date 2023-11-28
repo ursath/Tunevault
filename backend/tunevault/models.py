@@ -60,13 +60,17 @@ class VaultFavs(models.Model):
     user = models.ForeignKey(User,related_name='user_favs', on_delete=models.CASCADE)
     vault = models.ForeignKey('Vault',related_name='vault_favs', on_delete=models.CASCADE)
     def __str__(self):
-        return self.user.username+self.vault.title
+        return self.vault.external_url
+    class Meta:
+        unique_together = [('user', 'vault')]
 
-class PostFavs(models.Model):
-    user = models.ForeignKey(User,related_name='user_post_favs', on_delete=models.CASCADE)
-    post = models.ForeignKey('Post',related_name='post_favs', on_delete=models.CASCADE)
+class likedPosts(models.Model):
+    user = models.ForeignKey(User,related_name='user_liked_posts', on_delete=models.CASCADE)
+    post = models.ForeignKey('Post',related_name='post_liked', on_delete=models.CASCADE)
     def __str__(self):
-        return self.user.username + self.post.title
+        return self.post.id
+    class Meta:
+        unique_together = [('user', 'post')]
 
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
