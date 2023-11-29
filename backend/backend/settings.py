@@ -41,7 +41,7 @@ DEBUG = 'RENDER' not in os.environ
 
 #SECRET_KEY = 'django-insecure-v0q&g^)4f6459t7t_8#gxasgfubl%9ad-20p+f#$p3x8peqj7@'
 
-ALLOWED_HOSTS = ['127.0.0.1', '13.58.217.55']
+ALLOWED_HOSTS = ['127.0.0.1', '13.58.217.55', 'www.tunevault.net']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
@@ -143,6 +143,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta, date
+
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
 import json
@@ -7,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from spotipy.oauth2 import SpotifyOAuth
-from .models import Vault
+from .models import Vault, FollowersCount
 from dotenv import load_dotenv
 from .models import Comment, Post, Profile, VaultFavs, User, likedComments, likedPosts
 import re
@@ -336,6 +338,34 @@ def get_or_create_by_id(vtype, id):
     }
 
 
+def get_following_latest_posts(request):
+    current_user = request.user.username
+
+    limit_date = date.today() - timedelta(days=2)
+
+    posts_list = []
+    followers = FollowersCount.objects.filter(follower=current_user)
+    for follower in followers:
+        posts = Post.objects.filter(user=follower.user).values()
+        for post in posts:
+            if post['date'] > limit_date:
+                vault_data = Vault.objects.filter(external_url__contains=post['vault_id']).values()
+                post_formated = {
+                    'post_id': post['id'],
+                    'content': post['title'],
+                    'date': post['date'],
+                    'user': post['user'],
+                    'rating': post['rating'],
+                    'vault_id': post['vault_id'],
+                    'vault_name': vault_data[0]['title'],
+                    'vault_image': vault_data[0]['spotifyimg'],
+                    'vault_vtype': vault_data[0]['vtype']
+                }
+                posts_list.append(post_formated)
+
+    return {'timeline': posts_list}
+
+
 def get_album_item(id):
     pass
 
@@ -523,7 +553,7 @@ def get_user_vault_favs(user):
             'likes': auxvault.likes,
             'id': auxvault.external_url.split('/')[-1]
         }
-    return {'top': toret, 'isLastPage': False}
+    return {'top': toret}
 
 
 def get_vault_fav_count(vault_id):

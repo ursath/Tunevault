@@ -20,7 +20,8 @@ load_dotenv()
 # Create your views here.
 
 def home(request):
-    return render(request, 'home.html')
+    context = get_following_latest_posts(request)
+    return render(request, 'home.html', context)
 
 
 # class CustomProviderAuthView(ProviderAuthView):
@@ -371,7 +372,7 @@ def gallery(request):
                      "spotifyimg": vault.spotifyimg})
     return render(request, 'gallery.html', {list})
 
-
+@login_required(login_url='login')
 def fav_or_unfav_vault(request):
     if request.method == 'POST':
         vault_id = request.POST['vault_id']
@@ -388,8 +389,8 @@ def fav_or_unfav_vault(request):
             Vault.objects.filter(id=vault_id).update(followers=F('followers') + 1)
         return redirect('/vault/' + vtype + '/' + vault_id_path)
 
-
 # TOD?: hacerlo menos repetitivo
+@login_required(login_url='login')
 def like_or_unlike_comment(request):
     if request.method == 'POST':
         comment_id = request.POST['comment_id']
@@ -405,7 +406,7 @@ def like_or_unlike_comment(request):
             Comment.objects.filter(id=comment_id).update(likes=F('likes') + 1)
         return redirect(path)
 
-
+@login_required(login_url='login')
 def like_or_unlike_post(request):
     if request.method == 'POST':
         post_id = request.POST['post_id']
