@@ -308,8 +308,14 @@ def podcasts(request):
     if request.method == 'POST':
         query = request.POST['query']
         content = request.POST['content']
+        media_type = request.POST['media_type']
         if content != '' and query != '':
             query += '/?explicit=' + content
+        if media_type != '' and query != '':
+            if content != '':
+                query += '&media_type=' + media_type
+            else: 
+                query += '/?media_type=' + media_type
         return redirect('/podcasts/' + query)
     else:
         context = get_top_podcasts()
@@ -320,8 +326,14 @@ def podcasts_search(request, query):
     if request.method == 'POST':
         query = request.POST['query']
         content = request.POST['content']
+        media_type = request.POST['media_type']
         if content != '' and query != '':
             query += '/?explicit=' + content
+        if media_type != '' and query != '':
+            if content != '':
+                query += '&media_type=' + media_type
+            else: 
+                query += '/?media_type=' + media_type
         return redirect('/podcasts/' + query)
     else:
         market = request.GET.get('market', None)

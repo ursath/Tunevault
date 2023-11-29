@@ -16,6 +16,7 @@
                 {% csrf_token %}
                 <div class="Search">
                     <input type="hidden" value="" id="contentSelectInput" name="content" />
+                    <input type="hidden" value="" id="mediaSelectInput" name="media_type" />
                     <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
                     <button type='submit' class="searchButton">
                         <i class="material-icons SearchIcon">search</i>
@@ -32,6 +33,12 @@
             <option value="true">Explicit</option>
             <option value="false">Non-explicit</option>
             <option value="">All</option>
+        </select>
+        <select class='SelectPodcast' id="mediaSelect">
+            <option value="">Media type</option>
+            <option value="audio">Audio</option>
+            <option value="video">Video</option>
+            <option value="mixed">Mixed</option>
         </select>
     </div>
 
@@ -122,6 +129,11 @@
     document.getElementById('contentSelect').addEventListener('change', function() {
             var selectedContent = this.value;
             document.getElementById('contentSelectInput').value = selectedContent;  
+    });
+
+    document.getElementById('mediaSelect').addEventListener('change', function() {
+            var mediaContent = this.value;
+            document.getElementById('mediaSelectInput').value = mediaContent;  
     });
 
     </script>
