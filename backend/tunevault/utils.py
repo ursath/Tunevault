@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timedelta, date
 
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy
@@ -341,10 +341,9 @@ def get_or_create_by_id(vtype, id):
 def get_following_latest_posts(request):
     current_user = request.user.username
 
-    current_date = datetime.now().date()
-    limit_date = current_date - datetime.timedelta(days=2)
+    limit_date = date.today() - timedelta(days=2)
 
-    posts_list = []
+    posts_list = {}
     followers = FollowersCount.objects.filter(follower=current_user)
     for follower in followers:
         posts = Post.objects.filter(user=follower.user)

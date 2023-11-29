@@ -20,7 +20,8 @@ load_dotenv()
 # Create your views here.
 
 def home(request):
-    return render(request, 'home.html')
+    context = get_following_latest_posts(request)
+    return render(request, 'home.html', context)
 
 
 # class CustomProviderAuthView(ProviderAuthView):
