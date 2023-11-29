@@ -210,7 +210,7 @@ def search_music(query, genre=None, album_type=None, market=None):
 # para seccion de podcast
 def search_podcast(query, explicit=None, market=None, media_type=None):
     searchPodcast = get_result_search(query, 'show', 10, 0, market=market, explicit=explicit, media_type=media_type)
-    searchEpisode = get_result_search(query, 'episode', 10, 0, market=market, explicit=explicit, media_type=media_type)
+    searchEpisode = get_result_search(query, 'episode', 10, 0, market=market, explicit=explicit)
     result = [searchPodcast, searchEpisode]
     return {'result': result}
 
