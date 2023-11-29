@@ -343,12 +343,12 @@ def get_following_latest_posts(request):
 
     limit_date = date.today() - timedelta(days=2)
 
-    posts_list = {}
+    posts_list = []
     followers = FollowersCount.objects.filter(follower=current_user)
     for follower in followers:
-        posts = Post.objects.filter(user=follower.user)
+        posts = Post.objects.filter(user=follower.user).values()
         for post in posts:
-            if post.date > limit_date:
+            if post['date'] > limit_date:
                 vault_data = Vault.objects.filter(external_url__contains=post['vault_id']).values()
                 post_formated = {
                     'post_id': post['id'],
@@ -363,7 +363,8 @@ def get_following_latest_posts(request):
                 }
                 posts_list.append(post_formated)
 
-    return posts_list
+    return {'timeline': posts_list}
+
 
 def get_album_item(id):
     pass
@@ -551,7 +552,7 @@ def get_user_vault_favs(user):
             'likes': auxvault.likes,
             'id': auxvault.external_url.split('/')[-1]
         }
-    return {'top': toret, 'isLastPage': False}
+    return {'top': toret}
 
 
 def get_vault_fav_count(vault_id):
