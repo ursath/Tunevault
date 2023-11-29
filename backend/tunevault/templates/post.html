@@ -107,7 +107,7 @@
                 <div class="commentaries">
                     {% for a_comment in comments %}
                         {% with comment=a_comment.comment %}
-                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" rating=0 img=a_comment.img is_post=is_post comment_id=comment.id path=path is_liked=a_comment.is_liked likes=a_comment.likes %}
+                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" rating=0 img=a_comment.img is_post=is_post comment_id=comment.id path=path is_liked=a_comment.is_liked likes=a_comment.likes with_likes="true" %}
 
                         <div class="buttons">
                             <button class="replies-button" data-target="{{ comment.id }}" onclick="toggleReplies(this)">
@@ -149,7 +149,7 @@
                             <div class="hidden-replies" style="display: none;" data-comment-id="{{ comment.id }}">
                             {% for reply in a_comment.replies %}
                             <div style="margin: 20px 0;">
-                                {% include 'commentBox.html' with username=reply.comment.user date=reply.comment.date title=reply.comment.content type="false" id="false" post_id="false" rating=0 img=reply.img is_post=is_post comment_id=reply.comment.id path=path is_liked=reply.is_liked likes=reply.likes %}
+                                {% include 'commentBox.html' with username=reply.comment.user date=reply.comment.date title=reply.comment.content type="false" id="false" post_id="false" rating=0 img=reply.img is_post=is_post comment_id=reply.comment.id path=path is_liked=reply.is_liked likes=reply.likes with_likes="true" %}
                             </div>
                             {% endfor %}
                             </div>
