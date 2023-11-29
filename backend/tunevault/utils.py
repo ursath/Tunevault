@@ -195,7 +195,7 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
 # para sección de música
 def search_music(query, genre=None, album_type=None, market=None):
     searchArtist = get_result_search(query, 'artist', 10, 0, genre=genre, market=market)
-    searchAlbum = get_result_search(query, 'album', 10, 0, genre=genre, album_type=album_type, market=market)
+    searchAlbum = get_result_search(query, 'album', 10, 0, album_type=album_type, market=market)
     result = [searchArtist, searchAlbum]
     return {'result': result}
 
