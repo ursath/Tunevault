@@ -16,15 +16,18 @@ padding: 0;
 }
 
 .Black {
-height: 100vh;
-background-color: black;
+    height:auto;
+    width: 100%;
+    background-color: black;
+    min-height: 60vh;
+    padding-bottom: 50px;
 }
 
 .container {
 display: grid;
 width: 80%;
 place-content: center;
-margin: auto;  
+margin: auto;
 margin-bottom: 40px;
 position: relative;
 font-family: var(--fonts);
@@ -40,25 +43,25 @@ font-family: var(--fonts);
 }
 
 .btn-right {
-    background-color: #414141; 
-    border: 1px solid #414141; 
+    background-color: #414141;
+    border: 1px solid #414141;
     padding: 10px 30px;
-    cursor: pointer; 
-    float: left; 
+    cursor: pointer;
+    float: left;
     border-radius: 0 15px 15px 0;
-    color: white; 
+    color: white;
     font-family: var(--fonts);
     font-weight: bold;
 }
-  
+
 .btn-left {
-    background-color: #414141; 
-    border: 1px solid #414141; 
+    background-color: #414141;
+    border: 1px solid #414141;
     padding: 10px 30px;
-    cursor: pointer; 
-    float: left; 
+    cursor: pointer;
+    float: left;
     border-radius: 15px 0 0 15px;
-    color: white; 
+    color: white;
     font-family: var(--fonts);
     font-weight: bold;
 }

@@ -49,7 +49,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-right: 10px;   
+    padding-right: 10px;
 }
 
 .SearchIcon {
@@ -106,7 +106,7 @@
 .BlackMP {
     height:auto;
     width: 100%;
-    margin-top: 100px;
+    margin-top: 90px;
     background-color: black;
     color:white;
     min-height: 60vh;
@@ -142,7 +142,7 @@
 
 
 .gallery-page-nav {
-    margin-top: -40px;   
+    margin-top: -40px;
 }
 
 .searchButton {
