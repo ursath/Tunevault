@@ -24,125 +24,6 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-# class CustomProviderAuthView(ProviderAuthView):
-#     def post(self, request, *args, **kwargs):
-#         response = super().post(request, *args, **kwargs)
-
-#         if response.status_code == 201:
-#             access_token = response.data.get('access')
-#             refresh_token = response.data.get('refresh')
-
-#             response.set_cookie(
-#                 'access',
-#                 access_token,
-#                 max_age=settings.AUTH_COOKIE_MAX_AGE,
-#                 path=settings.AUTH_COOKIE_PATH,
-#                 secure=settings.AUTH_COOKIE_SECURE,
-#                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-#                 samesite=settings.AUTH_COOKIE_SAMESITE
-#             )
-#             response.set_cookie(
-#                 'refresh',
-#                 refresh_token,
-#                 max_age=settings.AUTH_COOKIE_MAX_AGE,
-#                 path=settings.AUTH_COOKIE_PATH,
-#                 secure=settings.AUTH_COOKIE_SECURE,
-#                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-#                 samesite=settings.AUTH_COOKIE_SAMESITE
-#             )
-
-#         return response
-
-
-# class CustomTokenObtainPairView(TokenObtainPairView):
-#     def post(self, request, *args, **kwargs):
-#         response = super().post(request, *args, **kwargs)
-
-#         if response.status_code == 200:
-#             access_token = response.data.get('access')
-#             refresh_token = response.data.get('refresh')
-
-#             response.set_cookie(
-#                 'access',
-#                 access_token,
-#                 max_age=settings.AUTH_COOKIE_MAX_AGE,
-#                 path=settings.AUTH_COOKIE_PATH,
-#                 secure=settings.AUTH_COOKIE_SECURE,
-#                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-#                 samesite=settings.AUTH_COOKIE_SAMESITE
-#             )
-#             response.set_cookie(
-#                 'refresh',
-#                 refresh_token,
-#                 max_age=settings.AUTH_COOKIE_MAX_AGE,
-#                 path=settings.AUTH_COOKIE_PATH,
-#                 secure=settings.AUTH_COOKIE_SECURE,
-#                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-#                 samesite=settings.AUTH_COOKIE_SAMESITE
-#             )
-
-#         return response
-
-
-# class CustomTokenRefreshView(TokenRefreshView):
-#     def post(self, request, *args, **kwargs):
-#         refresh_token = request.COOKIES.get('refresh')
-
-#         if refresh_token:
-#             request.data['refresh'] = refresh_token
-
-#         response = super().post(request, *args, **kwargs)
-
-#         if response.status_code == 200:
-#             access_token = response.data.get('access')
-
-#             response.set_cookie(
-#                 'access',
-#                 access_token,
-#                 max_age=settings.AUTH_COOKIE_MAX_AGE,
-#                 path=settings.AUTH_COOKIE_PATH,
-#                 secure=settings.AUTH_COOKIE_SECURE,
-#                 httponly=settings.AUTH_COOKIE_HTTP_ONLY,
-#                 samesite=settings.AUTH_COOKIE_SAMESITE
-#             )
-
-#         return response
-
-
-# class CustomTokenVerifyView(TokenVerifyView):
-#     def post(self, request, *args, **kwargs):
-#         access_token = request.COOKIES.get('access')
-
-#         if access_token:
-#             request.data['token'] = access_token
-
-#         return super().post(request, *args, **kwargs)
-
-
-# class LogoutView(APIView):
-#     def post(self, request, *args, **kwargs):
-#         response = Response(status=status.HTTP_204_NO_CONTENT)
-#         response.delete_cookie('access')
-#         response.delete_cookie('refresh')
-
-#         return response
-
-# class ProfileView(viewsets.ModelViewSet):
-#     serializer_class = ProfileSerializer
-#     queryset = Profile.objects.all()
-
-# class PostView(viewsets.ModelViewSet):
-#     serializer_class = PostSerializer
-#     queryset = Post.objects.all()
-
-# class CommentView(viewsets.ModelViewSet):
-#     serializer_class = CommentSerializer
-#     queryset = Comment.objects.all()
-
-# class VaultView(viewsets.ModelViewSet):
-#     serializer_class = VaultSerializer
-#     queryset = Vault.objects.all()
-
 @login_required(login_url='signin')
 def settings_profile(request):
     user_profile = Profile.objects.get(user__username=request.user)
@@ -224,36 +105,6 @@ def follow(request):
             return redirect('/profile/' + user)
     else:
         return redirect('/')
-
-
-# @login_required(login_url='signin')
-# def profile(request, pk):
-#     user_object = User.objects.get(username=pk)
-#     user_profile = Profile.objects.get(user=user_object)
-#     user_posts = Post.objects.filter(user=pk)
-#     user_post_length = len(user_posts)
-
-#     follower = request.user.username
-#     user = pk
-
-#     if FollowersCount.objects.filter(follower=follower, user=user).first():
-#         button_text = 'Unfollow'
-#     else:
-#         button_text = 'Follow'
-
-#     user_followers = len(FollowersCount.objects.filter(user=pk))
-#     user_following = len(FollowersCount.objects.filter(follower=pk))
-
-#     context = {
-#         'user_object': user_object,
-#         'user_profile': user_profile,
-#         'user_posts': user_posts,
-#         'user_post_length': user_post_length,
-#         'button_text': button_text,
-#         'user_followers': user_followers,
-#         'user_following': user_following,
-#     }
-#     return render(request, 'profile.html', context)
 
 
 def signup(request):
@@ -372,6 +223,7 @@ def gallery(request):
                      "spotifyimg": vault.spotifyimg})
     return render(request, 'gallery.html', {list})
 
+
 @login_required(login_url='login')
 def fav_or_unfav_vault(request):
     if request.method == 'POST':
@@ -389,6 +241,7 @@ def fav_or_unfav_vault(request):
             Vault.objects.filter(id=vault_id).update(followers=F('followers') + 1)
         return redirect('/vault/' + vtype + '/' + vault_id_path)
 
+
 # TOD?: hacerlo menos repetitivo
 @login_required(login_url='login')
 def like_or_unlike_comment(request):
@@ -405,6 +258,7 @@ def like_or_unlike_comment(request):
             newcomment.save()
             Comment.objects.filter(id=comment_id).update(likes=F('likes') + 1)
         return redirect(path)
+
 
 @login_required(login_url='login')
 def like_or_unlike_post(request):
@@ -426,6 +280,9 @@ def like_or_unlike_post(request):
 def music(request):
     if request.method == 'POST':
         query = request.POST['query']
+        genre = request.POST['genre']
+        if genre != '' and query != '':
+            query += '/?genre=' + genre
         return redirect('/music/' + query)
     else:
         context = format_top50(0)
@@ -435,6 +292,9 @@ def music(request):
 def music_search(request, query):
     if request.method == 'POST':
         query = request.POST['query']
+        genre = request.POST['genre']
+        if genre != '' and query != '':
+            query += '/?genre=' + genre
         return redirect('/music/' + query)
     else:
         market = request.GET.get('market', None)
@@ -447,6 +307,9 @@ def music_search(request, query):
 def podcasts(request):
     if request.method == 'POST':
         query = request.POST['query']
+        content = request.POST['content']
+        if content != '' and query != '':
+            query += '/?explicit=' + content
         return redirect('/podcasts/' + query)
     else:
         context = get_top_podcasts()
@@ -456,6 +319,9 @@ def podcasts(request):
 def podcasts_search(request, query):
     if request.method == 'POST':
         query = request.POST['query']
+        content = request.POST['content']
+        if content != '' and query != '':
+            query += '/?explicit=' + content
         return redirect('/podcasts/' + query)
     else:
         market = request.GET.get('market', None)
