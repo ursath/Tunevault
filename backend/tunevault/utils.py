@@ -350,9 +350,14 @@ def get_following_latest_posts(request):
         for post in posts:
             if post['date'] > limit_date:
                 vault_data = Vault.objects.filter(external_url__contains=post['vault_id']).values()
+                if len(post['title']) > 40:
+                    content_preview = post['title'][:37]
+                    content_preview += '...'
+                else:
+                    content_preview = post['title']
                 post_formated = {
                     'post_id': post['id'],
-                    'content': post['title'],
+                    'content': content_preview,
                     'date': post['date'],
                     'user': post['user'],
                     'rating': post['rating'],
