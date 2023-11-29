@@ -341,7 +341,7 @@ def get_or_create_by_id(vtype, id):
 def get_following_latest_posts(request):
     current_user = request.user.username
 
-    limit_date = date.today() - timedelta(days=2)
+    limit_date = date.today() - timedelta(days=7)
 
     posts_list = []
     followers = FollowersCount.objects.filter(follower=current_user)
@@ -367,6 +367,8 @@ def get_following_latest_posts(request):
                     'vault_vtype': vault_data[0]['vtype']
                 }
                 posts_list.append(post_formated)
+
+    posts_list.sort(key=lambda x: x['date'], reverse=True)
 
     return {'timeline': posts_list}
 
