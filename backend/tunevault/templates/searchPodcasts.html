@@ -15,6 +15,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="Search">
+                    <input type="hidden" value="" id="contentSelectInput" name="content" />
                     <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
                     <button type='submit' class="searchButton">
                         <i class="material-icons SearchIcon">search</i>
@@ -26,20 +27,11 @@
 
     <div class="Filters">
         <label class='Label'>FILTER BY</label>
-        <select class='SelectPodcast'>
-            <option value="0">Genre</option>
-            <option value="1">Disco</option>
-            <option value="2">Rock</option>
-            <option value="3">Classic</option>
-            <option value="4">Reggaeton</option>
-            <option value="5">Pop</option>
-            <option value="6">Salsa</option>
-        </select>
-        <select class='SelectPodcast'>
-            <option value="0">Active</option>
-            <option value="1">Trending</option>
-            <option value="2">Emergent</option>
-            <option value="3">New</option>
+        <select class='SelectPodcast' id="contentSelect">
+            <option value="">Content</option>
+            <option value="true">Explicit</option>
+            <option value="false">Non-explicit</option>
+            <option value="">All</option>
         </select>
     </div>
 
@@ -125,7 +117,13 @@
             artistsContent.style.display = 'none';
             albumsContent.style.display = 'block';
         }
-        }
+    }
+
+    document.getElementById('contentSelect').addEventListener('change', function() {
+            var selectedContent = this.value;
+            document.getElementById('contentSelectInput').value = selectedContent;  
+    });
+
     </script>
 </body>
 </html>

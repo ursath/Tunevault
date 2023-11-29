@@ -16,6 +16,7 @@
                 {% csrf_token %}
 
                 <div class="Search">
+                    <input type="hidden" value="" id="genreSelectInput" name="genre" />
                     <input class="InputSearch" placeholder='What do you want to talk about?' type="text" name="query" style="color: white"/>
                     <button type='submit' class="searchButton">
                         <i class="material-icons SearchIcon">search</i>
@@ -27,20 +28,14 @@
 
     <div class="Filters">
         <label class='Label'>FILTER BY</label>
-        <select class='SelectMusic'>
-            <option value="0">Genre</option>
-            <option value="1">Disco</option>
-            <option value="2">Rock</option>
-            <option value="3">Classic</option>
-            <option value="4">Reggaeton</option>
-            <option value="5">Pop</option>
-            <option value="6">Salsa</option>
-        </select>
-        <select class='SelectMusic'>
-            <option value="0">Active</option>
-            <option value="1">Trending</option>
-            <option value="2">Emergent</option>
-            <option value="3">New</option>
+        <select class='SelectMusic' id="genreSelect">
+            <option value="">Genre</option>
+            <option value="hip hop">Hip hop</option>
+            <option value="reggaeton">Reggaeton</option>
+            <option value="classic">Classic</option>
+            <option value="rock">Rock</option>
+            <option value="pop">Pop</option>
+            <option value="salsa">Salsa</option>
         </select>
     </div>
 
@@ -125,7 +120,12 @@
             artistsContent.style.display = 'none';
             albumsContent.style.display = 'block';
         }
-        }
+    }
+
+    document.getElementById('genreSelect').addEventListener('change', function() {
+            var selectedGenre = this.value;
+            document.getElementById('genreSelectInput').value = selectedGenre;  
+    });
     </script>
 </body>
 </html>
