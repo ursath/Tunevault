@@ -460,7 +460,8 @@ def podcasts_search(request, query):
     else:
         market = request.GET.get('market', None)
         explicit = request.GET.get('explicit', None)
-        context = search_podcast(query, explicit=explicit, market=market)
+        media_type = request.GET.get('media_type', None)
+        context = search_podcast(query, explicit=explicit, market=market, media_type=media_type)
         return render(request, 'searchPodcasts.html', context)
 
 

@@ -48,9 +48,9 @@ def verify_artist(url):
 
 
 # se podrían pasar codigos de error para que el front los maneje
-def get_result_search(search, type, limit, offset, genre=None, album_type=None, explicit=None, market=None):
+def get_result_search(search, type, limit, offset, genre=None, album_type=None, explicit=None, market=None, media_type=None):
     if market is None:
-        market = 'ES'
+        market = 'US'
     if ((
             type != "artist" and type != "album" and type != "playlist" and type != "track" and type != "show" and type != "episode" and type != "audiobook" and type != "member_common" and type != "member_artist") or limit < 0 or offset < 0):
         return json.dumps({'error': 'Tipo de busqueda no valida'})
@@ -99,7 +99,7 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
         if result[type + 's']['items'] == []:
             return json.dumps({'error': 'No se encontraron artistas'})
         for items in result[type + 's']['items']:
-            if genre != None:
+            if genre is not None:
                 if type == 'album':
                     genres = []
                     artists = items.get('artists')
@@ -129,7 +129,7 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
                             listToRet.append(queryResult)
                             break
 
-            elif album_type != None:
+            elif album_type is not None:
                 alb_type = items.get('album_type')
                 if alb_type and album_type in alb_type:
                     if not items['images']:
@@ -149,12 +149,12 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
                                 Vault.objects.filter(external_url__contains=items['id']).first())
                         }
                     listToRet.append(queryResult)
-            elif explicit != None:
+            elif explicit is not None or media_type is not None:
                 explicit_type = items.get('explicit')
                 explicit_boolean = False
                 if explicit == 'true':
                     explicit_boolean = True
-                if explicit_type is not None and explicit_type == explicit_boolean:
+                if (explicit is None or (explicit_type is not None and explicit_type == explicit_boolean)) and (media_type is None or (media_type == items.get('media_type'))):
                     if not items['images']:
                         queryResult = {
                             'id': items['id'],
@@ -208,9 +208,9 @@ def search_music(query, genre=None, album_type=None, market=None):
 
 
 # para seccion de podcast
-def search_podcast(query, explicit=None, market=None):
-    searchPodcast = get_result_search(query, 'show', 10, 0, market=market, explicit=explicit)
-    searchEpisode = get_result_search(query, 'episode', 10, 0, market=market, explicit=explicit)
+def search_podcast(query, explicit=None, market=None, media_type=None):
+    searchPodcast = get_result_search(query, 'show', 10, 0, market=market, explicit=explicit, media_type=media_type)
+    searchEpisode = get_result_search(query, 'episode', 10, 0, market=market, explicit=explicit, media_type=media_type)
     result = [searchPodcast, searchEpisode]
     return {'result': result}
 
