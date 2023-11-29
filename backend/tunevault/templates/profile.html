@@ -106,7 +106,7 @@
                             {% for post in user_posts %}
                                 <hr>
                                 <div style="margin: 15px 0;">
-                                {% include 'commentBox.html' with username=post.vault_name date=post.date title=post.content type=post.vault_vtype id=post.vault_id post_id=post.post_id rating=post.rating img=post.vault_image %}
+                                {% include 'commentBox.html' with username=post.vault_name date=post.date title=post.content type=post.vault_vtype id=post.vault_id post_id=post.post_id rating=post.rating img=post.vault_image with_likes="" %}
                                 </div>
                             {% endfor %}
                             <hr>
