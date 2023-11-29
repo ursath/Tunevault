@@ -12,12 +12,13 @@ from spotipy.oauth2 import SpotifyOAuth
 from .models import Vault, FollowersCount
 from dotenv import load_dotenv
 from .models import Comment, Post, Profile, VaultFavs, User, likedComments, likedPosts
+from requests.exceptions import ReadTimeout
 import re
 
 load_dotenv()
 
 auth_manager = SpotifyClientCredentials()
-sp = spotipy.Spotify(auth_manager=auth_manager)
+sp = spotipy.Spotify(auth_manager=auth_manager, requests_timeout=10, retries=10)
 
 
 def get_artist(id):
@@ -87,7 +88,14 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
         }
 
     else:
-        result = sp.search(search, limit, offset, type, market)
+
+        while True:
+            try:
+                result = sp.search(search, limit, offset, type, market)
+                break
+            except ReadTimeout:
+                pass
+
         listToRet = []
         if result[type + 's']['items'] == []:
             return json.dumps({'error': 'No se encontraron artistas'})
