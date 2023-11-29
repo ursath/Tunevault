@@ -25,6 +25,8 @@ urlpatterns = [
     path('search/<str:query>/', views.all_search, name='search'),
     path('follow/', views.follow, name='follow'),
     path('favourite/', views.fav_or_unfav_vault, name='favourite'),
+    path('likepost/', views.like_or_unlike_post, name='like_post'),
+    path('likecomment/', views.like_or_unlike_comment, name='like_comment'),
 ]
 
 if settings.DEBUG:

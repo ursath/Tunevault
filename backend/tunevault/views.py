@@ -348,15 +348,17 @@ def vault(request, vtype, id):
         new_post.vault_id = id
         new_post.rating = form.cleaned_data['rating']
         new_post.save()
-    posts = getPostsWithCommentCount(id)
+    posts = getPostsWithCommentCount(id, request.user)
     rating = getVaultRating(id)
     first_post = Post.objects.filter(user=request.user, vault_id=id).count() == 0
     vault_id = Vault.objects.filter(external_url__contains=id).first().id
     is_fav = VaultFavs.objects.filter(user=request.user.username, vault=vault_id).exists()
     likes = get_vault_fav_count(Vault.objects.filter(external_url__contains=id).first())
 
+    print(request.path)
+
     context = {'vault': vault, 'posts': posts, 'form': form, 'rating': rating, 'first_post': first_post,
-               'is_fav': is_fav, 'vault_id': id, 'likes': likes}
+               'is_fav': is_fav, 'vault_id': id, 'likes': likes, 'is_post': True, 'path': request.path}
     return render(request, 'vault.html', context)
 
 
@@ -388,33 +390,36 @@ def fav_or_unfav_vault(request):
 
 
 # TOD?: hacerlo menos repetitivo
-def like_or_unlike_comment(request, comment_id):
+def like_or_unlike_comment(request):
     if request.method == 'POST':
+        comment_id = request.POST['comment_id']
+        path = request.POST['path']
         auxComment = Comment.objects.get(id=comment_id)
         comment = likedComments.objects.filter(user=request.user, comment=auxComment)
         if (comment.exists()):
             comment.delete()
-            Comment.objects.filter(comment=auxComment).update(likes=F('likes') - 1)
+            Comment.objects.filter(id=comment_id).update(likes=F('likes') - 1)
         else:
-            newcomment = likedComments.objects.create(user=request.user, id=comment_id)
+            newcomment = likedComments.objects.create(user=request.user.username, comment=auxComment)
             newcomment.save()
-            Comment.objects.filter(comment=auxComment).update(likes=F('likes') + 1)
-        return redirect(request.path_info)
+            Comment.objects.filter(id=comment_id).update(likes=F('likes') + 1)
+        return redirect(path)
 
 
 def like_or_unlike_post(request):
     if request.method == 'POST':
         post_id = request.POST['post_id']
+        path = request.POST['path']
         auxPost = Post.objects.get(id=post_id)
         post = likedPosts.objects.filter(post=auxPost, user=request.user)
         if (post.exists()):
             post.delete()
-            Post.objects.filter(post=auxPost).update(likes=F('likes') - 1)
+            Post.objects.filter(id=post_id).update(likes=F('likes') - 1)
         else:
-            newpost = Post.objects.create(user=request.user, id=post_id)
+            newpost = likedPosts.objects.create(user=request.user.username, post=auxPost)
             newpost.save()
-            Post.objects.filter(post=auxPost).update(likes=F('likes') + 1)
-        return redirect(request.path_info)
+            Post.objects.filter(id=post_id).update(likes=F('likes') + 1)
+        return redirect(path)
 
 
 def music(request):
@@ -498,10 +503,12 @@ class vaultPost(View):
             'post': post,
             'img': Profile.objects.get(user__username=post.user).profileimg.url,
             'likes': get_post_likes_count(post),
-            'isLiked': is_post_liked_by_current_user(request.user.username, post),
+            'is_liked': is_post_liked_by_current_user(request.user.username, post),
             'form': form,
             'comments': chain_comments,
             'comment_count': comment_count,
+            'is_post': False,
+            'path': request.path,
         }
         return render(request, 'post.html', context)
 
@@ -522,9 +529,11 @@ class vaultPost(View):
             'post': post,
             'form': form,
             'likes': get_post_likes_count(post),
-            'isLiked': is_post_liked_by_current_user(request.user.username, post),
+            'is_liked': is_post_liked_by_current_user(request.user.username, post),
             'comments': chain_comments,
             'comment_count': comment_count,
+            'is_post': False,
+            'path': request.path,
         }
 
         return render(request, 'post.html', context)

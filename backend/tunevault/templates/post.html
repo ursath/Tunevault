@@ -25,23 +25,47 @@
                         <div class="comment">
                             <div class="comment-header">
                                 <h4 class="comment-title">@{{ post.user }}</h4>
-                                <p class="date">{{ post.date }}</p>
+                                <p class="date" style="margin-right: 20px;" >{{ post.date }}</p>
+                                {% with rating=post.rating %}
+                                {% if rating != 0 %}
+                                    <span class="star-rating">  
+                                        <i class="fa fa-star{% if rating >= 1 %} rated{% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if rating >= 2 %} rated{% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if rating >= 3 %} rated{% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if rating >= 4 %} rated{% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if rating >= 5 %} rated{% endif %}" aria-hidden="true"></i>
+                                    </span>
+                                {% endif %}
+                                {% endwith %}
                             </div>
                             <p class="post-comment">{{post.title}}</p>
                         </div>
-                        {% with rating=post.rating %}
-                        {% if rating != 0 %}
+                        
                         <div class="rate-right">
-                            <span class="star-rating">  
-                                <i class="fa fa-star{% if rating >= 1 %} rated{% endif %}" aria-hidden="true"></i>
-                                <i class="fa fa-star{% if rating >= 2 %} rated{% endif %}" aria-hidden="true"></i>
-                                <i class="fa fa-star{% if rating >= 3 %} rated{% endif %}" aria-hidden="true"></i>
-                                <i class="fa fa-star{% if rating >= 4 %} rated{% endif %}" aria-hidden="true"></i>
-                                <i class="fa fa-star{% if rating >= 5 %} rated{% endif %}" aria-hidden="true"></i>
-                            </span>
+                            <p style="margin: 0 8px 0 0; padding: 0px;">{{post.likes}}</p>
+
+                            {% if user.is_authenticated %}
+                            <form action="{% url 'like_post' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{post.id}}" name="post_id" />
+                                <input type="hidden" value="{{path}}" name="path" />
+                                <button type="submit" style="background-color: transparent; border: none; color: white; display: flex; align-items: center;">
+                                    {% if is_liked %}
+                                    <i class="material-icons" style="cursor: pointer; margin-right: 20px; color:rgb(255, 70, 70);">favorite</i>
+                                    {% else %}
+                                    <i class="material-icons" style="cursor: pointer; margin-right: 20px;">favorite_border</i>
+                                    {% endif %}
+                                </button>
+                            </form>
+                            {% else %}
+                                <a href="/login" style="text-decoration: none;">
+                                    <button style="background-color: transparent; border: none; color: white; display: flex; align-items: center;">
+                                        <i class="material-icons" style="cursor: pointer; margin-right: 20px;">favorite_border</i>
+                                    </button>
+                                </a>
+                            {% endif %}
                         </div>
-                        {% endif %}
-                        {% endwith %}
+    
                     </div>
                     <div class="buttons" style="margin: 20px 0 0 10px">
                         <button class="replies-button" data-target="0" onclick="toggleReplies(this)" style="cursor:default">
@@ -83,7 +107,7 @@
                 <div class="commentaries">
                     {% for a_comment in comments %}
                         {% with comment=a_comment.comment %}
-                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" rating=0 img=a_comment.img %}
+                        {% include 'commentBox.html' with username=comment.user date=comment.date title=comment.content type="false" id="false" post_id="false" rating=0 img=a_comment.img is_post=is_post comment_id=comment.id path=path is_liked=a_comment.is_liked likes=a_comment.likes %}
 
                         <div class="buttons">
                             <button class="replies-button" data-target="{{ comment.id }}" onclick="toggleReplies(this)">
@@ -125,7 +149,7 @@
                             <div class="hidden-replies" style="display: none;" data-comment-id="{{ comment.id }}">
                             {% for reply in a_comment.replies %}
                             <div style="margin: 20px 0;">
-                                {% include 'commentBox.html' with username=reply.comment.user date=reply.comment.date title=reply.comment.content type="false" id="false" post_id="false" rating=0 img=reply.img %}
+                                {% include 'commentBox.html' with username=reply.comment.user date=reply.comment.date title=reply.comment.content type="false" id="false" post_id="false" rating=0 img=reply.img is_post=is_post comment_id=reply.comment.id path=path is_liked=reply.is_liked likes=reply.likes %}
                             </div>
                             {% endfor %}
                             </div>

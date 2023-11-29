@@ -15,7 +15,16 @@
             <div class="comment">
                 <div class="comment-header">
                     <h4 class="comment-title">{{username}}</h4>
-                    <p class="date">{{date}}</p>
+                    <p class="date" style="margin-right: 20px;">{{date}}</p>
+                    {% if rating != 0 %}  
+                        <span class="star-rating">
+                            <i class="fa fa-star{% if rating >= 1 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 2 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 3 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 4 %} rated{% endif %}" aria-hidden="true"></i>
+                            <i class="fa fa-star{% if rating >= 5 %} rated{% endif %}" aria-hidden="true"></i>
+                        </span>
+                    {% endif %}
                 </div>
                 <p class="commentary">{{title}}</p>
             </div>
@@ -30,17 +39,46 @@
             </div>
             {% endif %}
 
-            {% if rating != 0 %}
+            
                 <div class="rate-right">
-                    <span class="star-rating">
-                        <i class="fa fa-star{% if rating >= 1 %} rated{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if rating >= 2 %} rated{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if rating >= 3 %} rated{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if rating >= 4 %} rated{% endif %}" aria-hidden="true"></i>
-                        <i class="fa fa-star{% if rating >= 5 %} rated{% endif %}" aria-hidden="true"></i>
-                    </span>
+                    <p style="margin: 0 8px 0 0; padding: 0px;">{{likes}}</p>
+
+                    {% if user.is_authenticated %}
+                        {% if is_post %}
+                        <form action="{% url 'like_post' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{post_id}}" name="post_id" />
+                            <input type="hidden" value="{{path}}" name="path" />
+                            <button type="submit" style="background-color: transparent; border: none; color: white; display: flex; align-items: center;">
+                                {% if is_liked %}
+                                <i class="material-icons" style="cursor: pointer; margin-right: 20px; color:rgb(255, 70, 70);">favorite</i>
+                                {% else %}
+                                <i class="material-icons" style="cursor: pointer; margin-right: 20px;">favorite_border</i>
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% else %}
+                        <form action="{% url 'like_comment' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{comment_id}}" name="comment_id" />
+                            <input type="hidden" value="{{path}}" name="path" />
+                            <button type="submit" style="background-color: transparent; border: none; color: white; display: flex; align-items: center;">
+                                {% if is_liked %}
+                                <i class="material-icons" style="cursor: pointer; margin-right: 20px; color:rgb(255, 70, 70);">favorite</i>
+                                {% else %}
+                                <i class="material-icons" style="cursor: pointer; margin-right: 20px;">favorite_border</i>
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    {% else %}
+                        <a href="/login" style="text-decoration: none;">
+                            <button style="background-color: transparent; border: none; color: white; display: flex; align-items: center;">
+                                <i class="material-icons" style="cursor: pointer; margin-right: 20px;">favorite_border</i>
+                            </button>
+                        </a>
+                    {% endif %}
                 </div>
-            {% endif %}
         </div>
 
         <script>

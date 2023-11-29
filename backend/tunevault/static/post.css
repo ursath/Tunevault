@@ -7,7 +7,7 @@
 
 .post {
     background-color: rgba(0, 0, 0, 0.86);
-    padding: 4%;
+    padding: 4% 0 4% 4%;
     margin-top: 2%;
     border-radius: 12px;
 }

@@ -427,28 +427,29 @@ def getChainOfComments(post_id, request):
             chain_comments.append({'comment': comment, 'replies': [], 'replies_count': 0,
                                    'img': Profile.objects.get(user__username=comment.user).profileimg.url,
                                    'likes': get_comment_likes_count(comment),
-                                   'isLiked': is_comment_liked_by_current_user(request.user.username, comment)})
+                                   'is_liked': is_comment_liked_by_current_user(request.user.username, comment)})
 
     for post in chain_comments:
         for comment in comments:
             if str(comment.comment_answer_id) == str(post['comment'].id):
                 post['replies'].append(
                     {'comment': comment, 'img': Profile.objects.get(user__username=comment.user).profileimg.url,
-                     'likes': get_comment_likes_count(post['comment']),
-                     'isLiked': is_comment_liked_by_current_user(request.user.username, comment)})
+                     'likes': get_comment_likes_count(comment),
+                     'is_liked': is_comment_liked_by_current_user(request.user.username, comment)})
                 post['replies_count'] += 1
 
     return chain_comments
 
 
-def getPostsWithCommentCount(vault_id):
+def getPostsWithCommentCount(vault_id, current_user):
     posts = Post.objects.filter(vault_id=vault_id)
     posts_with_count = []
     for post in posts:
         user = Profile.objects.get(user__username=post.user)
-        print(user)
+        likes = get_post_likes_count(post.id)
+        is_liked = is_post_liked_by_current_user(current_user, post)
         posts_with_count.append({'post': post, 'comment_count': Comment.objects.filter(post_id=post.id).count(),
-                                 'img': user.profileimg.url})
+                                 'img': user.profileimg.url, 'likes': likes, 'is_liked': is_liked})
     return posts_with_count
 
 
