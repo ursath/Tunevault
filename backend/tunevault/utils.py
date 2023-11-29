@@ -88,7 +88,6 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
         }
 
     else:
-
         while True:
             try:
                 result = sp.search(search, limit, offset, type, market)
@@ -102,24 +101,27 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
         for items in result[type + 's']['items']:
             if genre != None:
                 genres = items.get('genres')
-                if genres and genre in genres:
-                    if not items['images']:
-                        queryResult = {
-                            'id': items['id'],
-                            type: items['name'],
-                            'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
-                            'likes': get_vault_fav_count(
-                                Vault.objects.filter(external_url__contains=items['id']).first())
-                        }
-                    else:
-                        queryResult = {
-                            'id': items['id'],
-                            type: items['name'],
-                            'image': items['images'][0]['url'],
-                            'likes': get_vault_fav_count(
-                                Vault.objects.filter(external_url__contains=items['id']).first())
-                        }
-                    listToRet.append(queryResult)
+                if genres:
+                    for g in genres:
+                        if genre in g:
+                            if not items['images']:
+                                queryResult = {
+                                    'id': items['id'],
+                                    type: items['name'],
+                                    'image': 'https://f4.bcbits.com/img/a4139357031_10.jpg',
+                                    'likes': get_vault_fav_count(
+                                        Vault.objects.filter(external_url__contains=items['id']).first())
+                                }
+                            else:
+                                queryResult = {
+                                    'id': items['id'],
+                                    type: items['name'],
+                                    'image': items['images'][0]['url'],
+                                    'likes': get_vault_fav_count(
+                                        Vault.objects.filter(external_url__contains=items['id']).first())
+                                }
+                            listToRet.append(queryResult)
+
             elif album_type != None:
                 alb_type = items.get('album_type')
                 if alb_type and album_type in alb_type:
@@ -193,7 +195,7 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
 # para sección de música
 def search_music(query, genre=None, album_type=None, market=None):
     searchArtist = get_result_search(query, 'artist', 10, 0, genre=genre, market=market)
-    searchAlbum = get_result_search(query, 'album', 10, 0, album_type=album_type, market=market)
+    searchAlbum = get_result_search(query, 'album', 10, 0, genre=genre, album_type=album_type, market=market)
     result = [searchArtist, searchAlbum]
     return {'result': result}
 
