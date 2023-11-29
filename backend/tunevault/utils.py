@@ -100,7 +100,13 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
             return json.dumps({'error': 'No se encontraron artistas'})
         for items in result[type + 's']['items']:
             if genre != None:
-                genres = items.get('genres')
+                if type == 'album':
+                    genres = []
+                    artists = items.get('artists')
+                    for artist in artists:
+                        genres.append(sp.artist(artist.get('id')).get('genres'))
+                else:
+                    genres = items.get('genres')
                 if genres:
                     for g in genres:
                         if genre in g:
@@ -121,6 +127,7 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
                                         Vault.objects.filter(external_url__contains=items['id']).first())
                                 }
                             listToRet.append(queryResult)
+                            break
 
             elif album_type != None:
                 alb_type = items.get('album_type')
@@ -195,15 +202,15 @@ def get_result_search(search, type, limit, offset, genre=None, album_type=None, 
 # para sección de música
 def search_music(query, genre=None, album_type=None, market=None):
     searchArtist = get_result_search(query, 'artist', 10, 0, genre=genre, market=market)
-    searchAlbum = get_result_search(query, 'album', 10, 0, album_type=album_type, market=market)
+    searchAlbum = get_result_search(query, 'album', 10, 0, genre=genre, album_type=album_type, market=market)
     result = [searchArtist, searchAlbum]
     return {'result': result}
 
 
 # para seccion de podcast
 def search_podcast(query, explicit=None, market=None):
-    searchPodcast = get_result_search(query, 'show', 10, 0, explicit=explicit)
-    searchEpisode = get_result_search(query, 'episode', 10, 0, explicit=explicit)
+    searchPodcast = get_result_search(query, 'show', 10, 0, market=market, explicit=explicit)
+    searchEpisode = get_result_search(query, 'episode', 10, 0, market=market, explicit=explicit)
     result = [searchPodcast, searchEpisode]
     return {'result': result}
 
