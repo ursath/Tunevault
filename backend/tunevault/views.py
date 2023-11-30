@@ -385,7 +385,7 @@ class vaultPost(View):
 
         context = {
             'post': post,
-            'user': Profile.objects.get(user__username=post.user),
+            'user': User.objects.get(username=post.user),
             'likes': get_post_likes_count(post),
             'is_liked': is_post_liked_by_current_user(request.user.username, post),
             'form': form,
