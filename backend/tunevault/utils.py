@@ -635,3 +635,20 @@ def scrap_arists(limit):
 
     browser.quit()
     return urlList
+
+def get_user_followers(user):
+    followers = FollowersCount.objects.filter(user=user).distinct()
+    toret = []
+    for follower in followers:
+        aux =Profile.objects.get(user__username=follower.follower)
+        toret.append({'username': follower.follower, 'img': aux.profileimg.url, 'is_artist': aux.isArtist })
+    return {'followers': toret}
+
+
+def get_user_following(user):
+    following = FollowersCount.objects.filter(follower=user).distinct()
+    toret = []
+    for follow in following:
+        aux =Profile.objects.get(user__username=follow.user)
+        toret.append({'username': follow.user, 'img': aux.profileimg.url, 'is_artist': aux.isArtist })
+    return {'following': toret}

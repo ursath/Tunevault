@@ -11,7 +11,7 @@
         {% include 'NavBar.html' %}
         <div class='HeaderMP'>
             <div>
-                <h1 class="Title">Podcasts type</h1>
+                <h1 class="Title">Podcasts</h1>
                 <form method="POST">
                     {% csrf_token %}
 
@@ -36,7 +36,7 @@
                 <option value="">All</option>
             </select>
             <select class='SelectPodcast' id="mediaSelect">
-                <option value="">Media</option>
+                <option value="">Media type</option>
                 <option value="audio">Audio</option>
                 <option value="video">Video</option>
                 <option value="mixed">Mixed</option>
