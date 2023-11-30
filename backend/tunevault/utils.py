@@ -268,10 +268,11 @@ def get_or_create_by_id(vtype, id):
     uuid_str = string_to_uuid(str)
     toRet = None
     if type == 'artist':
+        item = sp.artist(id)
         try:
+            Vault.objects.filter(id=uuid_str).update(spotifyimg=item['images'][0]['url'])
             toRet = Vault.objects.get(id=uuid_str)
         except:
-            item = sp.artist(id)
             if (item['images'] == []):
                 image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
             else:
@@ -284,10 +285,11 @@ def get_or_create_by_id(vtype, id):
             toRet = create_vault(item['id'], type, item['name'], 'None', genre, image, item['external_urls']['spotify'],
                                  artist, 0, 'None')
     elif type == 'podcast':
+        item = sp.show(id, None)
         try:
+            Vault.objects.filter(id=uuid_str).update(spotifyimg=item['images'][0]['url'])
             toRet = Vault.objects.get(id=uuid_str)
         except:
-            item = sp.show(id, None)
             if (item['images'] == []):
                 image = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
             else:
@@ -296,10 +298,11 @@ def get_or_create_by_id(vtype, id):
             toRet = create_vault(item['id'], type, item['name'], item['description'], 'None', image,
                                  item['external_urls']['spotify'], publisher, item['total_episodes'], 'None')
     elif type == 'album':
+        item = sp.album(id, None)
         try:
+            Vault.objects.filter(id=uuid_str).update(spotifyimg=item['images'][0]['url'])
             toRet = Vault.objects.get(id=uuid_str)
         except:
-            item = sp.album(id, None)
             if (item['images'] == []):
                 image_album = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
             else:
@@ -319,10 +322,11 @@ def get_or_create_by_id(vtype, id):
             toRet = create_vault(item['id'], type, item['name'], 'None', genre_album, image_album,
                                  item['external_urls']['spotify'], artists, item['total_tracks'], item['release_date'])
     elif type == 'episode':
+        item = sp.episode(id, 'ES')
         try:
+            Vault.objects.filter(id=uuid_str).update(spotifyimg=item['images'][0]['url'])
             toRet = Vault.objects.get(id=uuid_str)
         except:
-            item = sp.episode(id, 'ES')
             if (item['images'] == []):
                 image_episode = 'https://f4.bcbits.com/img/a4139357031_10.jpg'
             else:

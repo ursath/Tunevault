@@ -21,11 +21,11 @@
 
                 <div class="post">
                     <div style="display: flex;">
-                        <img class="image-comment" height="40" width="40" src="{{user.profileimg.url}}">
+                        <img class="image-comment" height="40" width="40" src="{{post_user.profileimg.url}}">
                         <div class="comment">
                             <div class="comment-header">
                                 <h4 class="comment-title">@{{ post.user }}</h4>
-                                {% if user.isArtist %} 
+                                {% if post_user.isArtist %} 
                                     <i class="material-icons" style="color: rgb(0, 128, 255); margin-left: 10px;">verified</i>
                                 {% endif %}
                                 <p class="date" style="margin-right: 20px;" >{{ post.date }}</p>
