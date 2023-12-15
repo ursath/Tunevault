@@ -398,13 +398,38 @@ def get_album_item(id):
     pass
 
 
-def get_top50_artists(offset):
+def get_top50_artists_deprecated(offset):
     playlists = sp.playlist_tracks("37i9dQZF1DXcBWIGoYBM5M", None, 8, offset)  # top50 playlist id
     list = []
     for item in playlists['items']:
         if (item['track']['artists'] not in list):
             list.append(item['track']['artists'])
     return list
+
+def get_top50_artists(offset):
+    topArtistsUrls = scrap_artists(50)
+    artists = sp.artists(topArtistsUrls)
+    return artists
+
+def scrap_artists(limit):
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=true")
+    browser = webdriver.Chrome(options=options)
+    browser.get("https://charts.spotify.com/home")
+    browser.implicitly_wait(5)
+    button = browser.find_element(By.XPATH, '//*[@id="__next"]/div/div/main/div[2]/div/section[3]/div/div[1]/ul/li[3]/button')
+    button.send_keys(Keys.RETURN)
+    urlList=[]
+    elem= browser.find_elements(By.XPATH,'//*[@class="ChartsHomeEntries__StyledCover-kmpj2i-8 gqKcxZ"]/a')
+    i=0
+    for e in elem:
+        urlList.append(e.get_attribute('href').split('/')[-1])
+        i+=1
+        if i==limit:
+            break
+
+    browser.quit()
+    return urlList
 
 
 def format_top50(offset):
@@ -428,15 +453,13 @@ def format_top50(offset):
         top50_list = get_top50_artists(offset)
         if (len(top50_list) < 9):
             islastPage = True
-        for item in top50_list:
-            for artist in item:
-                if artist['id'] not in top50_dict:
-                    artist_data = get_artist(artist['id'])
+        for artist in top50_list['artists']:
+            if artist['id'] not in top50_dict:
                     top50_dict[artist['id']] = {
-                        'artist': artist_data['name'],
-                        'image': artist_data['images'][0]['url'],
+                        'artist': artist['name'],
+                        'image': artist['images'][0]['url'],
                         'likes': get_vault_fav_count(
-                            Vault.objects.filter(external_url__contains=artist_data['id']).first())
+                            Vault.objects.filter(external_url__contains=artist['id']).first())
                     }
     return {'top': top50_dict, 'isLastPage': isLastPage}
 
@@ -606,7 +629,7 @@ def is_comment_liked_by_current_user(user, comment):
 
 # se podría scrapear de algun lugar para tener un top
 def get_top_podcasts(limit=10):
-    topPodcastsUrls = scrap_arists(limit)
+    topPodcastsUrls = scrap_podcasts(limit)
 
     podcasts = sp.shows(topPodcastsUrls)
     podcastsfiltered = podcasts['shows']
@@ -621,7 +644,7 @@ def get_top_podcasts(limit=10):
     return {'top': podcast_data}
 
 
-def scrap_arists(limit):
+def scrap_podcasts(limit):
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=true")
     browser = webdriver.Chrome(options=options)
