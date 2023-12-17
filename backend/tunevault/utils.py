@@ -32,7 +32,7 @@ def verify_artist(url):
     # example url: https://open.spotify.com/artist/7jy3rLJdDQY21OgRLCZ9sD?si=bWz-CxINQQeKfQfhHdbg3Q
     # the id is 7jy3rLJdDQY21OgRLCZ9sD
 
-    regex = r"artist\/([a-zA-Z0-9]+)\?"
+    regex = r"artist\/([a-zA-Z0-9]+)"
     matches = re.search(regex, url)
 
     if matches == None:
